@@ -21,7 +21,7 @@ export default function Header() {
                         </a>
                         <a href="mailto:accordservice@interia.pl" className="hidden items-center gap-2 transition-opacity hover:opacity-80 sm:flex">
                             <Mail className="h-3.5 w-3.5" />
-                            <span>accordservice@op.pl</span>
+                            <span>accordservice@interia.pl</span>
                         </a>
                     </div>
                     <span className="hidden text-primary-foreground/70 md:block">Od 1984 roku w Opolu</span>
