@@ -15,8 +15,8 @@ const serviceLinks: LinksArrayType = [
 export default function Footer() {
     return (
         <footer className="bg-foreground text-card">
-            <div>
-                <div>
+            <div className="mx-auto max-w-7xl px-6 py-16">
+                <div className="grid gap-12">
                     {/* Brand section */}
                     <div className="lg:col-span-1">
                         <Image
@@ -61,23 +61,23 @@ export default function Footer() {
 
                     {/* Contact section */}
                     <div>
-                        <h4>Kontakt</h4>
-                        <ul>
+                        <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-card/40">Kontakt</h4>
+                        <ul className="space-y-3">
                             <li>
-                                <a href="tel:601475547">
-                                    <Phone />
+                                <a href="tel:601475547" className="flex items-center gap-3 text-sm text-card/70 transition-colors hover:text-card">
+                                    <Phone className="h-4 w-4 text-accent"/>
                                     601 47 55 47
                                 </a>
                             </li>
                             <li>
-                                <a href="mailto:accordservice@interia.pl">
-                                    <Mail />
+                                <a href="mailto:accordservice@interia.pl" className="flex items-center gap-3 text-sm text-card/70 transition-colors hover:text-card">
+                                    <Mail className="h-4 w-4 text-accent"/>
                                     accordservice@interia.pl
                                 </a>
                             </li>
                             <li>
-                                <a target="_blank" href="https://share.google/9emUNr7ADPnOUdc4r">
-                                    <MapPin />
+                                <a target="_blank" href="https://share.google/9emUNr7ADPnOUdc4r" className="flex items-center gap-3 text-sm text-card/70 transition-colors hover:text-card">
+                                    <MapPin className="h-4 w-4 text-accent"/>
                                     Masów, woj. opolskie
                                 </a>
                             </li>
