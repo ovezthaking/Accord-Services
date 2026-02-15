@@ -1,5 +1,14 @@
-import { ShieldCheck } from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import Image from "next/image";
+import { Button } from "./ui/button";
+import type { StatsArrayType } from "@/lib/types";
+
+const statsArray: StatsArrayType = [
+    { value: "40+", label: "lat doswiadczenia" },
+    { value: "X+", label: "realizacji" },
+    { value: "100%", label: "zadowolonych klientow" },
+    { value: "24/7", label: "serwis gwarancyjny" },
+]
 
 export default function HeroSection() {
     return (
@@ -27,6 +36,32 @@ export default function HeroSection() {
                         <span className="text-balance">Komfort i ekologia{" "}</span>
                         <span className="text-balance text-accent">dla Twojego domu</span>
                     </h1>
+
+                    <p>
+                        Pompy ciepła, klimatyzacja, rekuperacja i fotowoltaika. Kompleksowe rozwiązania od firmy z ponad 40-letnim stażem w Opolu i okolicach.
+                    </p>
+
+                    <div>
+                        <Button>
+                            Bezpłatna wycena
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                        <Button>
+                            Poznaj nasze usługi
+                        </Button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div>
+                <div>
+                    {statsArray.map(stat => (
+                        <div key={stat.label}>
+                            <div className="text-accent">{stat.value}</div>
+                            <div className="text-card/60">{stat.label}</div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>
