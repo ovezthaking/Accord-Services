@@ -85,8 +85,16 @@ export default function Footer() {
                     </div>
                 </div>
             </div>
-
             
+            {/* Bottom bar */}
+            <div className="border-t border-card/10">
+                <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-6 md:flex-row">
+                    <p className="text-xs text-card/40">
+                        {"\u00A9"} {new Date().getFullYear()} Accord Services. Wszelkie prawa zastrzeżone.
+                    </p>
+                    <p className="text-xs text-card/40">F.U.H. Accord Service - Rok założenia 1984</p>
+                </div>
+            </div>
         </footer>
     )
 }
