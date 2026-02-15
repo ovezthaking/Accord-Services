@@ -4,13 +4,7 @@ import { Phone, Mail, X, Menu } from "lucide-react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
-
-
-export const navLinks = [
-    { label: "Strona Główna", href: "#" },
-    { label: "O Nas", href: "#o-nas" },
-    { label: "Kontakt", href: "#kontakt" }
-]
+import { navLinks } from "@/lib/navLinks"
 
 export default function Header() {
     const [mobileOpen, setMobileOpen] = useState<boolean>(false)
@@ -25,7 +19,7 @@ export default function Header() {
                             <Phone className="h-3.5 w-3.5" />
                             <span>601 47 55 47</span>
                         </a>
-                        <a href="mailto:accordservice@op.pl" className="hidden items-center gap-2 transition-opacity hover:opacity-80 sm:flex">
+                        <a href="mailto:accordservice@interia.pl" className="hidden items-center gap-2 transition-opacity hover:opacity-80 sm:flex">
                             <Mail className="h-3.5 w-3.5" />
                             <span>accordservice@op.pl</span>
                         </a>

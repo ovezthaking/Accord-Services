@@ -1,0 +1,1 @@
+export type LinksArrayType = Array<{ label: string, href: string}>
