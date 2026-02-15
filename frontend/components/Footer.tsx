@@ -47,11 +47,11 @@ export default function Footer() {
 
                     {/* Nav links section */}
                     <div>
-                        <h4>F.U.H Accord Service</h4>
-                        <ul>
+                        <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-card/40">Accord Service</h4>
+                        <ul className="space-y-3">
                             {navLinks.map(link => (
                                 <li key={link.label}>
-                                    <a href={link.href}>
+                                    <a href={link.href} className="text-sm text-card/70 transition-colors hover:text-card">
                                         {link.label}
                                     </a>
                                 </li>
