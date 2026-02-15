@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { useState } from "react"
 
 
-const navLinks = [
+export const navLinks = [
     { label: "Strona Główna", href: "#" },
     { label: "O Nas", href: "#o-nas" },
     { label: "Kontakt", href: "#kontakt" }
