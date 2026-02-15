@@ -16,7 +16,7 @@ export default function Footer() {
     return (
         <footer className="bg-foreground text-card">
             <div className="mx-auto max-w-7xl px-6 py-16">
-                <div className="grid gap-12">
+                <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
                     {/* Brand section */}
                     <div className="lg:col-span-1">
                         <Image
@@ -24,7 +24,7 @@ export default function Footer() {
                             alt="Accord Service - logo"
                             width={700}
                             height={700}
-                            className="mb-4 h-10 w-auto brightness-200"
+                            className="mb-4 h-10 w-auto brightness-200 rounded-xl bg-white shadow-md shadow-blue-900"
                         />
                         <p className="text-sm leading-relaxed text-card/60">
                             Profesjonalne rozwiązania grzewcze, klimatyzacyjne i fotowoltaiczne od 1984 roku
