@@ -4,9 +4,9 @@ import { Button } from "./ui/button";
 import type { StatsArrayType } from "@/lib/types";
 
 const statsArray: StatsArrayType = [
-    { value: "40+", label: "lat doswiadczenia" },
-    { value: "X+", label: "realizacji" },
-    { value: "100%", label: "zadowolonych klientow" },
+    { value: "40+", label: "lat doświadczenia" },
+    { value: "XXXX+", label: "realizacji" },
+    { value: "100%", label: "zadowolonych klientów" },
     { value: "24/7", label: "serwis gwarancyjny" },
 ]
 
@@ -42,24 +42,26 @@ export default function HeroSection() {
                     </p>
 
                     <div className="flex flex-col gap-4 sm:flex-row">
-                        <Button size='lg' className="bg-accent text-accent-foreground hover:bg-accent/90">
-                            Bezpłatna wycena
-                            <ArrowRight className="ml-2 h-4 w-4" />
+                        <Button asChild size='lg' className="bg-accent text-accent-foreground hover:bg-accent/90">
+                            <a href="#kontakt">
+                                Bezpłatna wycena
+                                <ArrowRight className="ml-2 h-4 w-4" />
+                            </a>
                         </Button>
                         <Button size='lg' variant='outline' className="border-card/30 bg-transparent text-card hover:bg-card/10 hover:text-card">
-                            Poznaj nasze usługi
+                            <a href="#uslugi">Poznaj nasze usługi</a>
                         </Button>
                     </div>
                 </div>
             </div>
 
-
-            <div>
-                <div>
+            {/* Stats */}
+            <div className="relative z-10 border-t border-card/10 bg-foreground/80 backdrop-blur-md">
+                <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px md:grid-cols-4">
                     {statsArray.map(stat => (
-                        <div key={stat.label}>
-                            <div className="text-accent">{stat.value}</div>
-                            <div className="text-card/60">{stat.label}</div>
+                        <div key={stat.label} className="px-6 py-6 text-center">
+                            <div className="text-accent text-2xl font-bold md:text-3xl">{stat.value}</div>
+                            <div className="text-card/60 mt-1 text-sm">{stat.label}</div>
                         </div>
                     ))}
                 </div>
