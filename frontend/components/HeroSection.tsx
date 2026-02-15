@@ -25,7 +25,7 @@ export default function HeroSection() {
             </div>
 
             {/* Content */}
-            <div className="relative mx-auto z-10 ">
+            <div className="relative mx-auto z-10 max-w-7xl px-6 py-28 md:py-40">
                 <div className="max-w-2xl">
                     <div className="text-card inline-flex items-center mb-6 gap-2 border border-card/20 rounded-full bg-card/10 px-4 py-2 text-sm backdrop-blur-sm">
                         <ShieldCheck className="text-accent h-4 w-4"/>
@@ -37,16 +37,16 @@ export default function HeroSection() {
                         <span className="text-balance text-accent">dla Twojego domu</span>
                     </h1>
 
-                    <p>
+                    <p className="mb-10 max-w-lg text-lg leading-relaxed text-card/80">
                         Pompy ciepła, klimatyzacja, rekuperacja i fotowoltaika. Kompleksowe rozwiązania od firmy z ponad 40-letnim stażem w Opolu i okolicach.
                     </p>
 
-                    <div>
-                        <Button>
+                    <div className="flex flex-col gap-4 sm:flex-row">
+                        <Button size='lg' className="bg-accent text-accent-foreground hover:bg-accent/90">
                             Bezpłatna wycena
                             <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
-                        <Button>
+                        <Button size='lg' variant='outline' className="border-card/30 bg-transparent text-card hover:bg-card/10 hover:text-card">
                             Poznaj nasze usługi
                         </Button>
                     </div>
