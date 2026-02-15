@@ -24,7 +24,7 @@ export default function Footer() {
                             alt="Accord Service - logo"
                             width={700}
                             height={700}
-                            className="mb-4 h-10 w-auto brightness-200 rounded-xl bg-white shadow-md shadow-blue-900"
+                            className="mb-4 h-10 w-auto brightness-200 rounded-xl bg-white shadow-md shadow-blue-900 px-1"
                         />
                         <p className="text-sm leading-relaxed text-card/60">
                             Profesjonalne rozwiązania grzewcze, klimatyzacyjne i fotowoltaiczne od 1984 roku
