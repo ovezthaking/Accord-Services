@@ -48,7 +48,7 @@ export default function HeroSection() {
                                 <ArrowRight className="ml-2 h-4 w-4" />
                             </a>
                         </Button>
-                        <Button size='lg' variant='outline' className="border-card/30 bg-transparent text-card hover:bg-card/10 hover:text-card">
+                        <Button asChild size='lg' variant='outline' className="border-card/30 bg-transparent text-card hover:bg-card/10 hover:text-card">
                             <a href="#uslugi">Poznaj nasze usługi</a>
                         </Button>
                     </div>
