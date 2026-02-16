@@ -50,11 +50,13 @@ export default function Footer() {
                         <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-card/40">Accord Service</h4>
                         <ul className="space-y-3">
                             {navLinks.map(link => (
-                                <li key={link.label}>
-                                    <a href={link.href} className="text-sm text-card/70 transition-colors hover:text-card">
-                                        {link.label}
-                                    </a>
-                                </li>
+                                link.label !== 'Usługi' && link.label !== 'Realizacja' && (
+                                    <li key={link.label}>
+                                        <a href={link.href} className="text-sm text-card/70 transition-colors hover:text-card">
+                                            {link.label}
+                                        </a>
+                                    </li>
+                                )
                             ))}
                         </ul>
                     </div>
