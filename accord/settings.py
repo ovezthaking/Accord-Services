@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'contact',
-    'chatai'
+    'contact.apps.ContactConfig',
+    'chatai.apps.ChataiConfig'
 ]
 
 MIDDLEWARE = [
