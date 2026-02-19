@@ -5,4 +5,4 @@ from contact.models import Contact
 class ContactSerializer(ModelSerializer):
     class Meta:
         model = Contact
-        fields = ['__all__']
+        fields = '__all__'
