@@ -6,7 +6,7 @@ from django.core.validators import RegexValidator, EmailValidator
 class Contact(models.Model):
     SERVICE_CHOICES = (
         ('pompy', 'Pompy'),
-        ('klimatyacja', 'Klimatyzacja'),
+        ('klimatyzacja', 'Klimatyzacja'),
         ('rekuperacja', 'Rekuperacja'),
         ('fotowoltaika', 'Fotowoltaika'),
         ('serwis', 'Serwis')
