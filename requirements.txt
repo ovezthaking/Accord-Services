@@ -1,1 +1,4 @@
-Django
+django
+django_rest_framework
+django_cors_headers
+python-dotenv
