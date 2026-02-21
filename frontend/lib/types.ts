@@ -10,3 +10,10 @@ export type ServicesArrayType = Array<{
     image: string,
     features: Array<string>
 }>
+
+export type contactInfoType = Array<{
+    icon: LucideIcon,
+    label: string,
+    value: string,
+    href?: string
+}>
