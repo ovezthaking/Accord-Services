@@ -60,7 +60,7 @@ def contact_view(request, pk):
                 {'error': 'contact doesn\'t exist'},
                 status=status.HTTP_404_NOT_FOUND
             )
-        
+
         contact.delete()
 
         return Response(
