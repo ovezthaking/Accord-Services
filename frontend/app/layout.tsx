@@ -14,6 +14,7 @@ const __spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
+  icons: { icon: 'images/favicon.png' },
   title: "Accord Service - Pompy Ciepla, Klimatyzacja, Rekuperacja, Fotowoltaika | Opole",
   description: "Accord Service - od 1984 roku dostarczamy profesjonalne rozwiazania w zakresie pomp ciepla, klimatyzacji, rekuperacji i fotowoltaiki w Opolu i okolicach.",
 };

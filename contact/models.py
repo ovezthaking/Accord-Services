@@ -4,6 +4,8 @@ from django.core.validators import RegexValidator, EmailValidator
 
 # Create your models here.
 class Contact(models.Model):
+    """TODO: przemyśleć pole status i ewentualne wydzielenie services do osobnego modelu."""
+
     SERVICE_CHOICES = (
         ('pompy', 'Pompy'),
         ('klimatyzacja', 'Klimatyzacja'),
