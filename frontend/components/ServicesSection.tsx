@@ -1,7 +1,7 @@
 "use client"
 
 import { ServicesArrayType } from "@/lib/types"
-import { Flame, Wind } from "lucide-react"
+import { ArrowRight, Flame, Wind } from "lucide-react"
 import { useState } from "react"
 
 const services: ServicesArrayType = [
@@ -9,7 +9,7 @@ const services: ServicesArrayType = [
         icon: Flame,
         title: 'Pompy Ciepła',
         description: 'Nowoczesne pompy ciepła powietrze-woda i gruntowe. Ogrzewanie, chłodzenie i przygotowanie ciepłej wody użytkowej w jednym urządzeniu.',
-        image: '/images/hero-heat-pump.jpg',
+        image: '/images/hero-background.jpg',
         features: ["Oszczędność do 75% kosztów ogrzewania", "Dotacje rządowe", "Ciche działanie"]
     },
     {
@@ -39,7 +39,7 @@ export default function ServicesSection() {
                 </div>
 
                 {/* Tabs subsection */}
-                <div>
+                <div className="grid gap-8 lg:grid-cols-5">
                     {/* Tabs */}
                     <div className="flex flex-row gap-2 overflow-x-auto lg:col-span-2 lg:flex-col lg:gap-3">
                         {services.map((service, index) => {
@@ -64,8 +64,38 @@ export default function ServicesSection() {
                     </div>
 
                     {/* Active service details */}
-                    <div>
-                        
+                    <div className="lg:col-span-3">
+                        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                            <div className="relative h-56 overflow-hidden md:h-72">
+                                <img
+                                    src={services[activeIndex].image || '/placeholder.svg'}
+                                    alt={services[activeIndex].title}
+                                    className="h-full w-full object-cover"
+                                />
+                                <div className="absolute inset-0 bg-foreground/20" />
+                            </div>
+                            <div className="p-6 md:p-8">
+                                <h3 className="mb-3 text-2xl font-bold text-foreground">{services[activeIndex].title}</h3>
+                                <p className="mb-6 leading-relaxed text-muted-foreground">{services[activeIndex].description}</p>
+                                <ul className="mb-6 flex flex-col gap-2">
+                                    {services[activeIndex].features.map((feature) => (
+                                        <li key={feature} className="flex items-center gap-3 text-sm text-foreground">
+                                            <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent">
+                                                <ArrowRight className="h-3 w-3" />
+                                            </span>
+                                            {feature}
+                                        </li>
+                                    ))}
+                                </ul>
+                                <a
+                                    href="#kontakt"
+                                    className='inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-primary/80'
+                                >
+                                    Dowiedz się więcej
+                                    <ArrowRight className="h-4 w-4" />
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
