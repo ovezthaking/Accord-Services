@@ -1,7 +1,7 @@
 "use client"
 
 import { ServicesArrayType } from "@/lib/types"
-import { ArrowRight, Flame, Wind } from "lucide-react"
+import { ArrowRight, Fan, Flame, Sun, Wind } from "lucide-react"
 import { useState } from "react"
 
 const services: ServicesArrayType = [
@@ -18,6 +18,20 @@ const services: ServicesArrayType = [
         description: 'Profesjonalny montaż klimatyzacji domowej i przemysłowej. Systemy split i multi-split od najlepszych producentów.',
         image: '/images/service-ac.jpg',
         features: ["Systemy inwerterowe", "Montaż i serwis", "Gwarancja producenta"]
+    },
+    {
+        icon: Fan,
+        title: 'Rekuperacja',
+        description: 'Wentylacja mechaniczna z odzyskiem ciepła. Czyste powietrze i niskie rachunki za ogrzewanie przez cały rok.',
+        image: '/images/service-ventilation.jpg',
+        features: ["Odzysk ciepła do 95%", "Filtracja powietrza", "Eliminacja wilgoci"]
+    },
+    {
+        icon: Sun,
+        title: 'Fotowoltaika',
+        description: 'Instalacje fotowoltaiczne dopasowane do Twoich potrzeb. Produkuj własną energię i uniezależnij sie od rosnących cen prądu.',
+        image: '/images/service-solar.jpg',
+        features: ["Darmowa energia ze słonca", "Zwrot inwestycji w 6-8 lat", "25 lat gwarancji"]
     }
 ]
 
