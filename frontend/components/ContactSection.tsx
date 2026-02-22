@@ -75,14 +75,8 @@ export default function ContactSection() {
                                 )
                             })}
                             <div className="flex h-[180px] items-start rounded-xl border border-border bg-card p-0 transition-colors hover:border-primary/30">
-                                <iframe
-                                    title="Lokalizacja Accord Service na mapie"
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2528.5!2d17.93!3d50.67!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTDCsDQwJzEyLjAiTiAxN8KwNTUnNDguMCJF!5e0!3m2!1spl!2spl!4v1234567890"
-                                    className="h-full w-full border-0 rounded-xl"
-                                    allowFullScreen
-                                    loading="lazy"
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                    />
+                                <iframe className="w-full h-full rounded-xl" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=400&height=200&hl=en&q=Accord%20service&t=&z=9&ie=UTF8&iwloc=B&output=embed">
+                                </iframe>
                             </div>
                         </div>
                     </div>
