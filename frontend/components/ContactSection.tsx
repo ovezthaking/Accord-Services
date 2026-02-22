@@ -24,7 +24,7 @@ const contactInfo: contactInfoType = [
     {
         icon: MapPin,
         label: "Adres",
-        value: "Masów, woj. opolskie",
+        value: "ul. Opolska 27, 46-024 Masów, woj. opolskie",
         href: 'https://www.google.com/maps?newwindow=1&sca_esv=955d8677a95466f9&sxsrf=ANbL-n6nK7msBScC2S7aEwPKnQnVwR15Mw:1771695310547&si=AL3DRZGNtcdgKOqVhotcr-UG2kkYpwR2WO4qu3O00NmpwBmLnQK4IuiWlflH0mVqNJbs2sAJzylyt8IevYrYHZ5kbzmDPXt0N2hV7xzkCONId9lswyex8_BDGUY5bl57VGJy7Ecvg3qzirUomgAdHSUUNRHQrKvyHWpUlB_1bOhxW5A37PyZLkxA64y_QgPgAG_F22xe4GxW&biw=1272&bih=554&dpr=1.5&um=1&ie=UTF-8&fb=1&gl=pl&sa=X&geocode=KT-1-av4TeuAMd6B_g8YJOq4&daddr=Opolska+27,+46-024+Mas%C3%B3w',
     },
     {
@@ -37,38 +37,39 @@ const contactInfo: contactInfoType = [
 
 export default function ContactSection() {
     return (
-        <section id="#kontakt" className="bg-muted">
-            <div>
-                <div>
-                    <p>Kontakt</p>
-                    <h2>
+        <section id="#kontakt" className="bg-muted py-20 md:py-28">
+            <div className="mx-auto max-w-7xl px-6">
+                <div className="mb-16 text-center">
+                    <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-accent">Kontakt</p>
+                    <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
                         Porozmawiajmy o twoim projekcie
                     </h2>
-                    <p>
+                    <p className="mx-auto max-w-lg text-lg leading-relaxed text-muted-foreground">
                         Skontaktuj się z nami, aby uzyskać 
                         bezpłatną wycenę lub umówic się na 
                         bezpłatną konsultację
                     </p>
                 </div>
 
-                <div>
+                <div className="grid gap-12 lg:grid-cols-5">
                     {/* Info */}
-                    <div>
-                        <div>
+                    <div className="lg:col-span-2">
+                        <div className="space-y-6">
                             {contactInfo.map(item => {
                                 const Icon = item.icon
                                 const Wrapper = item.href ? 'a' : 'div'
                                 return (
                                     <Wrapper
                                         key={item.label}
-                                        {...(item.href ? { href: item.href } : {})}
+                                        {...(item.href ? { href: item.href, target: '_blank' } : {})}
+                                        className="flex items-start gap-4 rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/30"
                                     >
-                                        <div>
-                                            <Icon />
+                                        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                                            <Icon className="h-5 w-5" />
                                         </div>
                                         <div>
-                                            <p>{item.label}</p>
-                                            <p>{item.value}</p>
+                                            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{item.label}</p>
+                                            <p className="mt-1 font-medium text-foreground">{item.value}</p>
                                         </div>
                                     </Wrapper>
                                 )
@@ -77,15 +78,16 @@ export default function ContactSection() {
                     </div>
 
                     {/* Form */}
-                    <div>
+                    <div className="lg:col-span-3">
                         <form
                             onSubmit={(e) => e.preventDefault()}
+                            className="rounded-2xl border border-border bg-card p-6 shadow-sm md:p-8"
                         >
-                            <h3>Wyślij zapytanie</h3>
-                            <div>
+                            <h3 className="mb-6 text-xl font-bold text-foreground">Wyślij zapytanie</h3>
+                            <div className="grid gap-5 sm:grid-cols-2">
                                 <div className="space-y-2">
                                    <Label htmlFor="name" className="text-foreground">Imię i nazwisko</Label>
-                                   <Input id="name" placeholder="Jan Kowalski" className="bg-background text-foreground" />
+                                   <Input id="name" placeholder="Jan Kowalski" className="bg-background text-foreground" required />
                                 </div>
                                 <div className="space-y-2">
                                    <Label htmlFor="phone" className="text-foreground">Telefon</Label>
@@ -93,13 +95,15 @@ export default function ContactSection() {
                                 </div>
                                 <div className="space-y-2 sm:col-span-2">
                                    <Label htmlFor="email" className="text-foreground">E-mail</Label>
-                                   <Input id="email" type="email" placeholder="jan@email.com" className="bg-background text-foreground" />
+                                   <Input id="email" type="email" placeholder="jan@email.com" className="bg-background text-foreground" required />
                                 </div>
                                 <div className="space-y-2 sm:col-span-2">
                                    <Label htmlFor="service" className="text-foreground">Usługa</Label>
                                    <select
                                         id="service"
                                         defaultValue=''
+                                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                        required
                                     >
                                         <option value='' disabled>Wybierz usługę...</option>
                                         <option value="pompy">Pompy ciepła</option>
@@ -110,7 +114,7 @@ export default function ContactSection() {
                                    </select>
                                 </div>
                                 <div className="space-y-2 sm:col-span-2">
-                                   <Label htmlFor="name" className="text-foreground">Wiadomość</Label>
+                                   <Label htmlFor="message" className="text-foreground">Wiadomość</Label>
                                    <Textarea id="message" placeholder="Opisz swoje potrzeby..." rows={4} className="bg-background text-foreground" />
                                 </div>
                             </div>

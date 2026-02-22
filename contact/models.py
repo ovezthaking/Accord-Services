@@ -7,7 +7,7 @@ class Contact(models.Model):
     """TODO: przemyśleć pole status i ewentualne wydzielenie services do osobnego modelu."""
 
     SERVICE_CHOICES = (
-        ('pompy', 'Pompy'),
+        ('pompy', 'Pompy Ciepła'),
         ('klimatyzacja', 'Klimatyzacja'),
         ('rekuperacja', 'Rekuperacja'),
         ('fotowoltaika', 'Fotowoltaika'),
