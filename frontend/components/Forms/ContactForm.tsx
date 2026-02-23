@@ -1,14 +1,47 @@
-import { sendContactAction } from "@/app/actions/contact"
+"use client"
+
+import { useActionState, useEffect, useRef } from "react"
+import { sendContactAction, type ContactActionState } from "@/app/actions/contact"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { Textarea } from "../ui/textarea"
 import { Button } from "../ui/button"
 import { Send } from "lucide-react"
+import { toast } from "@/hooks/use-toast"
+
+const initialState: ContactActionState = {
+    ok: false,
+    message: ''
+}
 
 export default function ContactForm() {
+    const [state, formAction] = useActionState(sendContactAction, initialState)
+    const lastMessageRef = useRef('')
+
+    useEffect(() => {
+        if (!state.message || state.message === lastMessageRef.current) {
+            return
+        }
+
+        lastMessageRef.current = state.message
+
+        if (state.ok) {
+            toast({
+                title: 'Wysłano',
+                description: state.message
+            })
+            return
+        }
+
+        toast({
+            title: 'Przepraszamy',
+            description: state.message
+        })
+    }, [state])
+
     return (
         <form
-            action={sendContactAction}
+            action={formAction}
             className="rounded-2xl border border-border bg-card p-6 shadow-sm md:p-8"
         >
             <h3 className="mb-6 text-xl font-bold text-foreground">Wyślij zapytanie</h3>
