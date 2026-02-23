@@ -1,4 +1,4 @@
-import { MessageSquare } from "lucide-react"
+import { CheckCircle, FileSearch, HardHat, MessageSquare } from "lucide-react"
 
 const steps = [
     {
@@ -6,28 +6,28 @@ const steps = [
         number: "01",
         title: "Konsultacja",
         description:
-        "Bezpłatna rozmowa i analiza Twoich potrzeb. Doradzimy najlepsze rozwiązanie dla Twojego domu lub firmy.",
+            "Bezpłatna rozmowa i analiza Twoich potrzeb. Doradzimy najlepsze rozwiązanie dla Twojego domu lub firmy.",
     },
     {
-        icon: MessageSquare,
+        icon: FileSearch,
         number: "02",
-        title: "Konsultacja",
+        title: "Projekt i wycena",
         description:
-        "Bezpłatna rozmowa i analiza Twoich potrzeb. Doradzimy najlepsze rozwiązanie dla Twojego domu lub firmy.",
+            "Przygotujemy szczegółowy projekt techniczny oraz transparentną wycenę bez ukrytych kosztów.",
     },
     {
-        icon: MessageSquare,
+        icon: HardHat,
         number: "03",
-        title: "Konsultacja",
+        title: "Realizacja",
         description:
-        "Bezpłatna rozmowa i analiza Twoich potrzeb. Doradzimy najlepsze rozwiązanie dla Twojego domu lub firmy.",
+            "Profesjonalny montaż. Terminowo i zgodnie z najwyzszymi standardami.",
     },
     {
-        icon: MessageSquare,
+        icon: CheckCircle,
         number: "04",
-        title: "Konsultacja",
+        title: "Serwis i gwarancja",
         description:
-        "Bezpłatna rozmowa i analiza Twoich potrzeb. Doradzimy najlepsze rozwiązanie dla Twojego domu lub firmy.",
+            "Pełna obsługa serwisowa, przeglądy gwarancyjne i pogwarancyjne. Zawsze jestesmy do dyspozycji.",
     },
 ]
 
