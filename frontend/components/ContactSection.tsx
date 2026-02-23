@@ -72,7 +72,7 @@ export default function ContactSection() {
                                 )
                             })}
                             <div className="flex min-h-[180px] flex-1 items-start rounded-xl border border-border bg-card p-0 transition-colors hover:border-primary/30">
-                                <iframe className="w-full h-full rounded-xl" src="https://maps.google.com/maps?width=400&height=200&hl=en&q=Accord%20service&t=&z=9&ie=UTF8&iwloc=B&output=embed">
+                                <iframe className="w-full h-full rounded-xl" src="https://maps.google.com/maps?width=400&height=200&hl=pl&q=Accord%20service&t=&z=9&ie=UTF8&iwloc=B&output=embed">
                                 </iframe>
                             </div>
                         </div>
