@@ -17,3 +17,9 @@ export type contactInfoType = Array<{
     value: string,
     href?: string
 }>
+
+export type highlightsArrayType = Array<{
+    icon: LucideIcon,
+    title: string,
+    description: string
+}>
