@@ -20,14 +20,14 @@ const steps = [
         number: "03",
         title: "Realizacja",
         description:
-            "Profesjonalny montaż. Terminowo i zgodnie z najwyzszymi standardami.",
+            "Profesjonalny montaż. Terminowo i zgodnie z najwyższymi standardami.",
     },
     {
         icon: CheckCircle,
         number: "04",
         title: "Serwis i gwarancja",
         description:
-            "Pełna obsługa serwisowa, przeglądy gwarancyjne i pogwarancyjne. Zawsze jestesmy do dyspozycji.",
+            "Pełna obsługa serwisowa, przeglądy gwarancyjne i pogwarancyjne. Zawsze jesteśmy do dyspozycji.",
     },
 ]
 
