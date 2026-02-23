@@ -23,3 +23,10 @@ export type highlightsArrayType = Array<{
     title: string,
     description: string
 }>
+
+export type realizationStepsType = Array<{
+    icon: LucideIcon,
+    number: string,
+    title: string,
+    description: string
+}>
