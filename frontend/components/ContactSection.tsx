@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label"
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
+import { postContact } from "@/api/api";
+import ContactForm from "./ContactForm";
 
 
 const contactInfo: contactInfoType = [
@@ -36,6 +38,19 @@ const contactInfo: contactInfoType = [
 ]
 
 export default function ContactSection() {
+    // const sendContact = async (formData: FormData) => {
+    //     'use server'
+    //     const contactData = {
+    //         full_name: formData.get('name'),
+    //         phone_number: formData.get('phone'),
+    //         email: formData.get('email'),
+    //         services: formData.get('service'),
+    //         description: formData.get('message')
+    //     }
+
+    //     await postContact(contactData)
+    // }
+
     return (
         <section id="#kontakt" className="bg-muted py-20 md:py-28">
             <div className="mx-auto max-w-7xl px-6">
@@ -83,57 +98,7 @@ export default function ContactSection() {
 
                     {/* Form */}
                     <div className="lg:col-span-3">
-                        <form
-                            onSubmit={(e) => e.preventDefault()}
-                            className="rounded-2xl border border-border bg-card p-6 shadow-sm md:p-8"
-                        >
-                            <h3 className="mb-6 text-xl font-bold text-foreground">Wyślij zapytanie</h3>
-                            <div className="grid gap-5 sm:grid-cols-2">
-                                <div className="space-y-2">
-                                   <Label htmlFor="name" className="text-foreground">Imię i nazwisko</Label>
-                                   <Input id="name" placeholder="Jan Kowalski" className="bg-background text-foreground" required />
-                                </div>
-                                <div className="space-y-2">
-                                   <Label htmlFor="phone" className="text-foreground">Telefon</Label>
-                                   <Input id="phone" type="tel" placeholder="601 234 567" className="bg-background text-foreground" />
-                                </div>
-                                <div className="space-y-2 sm:col-span-2">
-                                   <Label htmlFor="email" className="text-foreground">E-mail</Label>
-                                   <Input id="email" type="email" placeholder="jan@email.com" className="bg-background text-foreground" required />
-                                </div>
-                                <div className="space-y-2 sm:col-span-2">
-                                   <Label htmlFor="service" className="text-foreground">Usługa</Label>
-                                   <select
-                                        id="service"
-                                        defaultValue=''
-                                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                                        required
-                                    >
-                                        <option value='' disabled>Wybierz usługę...</option>
-                                        <option value="pompy">Pompy ciepła</option>
-                                        <option value="klimatyzacja">Klimatyzacja</option>
-                                        <option value="rekuperacja">Rekuperacja</option>
-                                        <option value="fotowoltaika">Fotowoltaika</option>
-                                        <option value="serwis">Serwis</option>
-                                   </select>
-                                </div>
-                                <div className="space-y-2 sm:col-span-2">
-                                   <Label htmlFor="message" className="text-foreground">Wiadomość</Label>
-                                   <Textarea id="message" placeholder="Opisz swoje potrzeby..." rows={4} className="bg-background text-foreground" />
-                                </div>
-                            </div>
-                            <Button
-                                type="submit"
-                                size='lg'
-                                className="mt-6 w-full bg-accent text-accent-foreground hover:bg-accent/90"
-                            >
-                                <Send className="mr-2 h-4 w-4" />
-                                Wyślij wiadomość
-                            </Button>
-                            <p className="mt-3 text-center text-xs text-muted-foreground">
-                                Odpowiadamy w ciągu 24 godzin.
-                            </p>
-                        </form>
+                        <ContactForm />
                     </div>
                 </div>
             </div>
