@@ -1,14 +1,8 @@
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import { Button } from "./ui/button";
-import type { StatsArrayType } from "@/lib/types";
+import { statsArray } from "@/lib/statsArray";
 
-const statsArray: StatsArrayType = [
-    { value: "40+", label: "lat doświadczenia" },
-    { value: "XXXX+", label: "realizacji" },
-    { value: "100%", label: "zadowolonych klientów" },
-    { value: "24/7", label: "serwis gwarancyjny" },
-]
 
 export default function HeroSection() {
     return (
