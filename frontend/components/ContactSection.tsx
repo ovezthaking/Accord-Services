@@ -2,11 +2,6 @@
 
 import { contactInfoType } from "@/lib/types";
 import { Clock, Mail, MapPin, Phone, Send } from "lucide-react";
-import { Label } from "@/components/ui/label"
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
-import { Button } from "./ui/button";
-import { postContact } from "@/api/api";
 import ContactForm from "./ContactForm";
 
 
@@ -38,19 +33,6 @@ const contactInfo: contactInfoType = [
 ]
 
 export default function ContactSection() {
-    // const sendContact = async (formData: FormData) => {
-    //     'use server'
-    //     const contactData = {
-    //         full_name: formData.get('name'),
-    //         phone_number: formData.get('phone'),
-    //         email: formData.get('email'),
-    //         services: formData.get('service'),
-    //         description: formData.get('message')
-    //     }
-
-    //     await postContact(contactData)
-    // }
-
     return (
         <section id="#kontakt" className="bg-muted py-20 md:py-28">
             <div className="mx-auto max-w-7xl px-6">
