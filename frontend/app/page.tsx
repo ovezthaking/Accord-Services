@@ -18,7 +18,6 @@ export default function Home() {
       <ProcessSection />
       <ContactSection />
       <Footer />
-      {/* other components upcomming */}
     </main>
   );
 }
