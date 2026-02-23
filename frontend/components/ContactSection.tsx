@@ -34,7 +34,7 @@ const contactInfo: contactInfoType = [
 
 export default function ContactSection() {
     return (
-        <section id="#kontakt" className="bg-muted py-20 md:py-28">
+        <section id="kontakt" className="bg-muted py-20 md:py-28">
             <div className="mx-auto max-w-7xl px-6">
                 <div className="mb-16 text-center">
                     <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-accent">Kontakt</p>
