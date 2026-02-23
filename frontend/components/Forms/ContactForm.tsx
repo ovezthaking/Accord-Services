@@ -1,8 +1,8 @@
 import { sendContactAction } from "@/app/actions/contact"
-import { Label } from "./ui/label"
-import { Input } from "./ui/input"
-import { Textarea } from "./ui/textarea"
-import { Button } from "./ui/button"
+import { Label } from "../ui/label"
+import { Input } from "../ui/input"
+import { Textarea } from "../ui/textarea"
+import { Button } from "../ui/button"
 import { Send } from "lucide-react"
 
 export default function ContactForm() {

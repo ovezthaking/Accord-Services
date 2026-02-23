@@ -2,7 +2,7 @@
 
 import { contactInfoType } from "@/lib/types";
 import { Clock, Mail, MapPin, Phone, Send } from "lucide-react";
-import ContactForm from "./ContactForm";
+import ContactForm from "./Forms/ContactForm";
 
 
 const contactInfo: contactInfoType = [
