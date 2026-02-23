@@ -12,5 +12,9 @@ export async function sendContactAction(formData: FormData) {
         description: String(formData.get('message') ?? ''),
     }
 
-    await postContact(contactData)
+    try {
+        await postContact(contactData)
+    } catch (err) {
+        console.error('Error sending contact: ', err)
+    }
 }
