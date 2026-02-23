@@ -1,7 +1,7 @@
 "use client"
 
 import { contactInfoType } from "@/lib/types";
-import { Clock, Mail, MapPin, Phone, Send } from "lucide-react";
+import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import ContactForm from "./Forms/ContactForm";
 
 
@@ -50,8 +50,8 @@ export default function ContactSection() {
 
                 <div className="grid gap-12 lg:grid-cols-5">
                     {/* Info */}
-                    <div className="lg:col-span-2">
-                        <div className="space-y-6">
+                    <div className="lg:col-span-2 lg:h-full">
+                        <div className="flex h-full flex-col gap-6">
                             {contactInfo.map(item => {
                                 const Icon = item.icon
                                 const Wrapper = item.href ? 'a' : 'div'
@@ -71,7 +71,7 @@ export default function ContactSection() {
                                     </Wrapper>
                                 )
                             })}
-                            <div className="flex h-[180px] items-start rounded-xl border border-border bg-card p-0 transition-colors hover:border-primary/30">
+                            <div className="flex min-h-[180px] flex-1 items-start rounded-xl border border-border bg-card p-0 transition-colors hover:border-primary/30">
                                 <iframe className="w-full h-full rounded-xl" src="https://maps.google.com/maps?width=400&height=200&hl=en&q=Accord%20service&t=&z=9&ie=UTF8&iwloc=B&output=embed">
                                 </iframe>
                             </div>
