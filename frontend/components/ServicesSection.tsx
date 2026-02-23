@@ -3,6 +3,7 @@
 import { ServicesArrayType } from "@/lib/types"
 import { ArrowRight, Fan, Flame, Sun, Wind } from "lucide-react"
 import { useState } from "react"
+import Image from "next/image"
 
 const services: ServicesArrayType = [
     {
@@ -81,9 +82,11 @@ export default function ServicesSection() {
                     <div className="lg:col-span-3">
                         <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
                             <div className="relative h-56 overflow-hidden md:h-72">
-                                <img
+                                <Image
                                     src={services[activeIndex].image || '/placeholder.svg'}
                                     alt={services[activeIndex].title}
+                                    width={4000}
+                                    height={4000}
                                     className="h-full w-full object-cover"
                                 />
                                 <div className="absolute inset-0 bg-foreground/20" />
