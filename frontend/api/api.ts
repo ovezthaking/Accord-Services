@@ -1,10 +1,12 @@
 import { postContactProps } from "./types";
 
+const baseUrl = process.env.BACKEND_URL || 'http://localhost:8000'
+
 export const postContact = async (
     { full_name, phone_number, email, services, description }: postContactProps
 ): Promise<any> => {
     try {
-        const res = await fetch('http://localhost:8000/api/contacts', {
+        const res = await fetch(`${baseUrl}/api/contacts`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
