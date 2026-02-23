@@ -54,7 +54,7 @@ export default function ProcessSection() {
                         const Icon = step.icon
                         return (
                             <div key={step.number} className="group relative">
-                                <div className="rounded-2xl border border-border bg-card p-6 transition-all hover:border-primary/30 hover:shadow-lg">
+                                <div className="md:h-72 lg:h-80 rounded-2xl border border-border bg-card p-6 transition-all hover:border-primary/30 hover:shadow-lg">
                                     <span className="mb-4 block text-4xl font-bold text-muted-foreground/20">{step.number}</span>
                                     <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                                         <Icon className="h-6 w-6" />
