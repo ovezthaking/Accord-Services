@@ -3,8 +3,23 @@ from django.core.validators import RegexValidator, EmailValidator
 
 
 # Create your models here.
+class ContactStatus(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
+def get_default_contact_status_id():
+    status, _ = ContactStatus.objects.get_or_create(name='nowy')
+    return status.id
+
+
 class Contact(models.Model):
-    """TODO: przemyśleć pole status i ewentualne wydzielenie services do osobnego modelu."""
+    """TODO: przemyśleć pole status i ewentualne wydzielenie services.
+
+    Ewentualnie do osobnego modelu.
+    """
 
     SERVICE_CHOICES = (
         ('pompy', 'Pompy Ciepła'),
@@ -36,6 +51,11 @@ class Contact(models.Model):
         default='pompy'
     )
     description = models.TextField(blank=True, null=True)
+    status = models.ForeignKey(
+        ContactStatus,
+        on_delete=models.PROTECT,
+        default=get_default_contact_status_id,
+    )
     createdAt = models.DateTimeField(auto_now_add=True)
 
     class Meta:
