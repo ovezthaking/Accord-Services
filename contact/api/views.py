@@ -6,7 +6,9 @@ from .serializers import ContactSerializer
 from contact.utils.parse_contact import parse_contact
 from contact.utils.send_mail import send_contact_mail
 from django.contrib.auth.decorators import login_required
-from contact.utils.decorators.login_required_for_methods import login_required_for_methods
+from contact.utils.decorators.login_required_for_methods import (
+    login_required_for_methods
+)
 
 
 @login_required_for_methods(['GET'])
