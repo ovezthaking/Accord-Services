@@ -27,7 +27,7 @@ const contactInfo: contactInfoType = [
     {
         icon: Clock,
         label: "Godziny pracy",
-        value: "Pon-Pt: 8:00 - 17:00",
+        value: "Pon-Sob: 9:00 - 17:00",
         href: undefined,
     },
 ]
