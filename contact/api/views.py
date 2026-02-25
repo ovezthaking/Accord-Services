@@ -5,8 +5,11 @@ from contact.models import Contact
 from .serializers import ContactSerializer
 from contact.utils.parse_contact import parse_contact
 from contact.utils.send_mail import send_contact_mail
+from django.contrib.auth.decorators import login_required
+from contact.utils.decorators.login_required_for_methods import login_required_for_methods
 
 
+@login_required_for_methods(['GET'])
 @api_view(['GET', 'POST'])
 def contacts_view(request):
     if request.method == 'GET':
@@ -36,6 +39,7 @@ def contacts_view(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
+@login_required
 @api_view(['GET', 'DELETE'])
 def contact_view(request, pk):
     if request.method == 'GET':
