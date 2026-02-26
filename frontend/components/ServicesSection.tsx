@@ -11,28 +11,32 @@ const services: ServicesArrayType = [
         title: 'Pompy Ciepła',
         description: 'Nowoczesne pompy ciepła powietrze-woda i gruntowe. Ogrzewanie, chłodzenie i przygotowanie ciepłej wody użytkowej w jednym urządzeniu.',
         image: '/images/hero-background.jpg',
-        features: ["Oszczędność do 75% kosztów ogrzewania", "Dotacje rządowe", "Ciche działanie"]
+        features: ["Oszczędność do 75% kosztów ogrzewania", "Dotacje rządowe", "Ciche działanie"],
+        href: '/uslugi/pompy-ciepla'
     },
     {
         icon: Wind,
         title: 'Klimatyzacja',
         description: 'Profesjonalny montaż klimatyzacji domowej i przemysłowej. Systemy split i multi-split od najlepszych producentów.',
         image: '/images/service-ac.jpg',
-        features: ["Systemy inwerterowe", "Montaż i serwis", "Gwarancja producenta"]
+        features: ["Systemy inwerterowe", "Montaż i serwis", "Gwarancja producenta"],
+        href: '/uslugi/klimatyzacja'
     },
     {
         icon: Fan,
         title: 'Rekuperacja',
         description: 'Wentylacja mechaniczna z odzyskiem ciepła. Czyste powietrze i niskie rachunki za ogrzewanie przez cały rok.',
         image: '/images/service-ventilation.jpg',
-        features: ["Odzysk ciepła do 95%", "Filtracja powietrza", "Eliminacja wilgoci"]
+        features: ["Odzysk ciepła do 95%", "Filtracja powietrza", "Eliminacja wilgoci"],
+        href: '/uslugi/rekuperacja'
     },
     {
         icon: Sun,
         title: 'Fotowoltaika',
         description: 'Instalacje fotowoltaiczne dopasowane do Twoich potrzeb. Produkuj własną energię i uniezależnij sie od rosnących cen prądu.',
         image: '/images/service-solar.jpg',
-        features: ["Darmowa energia ze słonca", "Zwrot inwestycji w 6-8 lat", "25 lat gwarancji"]
+        features: ["Darmowa energia ze słonca", "Zwrot inwestycji w 6-8 lat", "25 lat gwarancji"],
+        href: '/uslugi/fotowoltaika'
     }
 ]
 
@@ -104,8 +108,9 @@ export default function ServicesSection() {
                                         </li>
                                     ))}
                                 </ul>
+                                
                                 <a
-                                    href="#kontakt"
+                                    href={services[activeIndex].href ? services[activeIndex].href : '#kontakt'}
                                     className='inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-primary/80'
                                 >
                                     Dowiedz się więcej
