@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 
 const __inter = Inter({
@@ -34,8 +36,10 @@ export default function RootLayout({
       <body
         className={`${__inter.variable} ${__spaceGrotesk.variable} font-sans antialiased`}
       >
+        <Header />
         {children}
         <Toaster />
+        <Footer />
       </body>
     </html>
   );

@@ -10,14 +10,12 @@ import ServicesSection from "@/components/ServicesSection";
 export default function Home() {
   return (
     <main>
-      <Header />
       <HeroSection />
       <ScrollingServices />
       <ServicesSection />
       <AboutSection />
       <ProcessSection />
       <ContactSection />
-      <Footer />
     </main>
   );
 }
