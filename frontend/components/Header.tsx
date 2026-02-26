@@ -31,7 +31,7 @@ export default function Header() {
             {/* Main */}
             <header className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur-md">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-                    <a href="#" className="flex items-center gap3">
+                    <a href="/" className="flex items-center gap3">
                         <Image
                             src="/images/logo-transparent.png"
                             width={700}
