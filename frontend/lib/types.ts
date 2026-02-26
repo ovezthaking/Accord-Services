@@ -8,7 +8,8 @@ export type ServicesArrayType = Array<{
     title: string,
     description: string,
     image: string,
-    features: Array<string>
+    features: Array<string>,
+    href?: string
 }>
 
 export type contactInfoType = Array<{
