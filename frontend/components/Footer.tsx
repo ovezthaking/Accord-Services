@@ -5,11 +5,11 @@ import { Mail, MapPin, Phone } from "lucide-react";
 
 
 const serviceLinks: LinksArrayType = [
-    { label: "Pompy ciepła", href: "#uslugi" },
-    { label: "Klimatyzacja", href: "#uslugi" },
-    { label: "Rekuperacja", href: "#uslugi" },
-    { label: "Fotowoltaika", href: "#uslugi" },
-    { label: "Serwis", href: "#kontakt" },
+    { label: "Pompy ciepła", href: "/uslugi/pompy-ciepla" },
+    { label: "Klimatyzacja", href: "/uslugi/klimatyzacja" },
+    { label: "Rekuperacja", href: "/uslugi/rekuperacja" },
+    { label: "Fotowoltaika", href: "/uslugi/fotowoltaika" },
+    { label: "Serwis", href: "/#kontakt" },
 ]
 
 export default function Footer() {
