@@ -8,25 +8,19 @@ export default function PhotoGallery({images}: photoGalleryProps) {
     const [activeIndex, setActiveIndex] = useState<number>(0)
 
     const onDecrease = () => {
-        const nextIndex = activeIndex - 1
-        console.log(activeIndex)
-        if(nextIndex < 0) {
-            setActiveIndex(images.length - 1)
-        }
-        else {
-            setActiveIndex(nextIndex)
-        }
+        setActiveIndex(prevIndex => {
+            if(prevIndex == 0) return images.length - 1
+            
+            return prevIndex - 1
+        })
     }
 
     const onIncrease = () => {
-        const nextIndex = activeIndex + 1
-        console.log(activeIndex)
-        if(nextIndex > images.length - 1) {
-            setActiveIndex(0)
-        }
-        else {
-            setActiveIndex(nextIndex)
-        }
+        setActiveIndex(prevIndex => {
+            if(prevIndex == images.length - 1) return 0
+
+            return prevIndex + 1
+        })
     }
 
     return (
