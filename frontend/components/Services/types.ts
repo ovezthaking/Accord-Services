@@ -10,7 +10,7 @@ export type photoGalleryProps = {
 }
 
 export type servicePageProps = {
-    title?: string,
+    title: string,
     description?: string,
     children?: ReactNode,
     images?: Array<imageType>,
