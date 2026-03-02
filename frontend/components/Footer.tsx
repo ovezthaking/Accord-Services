@@ -2,6 +2,7 @@ import Image from "next/image";
 import { navLinks } from "@/lib/navLinks";
 import type { LinksArrayType } from "@/lib/types";
 import { Mail, MapPin, Phone } from "lucide-react";
+import Link from "next/link";
 
 
 const serviceLinks: LinksArrayType = [
@@ -37,9 +38,9 @@ export default function Footer() {
                         <ul className="space-y-3">
                             {serviceLinks.map(link => (
                                 <li key={link.label}>
-                                    <a href={link.href} className="text-sm text-card/70 transition-colors hover:text-card"> 
+                                    <Link href={link.href} className="text-sm text-card/70 transition-colors hover:text-card"> 
                                         {link.label}
-                                    </a>
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
@@ -52,9 +53,9 @@ export default function Footer() {
                             {navLinks.map(link => (
                                 link.label !== 'Usługi' && link.label !== 'Realizacja' && (
                                     <li key={link.label}>
-                                        <a href={link.href} className="text-sm text-card/70 transition-colors hover:text-card">
+                                        <Link href={link.href} className="text-sm text-card/70 transition-colors hover:text-card">
                                             {link.label}
-                                        </a>
+                                        </Link>
                                     </li>
                                 )
                             ))}

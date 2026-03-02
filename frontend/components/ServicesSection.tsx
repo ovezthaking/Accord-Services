@@ -4,6 +4,7 @@ import { ServicesArrayType } from "@/lib/types"
 import { ArrowRight, Fan, Flame, Sun, Wind } from "lucide-react"
 import { useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 
 const services: ServicesArrayType = [
     {
@@ -109,13 +110,13 @@ export default function ServicesSection() {
                                     ))}
                                 </ul>
                                 
-                                <a
+                                <Link
                                     href={services[activeIndex].href ? services[activeIndex].href : '#kontakt'}
                                     className='inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-primary/80'
                                 >
                                     Dowiedz się więcej
                                     <ArrowRight className="h-4 w-4" />
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>

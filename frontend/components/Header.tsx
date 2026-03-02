@@ -45,13 +45,13 @@ export default function Header() {
                     {/* Desktop */}
                     <nav aria-label="Nawigacja główna" className="hidden items-center gap-1 lg:flex">
                         {navLinks.map(link =>(
-                            <a
+                            <Link
                                 key={link.label}
                                 href={link.href}
                                 className="rounded-md px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted hover:text-primary"
                             >
                                 {link.label}
-                            </a>
+                            </Link>
                         ))}
                     </nav>    
                     

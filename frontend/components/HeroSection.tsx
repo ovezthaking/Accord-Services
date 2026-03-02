@@ -6,7 +6,7 @@ import { statsArray } from "@/lib/statsArray";
 
 export default function HeroSection() {
     return (
-        <section className="relative bg-foreground overflow-hidden ">
+        <section id="hero" className="relative bg-foreground overflow-hidden ">
             {/* Background */}
             <div className="absolute inset-0">
                 <Image
