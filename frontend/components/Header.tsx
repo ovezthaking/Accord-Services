@@ -5,6 +5,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { navLinks } from "@/lib/navLinks"
+import Link from "next/link"
 
 export default function Header() {
     const [mobileOpen, setMobileOpen] = useState<boolean>(false)
@@ -12,7 +13,7 @@ export default function Header() {
     return (
         <>
             {/* small top bar */}
-            <div className="bg-primary text-primary-foreground">
+            <div id="top" className="bg-primary text-primary-foreground">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2 text-sm">
                     <div className="flex items-center gap-6">
                         <a href="tel:601475547" className="flex items-center gap-2 transition-opacity hover:opacity-80">
@@ -31,7 +32,7 @@ export default function Header() {
             {/* Main */}
             <header className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur-md">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-                    <a href="/" className="flex items-center gap3">
+                    <Link href="/#top" className="flex items-center gap3">
                         <Image
                             src="/images/logo-transparent.png"
                             width={700}
@@ -39,7 +40,7 @@ export default function Header() {
                             alt="Accord Service - logo"
                             className="h-12 w-auto"
                         />
-                    </a>
+                    </Link>
                     
                     {/* Desktop */}
                     <nav aria-label="Nawigacja główna" className="hidden items-center gap-1 lg:flex">
