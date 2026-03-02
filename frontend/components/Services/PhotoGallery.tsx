@@ -1,39 +1,24 @@
 'use client'
 
-import Image from "next/image";
-import { useState } from "react";
-import { photoGalleryProps } from "./types";
+import ImageGallery from 'react-image-gallery'
+import type { GalleryItem, ImageGalleryRef } from "react-image-gallery";
+import { useRef } from 'react';
+import 'react-image-gallery/styles/image-gallery.css'
 
-export default function PhotoGallery({images}: photoGalleryProps) {
-    const [activeIndex, setActiveIndex] = useState<number>(0)
-
-    const onDecrease = () => {
-        setActiveIndex(prevIndex => {
-            if(prevIndex == 0) return images.length - 1
-            
-            return prevIndex - 1
-        })
-    }
-
-    const onIncrease = () => {
-        setActiveIndex(prevIndex => {
-            if(prevIndex == images.length - 1) return 0
-
-            return prevIndex + 1
-        })
-    }
+export default function PhotoGallery2({images}: {images: GalleryItem[]}) {
+    const galleryRef = useRef<ImageGalleryRef>(null);
 
     return (
-        <>
-            <button onClick={onDecrease}>-</button>
-            <Image 
-                key={activeIndex}
-                width={800}
-                height={800}
-                src={images[activeIndex].src}
-                alt={images[activeIndex].alt}
-            />
-            <button onClick={onIncrease}>+</button>
-        </>
-    )
+        <div className='w-full flex flex-col items-center'>
+            <h3>Nasze realizacje</h3>
+            <div className='max-w-7xl'>
+                <ImageGallery
+                    ref={galleryRef}
+                    items={images}
+                    onSlide={(index) => console.log("Slid to", index)}
+                />  
+            </div>
+        </div>
+        
+  );
 }

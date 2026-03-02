@@ -1,4 +1,5 @@
 import { ReactNode } from "react"
+import { GalleryItem } from "react-image-gallery"
 
 type imageType = {
     src: string,
@@ -13,5 +14,5 @@ export type servicePageProps = {
     title: string,
     description?: string,
     children?: ReactNode,
-    images?: Array<imageType>,
+    images?: Array<GalleryItem>,
 }

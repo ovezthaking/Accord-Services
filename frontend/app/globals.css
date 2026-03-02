@@ -102,3 +102,12 @@ html {
     @apply bg-background text-foreground;
   }
 }
+
+.image-gallery-thumbnail {
+  height: 4.5em !important;       /* stała wysokość miniatury */
+  width: auto;                    /* szerokość dopasowana proporcjonalnie */
+  overflow: hidden;               /* ukrycie nadmiaru obrazu */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
