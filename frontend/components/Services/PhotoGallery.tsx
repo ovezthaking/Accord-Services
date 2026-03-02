@@ -31,7 +31,7 @@ export default function PhotoGallery({images}: photoGalleryProps) {
 
     return (
         <>
-            <button onClick={() => onDecrease()}>-</button>
+            <button onClick={onDecrease}>-</button>
             <Image 
                 key={activeIndex}
                 width={800}
@@ -39,7 +39,7 @@ export default function PhotoGallery({images}: photoGalleryProps) {
                 src={images[activeIndex].src}
                 alt={images[activeIndex].alt}
             />
-            <button onClick={() => onIncrease()}>+</button>
+            <button onClick={onIncrease}>+</button>
         </>
     )
 }
