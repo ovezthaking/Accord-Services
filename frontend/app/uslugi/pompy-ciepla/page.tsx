@@ -31,7 +31,7 @@ export default function HeatPumpsPage() {
                         alt="Pompa ciepła powietrze-woda"
                         fill
                         sizes="(max-width: 768px) 100vw, 50vw"
-                        className="object-cover rounded-xl"
+                        className="md:object-cover object-scale-down rounded-xl"
                     />
                 </div>
             </section>
