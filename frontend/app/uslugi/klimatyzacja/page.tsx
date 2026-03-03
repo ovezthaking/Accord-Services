@@ -48,7 +48,8 @@ const data: servicePageProps = {
 export default function AirConditioningPage() {
     return (
         <ServicePage {...data}>
-            <p>
+            <section className="flex flex-col items-center">
+            <p className="p-2 mb-4 leading-relaxed text-card-foreground my-5">
                 Montaż klimatyzacji przeprowadzamy w sposób dokładny i staranny 
                 zapewniający długoletnie, bezawaryjne działanie.Posiadamy duże 
                 doświadczenie w branży. W swojej ofercie szeroką gamę urządzeń 
@@ -59,8 +60,9 @@ export default function AirConditioningPage() {
                 width={1500} 
                 height={1000}
                 alt="brand baner"
-                className="max-w-6xl"
+                className="max-w-5xl my-10"
             />
+            </section>
             
         </ServicePage>
     )

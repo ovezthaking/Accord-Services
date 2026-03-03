@@ -23,7 +23,7 @@ export default function ServicePage({title, description, images, children}: serv
             </section>
 
             {children && (
-                <section className="mx-auto max-w-7xl px-6 pb-12">
+                <section className="mx-auto max-w-7xl px-6 pb-12 mt-10">
                     <div className="rounded-2xl border border-border bg-card p-6 text-card-foreground shadow-sm md:p-8">
                         <div className="prose prose-zinc max-w-none dark:prose-invert">{children}</div>
                     </div>
