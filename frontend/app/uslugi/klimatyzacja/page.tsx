@@ -4,7 +4,7 @@ import Image from "next/image"
 
 const data: servicePageProps = {
     title: 'Klimatyzacja',
-    description: 'Zapewniamy kompleksową obsługę w zakresie doboru, montażu i serwisu systemów klimatyzacji pomieszczeń w biurach, sklepach oraz domach na teranie woj Opolskiego',
+    description: 'Zapewniamy kompleksową obsługę w zakresie doboru, montażu i serwisu systemów klimatyzacji pomieszczeń w biurach, sklepach oraz domach na terenie województwa opolskiego.',
     images: [
         {
             // src: 'http://www.accord.opole.pl/wordpress/wp-content/uploads/2020/03/89825358_889485641504483_5225617989566464_n-1536x1152.jpg',
@@ -48,22 +48,31 @@ const data: servicePageProps = {
 export default function AirConditioningPage() {
     return (
         <ServicePage {...data}>
-            <section className="flex flex-col items-center">
-            <p className="p-2 mb-4 leading-relaxed text-card-foreground my-5">
-                Montaż klimatyzacji przeprowadzamy w sposób dokładny i staranny 
-                zapewniający długoletnie, bezawaryjne działanie.Posiadamy duże 
-                doświadczenie w branży. W swojej ofercie szeroką gamę urządzeń 
-                renomowanych producentów.
-            </p>
-            <Image 
-                src="http://www.accord.opole.pl/wordpress/wp-content/uploads/2020/03/loga-ac.png"
-                width={1500} 
-                height={1000}
-                alt="brand baner"
-                className="max-w-5xl my-10"
-            />
+            <section className="not-prose grid gap-8 md:grid-cols-2 md:items-center">
+                <div>
+                    <p className="mb-5 leading-relaxed text-card-foreground">
+                        Montaż klimatyzacji przeprowadzamy w sposób dokładny i staranny, co zapewnia długoletnie,
+                        bezawaryjne działanie instalacji. Posiadamy duże doświadczenie w branży i oferujemy szeroką
+                        gamę urządzeń renomowanych producentów.
+                    </p>
+
+                    <ul className="space-y-2 text-sm text-muted-foreground md:text-base">
+                        <li>Dobór urządzenia do metrażu i układu pomieszczeń</li>
+                        <li>Profesjonalny montaż i uruchomienie systemu</li>
+                        <li>Serwis gwarancyjny i pogwarancyjny</li>
+                    </ul>
+                </div>
+
+                <div className="flex min-h-[180px] items-center justify-center rounded-xl border border-border bg-muted/30 p-4 md:min-h-[220px] md:p-8">
+                    <Image
+                        src="http://www.accord.opole.pl/wordpress/wp-content/uploads/2020/03/loga-ac.png"
+                        width={1500}
+                        height={1000}
+                        alt="Logo producentów klimatyzacji"
+                        className="mx-auto h-auto w-full max-w-[560px]"
+                    />
+                </div>
             </section>
-            
         </ServicePage>
     )
 }
