@@ -111,3 +111,39 @@ html {
   align-items: center;
   justify-content: center;
 }
+
+.service-image-gallery .image-gallery-slide-wrapper,
+.service-image-gallery .image-gallery-content,
+.service-image-gallery .image-gallery-image {
+  border-radius: 0.875rem;
+}
+
+.service-image-gallery .image-gallery-image {
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--muted));
+  max-height: 34rem;
+  object-fit: cover;
+}
+
+.service-image-gallery .image-gallery-thumbnail {
+  border-radius: 0.625rem;
+  border: 1px solid hsl(var(--border));
+  transition: all 200ms ease;
+}
+
+.service-image-gallery .image-gallery-thumbnail:hover,
+.service-image-gallery .image-gallery-thumbnail.active,
+.service-image-gallery .image-gallery-thumbnail:focus {
+  border-color: hsl(var(--primary));
+}
+
+.service-image-gallery .image-gallery-icon {
+  color: hsl(var(--primary-foreground));
+  filter: none;
+}
+
+.service-image-gallery .image-gallery-left-nav,
+.service-image-gallery .image-gallery-right-nav {
+  border-radius: 9999px;
+  background-color: hsl(var(--foreground) / 0.45);
+}

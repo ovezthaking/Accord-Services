@@ -1,5 +1,6 @@
 import ServicePage from "@/components/Services/ServicePage"
 import { servicePageProps } from "@/components/Services/types"
+import Image from "next/image"
 
 const data: servicePageProps = {
     title: 'Klimatyzacja',
@@ -47,7 +48,20 @@ const data: servicePageProps = {
 export default function AirConditioningPage() {
     return (
         <ServicePage {...data}>
-            TEST
+            <p>
+                Montaż klimatyzacji przeprowadzamy w sposób dokładny i staranny 
+                zapewniający długoletnie, bezawaryjne działanie.Posiadamy duże 
+                doświadczenie w branży. W swojej ofercie szeroką gamę urządzeń 
+                renomowanych producentów.
+            </p>
+            <Image 
+                src="http://www.accord.opole.pl/wordpress/wp-content/uploads/2020/03/loga-ac.png"
+                width={1500} 
+                height={1000}
+                alt="brand baner"
+                className="max-w-6xl"
+            />
+            
         </ServicePage>
     )
 }
