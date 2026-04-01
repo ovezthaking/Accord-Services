@@ -51,7 +51,7 @@ export default function HeroSection() {
 
             {/* Stats */}
             <div className="relative z-10 border-t border-card/10 bg-foreground/80 backdrop-blur-md">
-                <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px md:grid-cols-4">
+                <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px md:grid-cols-2 md:max-w-3xl">
                     {statsArray.map(stat => (
                         <div key={stat.label} className="px-6 py-6 text-center">
                             <div className="text-accent text-2xl font-bold md:text-3xl">{stat.value}</div>
