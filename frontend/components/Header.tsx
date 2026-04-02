@@ -35,7 +35,7 @@ export default function Header() {
                     <Link href="/#top" className="flex items-center gap3">
                         <Image
                             src="/images/logo-transparent.png"
-                            width={700}
+                            width={1900}
                             height={700}
                             alt="Accord Service - logo"
                             className="h-12 w-auto"

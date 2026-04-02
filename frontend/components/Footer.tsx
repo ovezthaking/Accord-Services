@@ -23,7 +23,7 @@ export default function Footer() {
                         <Image
                             src='/images/logo-transparent.png'
                             alt="Accord Service - logo"
-                            width={700}
+                            width={1900}
                             height={700}
                             className="mb-4 h-10 w-auto brightness-200 rounded-xl bg-white shadow-md shadow-blue-900/80 px-1"
                         />
