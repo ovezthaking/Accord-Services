@@ -38,7 +38,7 @@ export default function Header() {
                             width={1900}
                             height={700}
                             alt="Accord Service - logo"
-                            className="h-12 w-auto"
+                            className="h-16 w-auto"
                         />
                     </Link>
                     
