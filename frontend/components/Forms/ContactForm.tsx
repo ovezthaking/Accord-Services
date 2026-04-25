@@ -86,7 +86,7 @@ export default function ContactForm() {
                 className="mt-6 w-full bg-accent text-accent-foreground hover:bg-accent/90"
             >
                 <Send className="mr-2 h-4 w-4" />
-                Wyślij wiadomość
+                Chcę darmową wycenę
             </Button>
             <p className="mt-3 text-center text-xs text-muted-foreground">
                 Odpowiadamy w ciągu 24 godzin.
