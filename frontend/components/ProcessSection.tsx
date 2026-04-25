@@ -4,30 +4,30 @@ const steps = [
     {
         icon: MessageSquare,
         number: "01",
-        title: "Konsultacja",
+        title: "Kontakt",
         description:
-            "Bezpłatna rozmowa i analiza Twoich potrzeb. Doradzimy najlepsze rozwiązanie dla Twojego domu lub firmy.",
+            "Bezpłatna konsultacja, oddzwaniamy i ustalamy potrzeby.",
     },
     {
         icon: FileSearch,
         number: "02",
-        title: "Projekt i wycena",
+        title: "Wycena",
         description:
-            "Przygotujemy szczegółowy projekt techniczny oraz transparentną wycenę bez ukrytych kosztów.",
+            "Dostajesz konkretną ofertę.",
     },
     {
         icon: HardHat,
         number: "03",
         title: "Realizacja",
         description:
-            "Profesjonalny montaż. Terminowo i zgodnie z najwyższymi standardami.",
+            "Montaż - szybki i profesjonalny.",
     },
     {
         icon: CheckCircle,
         number: "04",
         title: "Serwis i gwarancja",
         description:
-            "Pełna obsługa serwisowa, przeglądy gwarancyjne i pogwarancyjne. Zawsze jesteśmy do dyspozycji.",
+            "Jesteśmy dostępni po instalacji.",
     },
 ]
 
@@ -41,7 +41,7 @@ export default function ProcessSection() {
                         Jak działamy
                     </p>
                     <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-                        Prosty proces, profesjonalny efekt
+                        Jak wygląda współpraca
                     </h2>
                     <p className="mx-auto max-w-lg text-lg leading-relaxed text-muted-foreground">
                         Od pierwszego kontaktu do gotowej instalacji - każdego klienta traktujemy indywidualnie
