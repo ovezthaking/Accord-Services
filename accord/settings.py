@@ -28,7 +28,9 @@ SECRET_KEY = 'django-insecure-ill*k9atmu^kj=*a@fb=38c(gxh_24-&sa)h1wkvz948hn4_#4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'accord-backend-lyart.vercel.app',
+]
 
 
 # Application definition
