@@ -10,25 +10,25 @@ const services: ServicesArrayType = [
     {
         icon: Flame,
         title: 'Pompy Ciepła',
-        description: 'Nowoczesne pompy ciepła powietrze-woda i gruntowe. Ogrzewanie, chłodzenie i przygotowanie ciepłej wody użytkowej w jednym urządzeniu.',
+        description: 'Ogrzewanie, chłodzenie i ciepła woda w jednym systemie.',
         image: '/images/hero-background.jpg',
-        features: ["Oszczędność do 75% kosztów ogrzewania", "Dotacje rządowe", "Ciche działanie"],
+        features: ["Oszczędność nawet do 70% rocznie", "Dotacje rządowe", "Koszt: od 25 000 zł z montażem"],
         href: '/uslugi/pompy-ciepla'
     },
     {
         icon: Wind,
         title: 'Klimatyzacja',
-        description: 'Profesjonalny montaż klimatyzacji domowej i przemysłowej. Systemy split i multi-split od najlepszych producentów.',
+        description: 'Komfort latem i dogrzewanie zimą. Systemy domowe i przemysłowe.',
         image: '/images/service-ac.jpg',
-        features: ["Systemy inwerterowe", "Montaż i serwis", "Gwarancja producenta"],
+        features: ["Szybki montaż", "5 lat gwarancji", "Sterowanie z telefonu", "Koszt: od 3 500 zł"],
         href: '/uslugi/klimatyzacja'
     },
     {
         icon: Fan,
         title: 'Rekuperacja',
-        description: 'Wentylacja mechaniczna z odzyskiem ciepła. Czyste powietrze i niskie rachunki za ogrzewanie przez cały rok.',
+        description: 'Stały dopływ świeżego powietrza bez strat ciepła',
         image: '/images/service-ventilation.jpg',
-        features: ["Odzysk ciepła do 95%", "Filtracja powietrza", "Eliminacja wilgoci"],
+        features: ["Niższe rachunki za ogrzewanie", "Odzysk ciepła do 95%", "Filtracja powietrza", "Eliminacja wilgoci"],
         href: '/uslugi/rekuperacja'
     },
     {
@@ -36,7 +36,7 @@ const services: ServicesArrayType = [
         title: 'Fotowoltaika',
         description: 'Instalacje fotowoltaiczne dopasowane do Twoich potrzeb. Produkuj własną energię i uniezależnij sie od rosnących cen prądu.',
         image: '/images/service-solar.jpg',
-        features: ["Darmowa energia ze słonca", "Zwrot inwestycji w 6-8 lat", "25 lat gwarancji"],
+        features: ["Niezależność energetyczna", "Niższe rachunki", "Zasilanie awaryjne", "Dotacje i ulgi"],
         href: '/uslugi/fotowoltaika'
     }
 ]
@@ -51,10 +51,10 @@ export default function ServicesSection() {
                 <div className="mb-16 max-w-2xl">
                     <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-accent">Nasze usługi</p>
                     <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-                        Kompleksowe rozwiązania dla twojego komfortu
+                        Intalacje, które realnie obniżają koszty
                     </h2>
                     <p className="text-lg leading-relaxed text-muted-foreground">
-                        Od pomp ciepła po fotowoltaikę - zapewniamy pełną obsługę od projektu po serwis.
+                        Dobieramy rozwiązanie do Twojego domu, budżetu i sposobu użytkowania.
                     </p>
                 </div>
 

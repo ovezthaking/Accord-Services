@@ -23,7 +23,7 @@ export default function Footer() {
                         <Image
                             src='/images/logo-transparent.png'
                             alt="Accord Service - logo"
-                            width={700}
+                            width={1900}
                             height={700}
                             className="mb-4 h-10 w-auto brightness-200 rounded-xl bg-white shadow-md shadow-blue-900/80 px-1"
                         />
@@ -70,6 +70,12 @@ export default function Footer() {
                                 <a href="tel:601475547" className="flex items-center gap-3 text-sm text-card/70 transition-colors hover:text-card">
                                     <Phone className="h-4 w-4 text-accent"/>
                                     601 47 55 47
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tel:783636363" className="flex items-center gap-3 text-sm text-card/70 transition-colors hover:text-card">
+                                    <Phone className="h-4 w-4 text-accent"/>
+                                    783 636 363
                                 </a>
                             </li>
                             <li>

@@ -1,7 +1,7 @@
 "use client"
 
 import { contactInfoType } from "@/lib/types";
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { Check, Clock, Mail, MapPin, Phone } from "lucide-react";
 import ContactForm from "./Forms/ContactForm";
 
 
@@ -42,10 +42,23 @@ export default function ContactSection() {
                         Porozmawiajmy o twoim projekcie
                     </h2>
                     <p className="mx-auto max-w-lg text-lg leading-relaxed text-muted-foreground">
-                        Skontaktuj się z nami, aby uzyskać 
-                        bezpłatną wycenę lub umówic się na 
-                        bezpłatną konsultację
+                        Wypełnij formularz lub zadzwoń - przygotujemy darmową wycenę dopasowaną do Ciebie
                     </p>
+                    <div className="mx-auto mt-6 grid max-w-2xl gap-3 sm:grid-cols-2">
+                        <div className="flex items-center gap-3 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-sm">
+                            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/15 text-primary">
+                                <Check className="h-4 w-4" />
+                            </span>
+                            <p>Bez zobowiązań</p>
+                        </div>
+
+                        <div className="flex items-center gap-3 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-sm">
+                            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/15 text-primary">
+                                <Check className="h-4 w-4" />
+                            </span>
+                            <p>Doradzimy najlepsze rozwiązanie</p>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="grid gap-12 lg:grid-cols-5">

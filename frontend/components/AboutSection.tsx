@@ -1,13 +1,15 @@
 import { statsArray } from "@/lib/statsArray"
-import { highlightsArrayType } from "@/lib/types"
+import { highlightsArrayType, StatsArrayType } from "@/lib/types"
 import { Award, Clock, LucideBadgeCheck, Wrench } from "lucide-react"
 import Image from "next/image"
+import PhotoGallery from "./Services/PhotoGallery";
+import { aboutImages } from "@/lib/aboutImages";
 
 const higlights: highlightsArrayType = [
     {
         icon: Award,
         title: 'Doświadczenie',
-        description: 'Ponad 40 lat na rynku instalacji grzewczych i klimatyzacyjnych.'
+        description: 'Ponad 40 lat pracy w branży instalacyjnej – wiemy, co działa w praktyce, a nie tylko na papierze.'
     },
     {
         icon: LucideBadgeCheck,
@@ -16,14 +18,21 @@ const higlights: highlightsArrayType = [
     },
     {
         icon: Wrench,
-        title: "Pełna obsługa",
-        description: "Od projektu, przez montaż, po serwis gwarancyjny i pogwarancyjny.",
+        title: "Kompleksowa obsługa",
+        description: "Od projektu, przez montaż, po serwis – masz jedną firmę, która odpowiada za całość.",
     },
     {
         icon: Clock,
-        title: "Szybka realizacja",
-        description: "Terminowosc i profesjonalizm na kazdym etapie wspolpracy.",
+        title: "Lokalna firma, szybki kontakt",
+        description: "Działamy w Opolu i okolicy – jesteśmy dostępni także po zakończeniu montażu",
     },
+]
+
+const stats: StatsArrayType = [
+    { value: "40+", label: "lat doświadczenia" },
+    { value: "300+", label: "wykonanych instalacji" },
+    { value: "Setki", label: "obsłużonych klientów w regionie" },
+    { value: "Dziesiątki", label: "serwisów rocznie" },
 ]
 
 export default function AboutSection() {
@@ -33,17 +42,18 @@ export default function AboutSection() {
                 <div className="grid items-center gap-16 lg:grid-cols-2">
                         {/* Text */}
                         <div>
-                            <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-accent">O nas</p>
+                            <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-accent">Dlaczego my</p>
                             <h2 className="mb-6 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-                                Od 1984 roku dostarczamy sprawdzone rozwiązania
+                                40 lat doświadczenia, które przekłada się na realne doświadczenie w branży
                             </h2>
                             <p className="mb-4 leading-relaxed text-muted-foreground">
-                                Firma Accord Service działa na rynku od ponad 40 lat,
-                                oferując kompleksowe usługi w zakresie ogrzewania, 
-                                klimatyzacji, wentylacji i odnawialnych źródeł energii.
+                                Działamy od 1984 roku, pomagamy mieszkańcom Opola i okolic obniżać koszty ogrzewania i poprawić komfort życia w domu.
                             </p>
-                            <p className="mb-8 leading-relaxed text-muted-foreground">
-                                Naszym priorytetem jest zadowolenie klienta - od pierwszej konsultacji, przez profesjonalny montaż, aż po niezawodny serwis. Działamy na terenie Opola i całego województwa opolskiego.
+                            <p className="mb-4 leading-relaxed text-muted-foreground">
+                                Zrealizowaliśmy setki instalacji – od małych systemów klimatyzacji po kompleksowe instalacje pomp ciepła i fotowoltaiki dla przemysłu.
+                            </p>
+                            <p className="mb-10 leading-relaxed text-muted-foreground">
+                                Nie jesteśmy firmą „od wszystkiego”. Specjalizujemy się w instalacjach, które mają działać bezproblemowo przez lata – i dokładnie tak je projektujemy.
                             </p>
                         
 
@@ -91,7 +101,7 @@ export default function AboutSection() {
                                         <div className="text-4xl font-bold text-accent-foreground">
                                             {statsArray.find(item => item.label === 'realizacji')?.value}
                                         </div>
-                                        <div className="mt-1 text-sm text-accent-foreground/80">zrealizowanych projektów</div>
+                                        <div className="mt-1 text-sm text-accent-foreground/80">działających instalacji</div>
                                     </div>
                                     <div className="overflow-hidden rounded-2xl">
                                         <Image
@@ -105,6 +115,35 @@ export default function AboutSection() {
                                 </div>
                             </div>
                         </div>
+                        
+                        <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:col-span-2">
+                            <div className="rounded-2xl border border-border bg-card p-6">
+                                <h3 className="mb-3 text-base font-bold text-foreground">Realne doradztwo, nie sprzedaż na siłę</h3>
+                                <p className="text-sm leading-relaxed text-muted-foreground mb-2">
+                                    Dobieramy rozwiązanie do Twojego domu i budżetu – nie sprzedajemy najdroższej opcji, tylko najbardziej opłacalną.
+                                </p>
+                                <p className="text-sm leading-relaxed text-muted-foreground">
+                                    Nie zostawiamy klienta po montażu – zapewniamy serwis i wsparcie.
+                                </p>
+                            </div>
+
+                            <div className="rounded-2xl bg-primary p-7 text-primary-foreground">
+                                <h3 className="mb-5 text-lg font-bold">Nasze realizacje w liczbach</h3>
+                                <div className="grid grid-cols-2 gap-5">
+                                    {stats.map((stat) => (
+                                    <div key={stat.label}>
+                                        <div className="text-3xl font-bold text-white">{stat.value}</div>
+                                        <div className="mt-1 text-sm text-primary-foreground/70">{stat.label}</div>
+                                    </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        
+                </div>
+
+                <div className="mt-10 items-center gap-16 lg:grid-cols-2">
+                    <PhotoGallery images={aboutImages} />
                 </div>
             </div>
         </section>
