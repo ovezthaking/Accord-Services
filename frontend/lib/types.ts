@@ -31,3 +31,10 @@ export type realizationStepsType = Array<{
     title: string,
     description: string
 }>
+
+export type galleryCandidatesType = Array<
+    {
+        directory: string,
+        publicPath: string
+    }
+>
