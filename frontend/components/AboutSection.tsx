@@ -25,7 +25,7 @@ const higlights: highlightsArrayType = [
     {
         icon: Clock,
         title: "Lokalna firma, szybki kontakt",
-        description: "Działamy w Opolu i okolicy – jesteśmy dostępni także po zakończeniu montażu",
+        description: "Działamy w Opolu i okolicy – jesteśmy dostępni także po zakończeniu montażu.",
     },
 ]
 
@@ -151,9 +151,9 @@ export default function AboutSection() {
                         
                 </div>
 
-                <div className="mt-10 items-center gap-16 lg:grid-cols-2">
+                <div className="mt-10">
                     <FadeIn direction="up" delay={120}>
-                        <PhotoGallery images={aboutImages} />
+                        <PhotoGallery images={aboutImages} embedded />
                     </FadeIn>
                 </div>
             </div>

@@ -6,16 +6,25 @@ import { useState } from 'react';
 import 'react-image-gallery/styles/image-gallery.css'
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
-export default function PhotoGallery2({images}: {images: GalleryItem[]}) {
+type PhotoGalleryProps = {
+    images: GalleryItem[]
+    embedded?: boolean
+}
+
+export default function PhotoGallery2({images, embedded = false}: PhotoGalleryProps) {
     const [galleryShown, setGalleryShown] = useState<boolean>(false)
+    const isMobile = useIsMobile()
 
     const showGallery = () => {
         setGalleryShown(prevState => !prevState)
     }
 
+    const Wrapper = embedded ? 'div' : 'section'
+
     return (
-        <section className='mx-auto w-full max-w-7xl px-6 pb-20'>
+        <Wrapper className={cn(embedded ? 'w-full' : 'mx-auto w-full max-w-7xl px-6 pb-20')}>
             <div className='rounded-2xl border border-border bg-card p-5 shadow-sm md:p-8'>
                 <div className='mb-6 max-w-2xl'>
                     <p className='mb-2 text-sm font-semibold uppercase tracking-wider text-accent'>Portfolio</p>
@@ -48,11 +57,15 @@ export default function PhotoGallery2({images}: {images: GalleryItem[]}) {
                         <ImageGallery
                             items={images}
                             additionalClass="service-image-gallery"
+                            showThumbnails={!isMobile}
+                            showPlayButton={true}
+                            showFullscreenButton={true}
+                            useBrowserFullscreen={true}
                         />
                     </div>
                 </div>
             </div>
-        </section>
+                </Wrapper>
         
   );
 }
