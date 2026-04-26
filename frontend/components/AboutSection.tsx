@@ -1,5 +1,5 @@
 import { statsArray } from "@/lib/statsArray"
-import { highlightsArrayType } from "@/lib/types"
+import { highlightsArrayType, StatsArrayType } from "@/lib/types"
 import { Award, Clock, LucideBadgeCheck, Wrench } from "lucide-react"
 import Image from "next/image"
 
@@ -24,6 +24,13 @@ const higlights: highlightsArrayType = [
         title: "Lokalna firma, szybki kontakt",
         description: "Działamy w Opolu i okolicy – jesteśmy dostępni także po zakończeniu montażu",
     },
+]
+
+const stats: StatsArrayType = [
+    { value: "40+", label: "lat doświadczenia" },
+    { value: "300+", label: "wykonanych instalacji" },
+    { value: "Setki", label: "obsłużonych klientów w regionie" },
+    { value: "Dziesiątki", label: "serwisów rocznie" },
 ]
 
 export default function AboutSection() {
@@ -103,6 +110,30 @@ export default function AboutSection() {
                                             className="h-48 w-full object-cover md:h-64"
                                         />
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:col-span-2">
+                            <div className="rounded-2xl border border-border bg-card p-6">
+                                <h3 className="mb-3 text-base font-bold text-foreground">Realne doradztwo, nie sprzedaż na siłę</h3>
+                                <p className="text-sm leading-relaxed text-muted-foreground mb-2">
+                                    Dobieramy rozwiązanie do Twojego domu i budżetu – nie sprzedajemy najdroższej opcji, tylko najbardziej opłacalną.
+                                </p>
+                                <p className="text-sm leading-relaxed text-muted-foreground">
+                                    Nie zostawiamy klienta po montażu – zapewniamy serwis i wsparcie.
+                                </p>
+                            </div>
+
+                            <div className="rounded-2xl bg-primary p-7 text-primary-foreground">
+                                <h3 className="mb-5 text-lg font-bold">Nasze realizacje w liczbach</h3>
+                                <div className="grid grid-cols-2 gap-5">
+                                    {stats.map((stat) => (
+                                    <div key={stat.label}>
+                                        <div className="text-3xl font-bold text-white">{stat.value}</div>
+                                        <div className="mt-1 text-sm text-primary-foreground/70">{stat.label}</div>
+                                    </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
