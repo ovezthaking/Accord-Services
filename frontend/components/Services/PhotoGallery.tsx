@@ -1,13 +1,12 @@
 'use client'
 
 import ImageGallery from 'react-image-gallery'
-import type { GalleryItem, ImageGalleryRef } from "react-image-gallery";
-import { useRef, useState } from 'react';
+import type { GalleryItem } from "react-image-gallery";
+import { useState } from 'react';
 import 'react-image-gallery/styles/image-gallery.css'
 import { Button } from '../ui/button';
 
 export default function PhotoGallery2({images}: {images: GalleryItem[]}) {
-    const galleryRef = useRef<ImageGalleryRef>(null);
     const [galleryShown, setGalleryShown] = useState<boolean>(false)
 
     const showGallery = () => {
@@ -26,11 +25,17 @@ export default function PhotoGallery2({images}: {images: GalleryItem[]}) {
                 </div>
 
                 {galleryShown ? 
-                    <ImageGallery
-                        ref={galleryRef}
-                        items={images}
-                        additionalClass="service-image-gallery"
-                    /> : 
+                    <div className="space-y-4">
+                        <div className="flex justify-start">
+                            <Button onClick={showGallery} variant="outline">
+                                Ukryj galerię
+                            </Button>
+                        </div>
+                        <ImageGallery
+                            items={images}
+                            additionalClass="service-image-gallery"
+                        />
+                    </div> : 
                     <Button onClick={showGallery} className="bg-accent text-accent-foreground hover:bg-accent/90">
                         Pokaż galerię zdjęć
                     </Button>

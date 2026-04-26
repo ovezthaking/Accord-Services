@@ -2,6 +2,8 @@ import { statsArray } from "@/lib/statsArray"
 import { highlightsArrayType, StatsArrayType } from "@/lib/types"
 import { Award, Clock, LucideBadgeCheck, Wrench } from "lucide-react"
 import Image from "next/image"
+import PhotoGallery from "./Services/PhotoGallery";
+import { aboutImages } from "@/lib/aboutImages";
 
 const higlights: highlightsArrayType = [
     {
@@ -137,6 +139,11 @@ export default function AboutSection() {
                                 </div>
                             </div>
                         </div>
+                        
+                </div>
+
+                <div className="mt-10 items-center gap-16 lg:grid-cols-2">
+                    <PhotoGallery images={aboutImages} />
                 </div>
             </div>
         </section>
