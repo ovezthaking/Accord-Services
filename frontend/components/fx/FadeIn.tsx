@@ -12,6 +12,7 @@ interface FadeInProps {
   delay?: number
   duration?: number
   threshold?: number
+  exitDelay?: number
 }
 
 // Transform applied when the element enters (scrolling down into view)
@@ -39,6 +40,7 @@ export function FadeIn({
   delay = 0,
   duration = 600,
   threshold = 0.15,
+  exitDelay = 0,
 }: FadeInProps) {
   const { ref, state } = useInView({ threshold })
 
@@ -74,7 +76,7 @@ export function FadeIn({
         return {
           className: `opacity-0 ${exitToClasses[direction]}`,
           duration: 200,
-          delay: 0,
+          delay: exitDelay,
           easing: "cubic-bezier(0.55, 0, 1, 0.45)", // ease-in (accelerating)
         }
       default:
