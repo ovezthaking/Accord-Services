@@ -26,19 +26,21 @@ export default function HeroSection() {
                         <span>Zaufaj firmie z 40-letnim doświadczeniem</span>
                     </div>
 
-                    <h1 className="mb-6 text-4xl font-bold leading-tight tracking-tight text-card md:text-5xl lg:text-6xl">
-                        <span className="text-balance">Komfort i ekologia{" "}</span>
-                        <span className="text-balance text-accent">dla Twojego domu</span>
+                    <h1 className="mb-6 text-3xl font-bold leading-tight tracking-tight text-card md:text-4xl lg:text-5xl">
+                        <span className="text-balance">Pompy ciepła Opole |{" "}</span>
+                        <span className="text-balance text-accent">Klimatyzacja, Rekuperacja, Fotowoltaika</span>
                     </h1>
 
                     <p className="mb-10 max-w-lg text-lg leading-relaxed text-card/80">
-                        Pompy ciepła, klimatyzacja, rekuperacja i fotowoltaika. Kompleksowe rozwiązania od firmy z ponad 40-letnim stażem w Opolu i okolicach.
+                        Dobieramy, montujemy i serwisujemy instalacje 
+                        dopasowane do Twoich potrzeb. 40 lat 
+                        doświadczenia i setki realizacji w woj. opolskim.
                     </p>
 
                     <div className="flex flex-col gap-4 sm:flex-row">
                         <Button asChild size='lg' className="bg-accent text-accent-foreground hover:bg-accent/90">
                             <a href="#kontakt">
-                                Bezpłatna wycena
+                                Sprawdź darmową wycenę
                                 <ArrowRight className="ml-2 h-4 w-4" />
                             </a>
                         </Button>
@@ -50,7 +52,7 @@ export default function HeroSection() {
             </div>
 
             {/* Stats */}
-            <div className="relative z-10 border-t border-card/10 bg-foreground/80 backdrop-blur-md">
+            {/* <div className="relative z-10 border-t border-card/10 bg-foreground/80 backdrop-blur-md">
                 <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px md:grid-cols-2 md:max-w-3xl">
                     {statsArray.map(stat => (
                         <div key={stat.label} className="px-6 py-6 text-center">
@@ -59,7 +61,21 @@ export default function HeroSection() {
                         </div>
                     ))}
                 </div>
+            </div> */}
+            <div className="relative z-10 border-t border-card/10 bg-foreground/80 backdrop-blur-md">
+                <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-8 px-6 py-8 sm:flex-row sm:gap-16 md:gap-24">
+                    <div className="text-center">
+                        <div className="text-3xl font-bold text-accent md:text-4xl">{statsArray[0].value}</div>
+                        <div className="mt-1 text-sm text-card/60">{statsArray[0].label}</div>
+                    </div>
+                    <div className="hidden h-12 w-px bg-card/20 sm:block" />
+                    <div className="text-center">
+                        <div className="text-3xl font-bold text-accent md:text-4xl">{statsArray[1].value}</div>
+                        <div className="mt-1 text-sm text-card/60">{statsArray[1].label}</div>
+                    </div>
+                </div>
             </div>
+            
         </section>
     )
 }
