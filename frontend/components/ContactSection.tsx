@@ -3,6 +3,7 @@
 import { contactInfoType } from "@/lib/types";
 import { Check, Clock, Mail, MapPin, Phone } from "lucide-react";
 import ContactForm from "./Forms/ContactForm";
+import { FadeIn } from "./fx/FadeIn";
 
 
 const contactInfo: contactInfoType = [
@@ -36,7 +37,7 @@ export default function ContactSection() {
     return (
         <section id="kontakt" className="bg-muted py-20 md:py-28">
             <div className="mx-auto max-w-7xl px-6">
-                <div className="mb-16 text-center">
+                <FadeIn className="mb-16 text-center" direction="up" delay={50}>
                     <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-accent">Kontakt</p>
                     <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
                         Porozmawiajmy o twoim projekcie
@@ -45,55 +46,69 @@ export default function ContactSection() {
                         Wypełnij formularz lub zadzwoń - przygotujemy darmową wycenę dopasowaną do Ciebie
                     </p>
                     <div className="mx-auto mt-6 grid max-w-2xl gap-3 sm:grid-cols-2">
-                        <div className="flex items-center gap-3 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-sm">
-                            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/15 text-primary">
-                                <Check className="h-4 w-4" />
-                            </span>
-                            <p>Bez zobowiązań</p>
-                        </div>
+                        <FadeIn direction="up" delay={120} duration={450}>
+                            <div className="flex items-center gap-3 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-sm">
+                                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/15 text-primary">
+                                    <Check className="h-4 w-4" />
+                                </span>
+                                <p>Bez zobowiązań</p>
+                            </div>
+                        </FadeIn>
 
-                        <div className="flex items-center gap-3 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-sm">
-                            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/15 text-primary">
-                                <Check className="h-4 w-4" />
-                            </span>
-                            <p>Doradzimy najlepsze rozwiązanie</p>
-                        </div>
+                        <FadeIn direction="up" delay={200} duration={450}>
+                            <div className="flex items-center gap-3 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-sm">
+                                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/15 text-primary">
+                                    <Check className="h-4 w-4" />
+                                </span>
+                                <p>Doradzimy najlepsze rozwiązanie</p>
+                            </div>
+                        </FadeIn>
                     </div>
-                </div>
+                </FadeIn>
 
                 <div className="grid gap-12 lg:grid-cols-5">
                     {/* Info */}
                     <div className="lg:col-span-2 lg:h-full">
                         <div className="flex h-full flex-col gap-6">
-                            {contactInfo.map(item => {
+                            {contactInfo.map((item, index) => {
                                 const Icon = item.icon
                                 const Wrapper = item.href ? 'a' : 'div'
                                 return (
-                                    <Wrapper
-                                        key={item.label}
-                                        {...(item.href ? { href: item.href, target: '_blank' } : {})}
-                                        className="flex items-start gap-4 rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/30"
-                                    >
-                                        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                                            <Icon className="h-5 w-5" />
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{item.label}</p>
-                                            <p className="mt-1 font-medium text-foreground">{item.value}</p>
-                                        </div>
-                                    </Wrapper>
+                                    <FadeIn key={item.label} direction="right" delay={index * 90 + 80}>
+                                        <Wrapper
+                                            {...(item.href ? { href: item.href, target: '_blank' } : {})}
+                                            className="flex items-start gap-4 rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/30"
+                                        >
+                                            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                                                <Icon className="h-5 w-5" />
+                                            </div>
+                                            <div>
+                                                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{item.label}</p>
+                                                <p className="mt-1 font-medium text-foreground">{item.value}</p>
+                                            </div>
+                                        </Wrapper>
+                                    </FadeIn>
                                 )
                             })}
-                            <div className="flex min-h-[180px] flex-1 items-start rounded-xl border border-border bg-card p-0 transition-colors hover:border-primary/30">
-                                <iframe className="w-full h-full rounded-xl" src="https://maps.google.com/maps?width=400&height=200&hl=pl&q=Accord%20service&t=&z=9&ie=UTF8&iwloc=B&output=embed">
-                                </iframe>
-                            </div>
+                            <FadeIn direction="up" delay={220}>
+                                <div className="min-h-[180px] flex-1 overflow-hidden rounded-xl border border-border bg-card p-0 transition-colors hover:border-primary/30">
+                                    <iframe
+                                        className="block h-full min-h-[180px] w-full border-0"
+                                        src="https://maps.google.com/maps?width=400&height=200&hl=pl&q=Accord%20service&t=&z=9&ie=UTF8&iwloc=B&output=embed"
+                                        loading="lazy"
+                                        referrerPolicy="no-referrer-when-downgrade"
+                                        title="Mapa dojazdu Accord Service"
+                                    />
+                                </div>
+                            </FadeIn>
                         </div>
                     </div>
 
                     {/* Form */}
                     <div className="lg:col-span-3">
-                        <ContactForm />
+                        <FadeIn direction="left" delay={120}>
+                            <ContactForm />
+                        </FadeIn>
                     </div>
                 </div>
             </div>

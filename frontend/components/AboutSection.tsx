@@ -4,6 +4,7 @@ import { Award, Clock, LucideBadgeCheck, Wrench } from "lucide-react"
 import Image from "next/image"
 import PhotoGallery from "./Services/PhotoGallery";
 import { aboutImages } from "@/lib/aboutImages";
+import { FadeIn } from "./fx/FadeIn";
 
 const higlights: highlightsArrayType = [
     {
@@ -41,6 +42,7 @@ export default function AboutSection() {
             <div className="mx-auto max-w-7xl px-6">
                 <div className="grid items-center gap-16 lg:grid-cols-2">
                         {/* Text */}
+                        <FadeIn direction="up" delay={60}>
                         <div>
                             <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-accent">Dlaczego my</p>
                             <h2 className="mb-6 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
@@ -59,25 +61,28 @@ export default function AboutSection() {
 
                             {/* Highlights */}
                             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                                {higlights.map(item => {
+                                {higlights.map((item, index) => {
                                     const Icon = item.icon
                                     return (
-                                        <div key={item.title} className="flex gap-4">
-                                            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                                                <Icon className="h-5 w-5" />
+                                        <FadeIn key={item.title} direction="up" delay={120 + index * 80} duration={500}>
+                                            <div className="flex gap-4">
+                                                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                                                    <Icon className="h-5 w-5" />
+                                                </div>
+                                                <div>
+                                                    <h3 className="mb-1 text-sm font-semibold text-foreground">{item.title}</h3>
+                                                    <p className="text-sm leading-relaxed text-muted-foreground">{item.description}</p>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <h3 className="mb-1 text-sm font-semibold text-foreground">{item.title}</h3>
-                                                <p className="text-sm leading-relaxed text-muted-foreground">{item.description}</p>
-                                            </div>
-                                        </div>
+                                        </FadeIn>
                                     )
                                 })}
                             </div>
                         </div>
+                        </FadeIn>
 
                         {/* Visual side */}
-                        <div className="relative">
+                        <FadeIn className="relative" direction="left" delay={100}>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-4">
                                     <div className="overflow-hidden rounded-2xl">
@@ -114,36 +119,42 @@ export default function AboutSection() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </FadeIn>
                         
                         <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:col-span-2">
-                            <div className="rounded-2xl border border-border bg-card p-6">
-                                <h3 className="mb-3 text-base font-bold text-foreground">Realne doradztwo, nie sprzedaż na siłę</h3>
-                                <p className="text-sm leading-relaxed text-muted-foreground mb-2">
-                                    Dobieramy rozwiązanie do Twojego domu i budżetu – nie sprzedajemy najdroższej opcji, tylko najbardziej opłacalną.
-                                </p>
-                                <p className="text-sm leading-relaxed text-muted-foreground">
-                                    Nie zostawiamy klienta po montażu – zapewniamy serwis i wsparcie.
-                                </p>
-                            </div>
-
-                            <div className="rounded-2xl bg-primary p-7 text-primary-foreground">
-                                <h3 className="mb-5 text-lg font-bold">Nasze realizacje w liczbach</h3>
-                                <div className="grid grid-cols-2 gap-5">
-                                    {stats.map((stat) => (
-                                    <div key={stat.label}>
-                                        <div className="text-3xl font-bold text-white">{stat.value}</div>
-                                        <div className="mt-1 text-sm text-primary-foreground/70">{stat.label}</div>
-                                    </div>
-                                    ))}
+                            <FadeIn direction="up" delay={80}>
+                                <div className="rounded-2xl border border-border bg-card p-6">
+                                    <h3 className="mb-3 text-base font-bold text-foreground">Realne doradztwo, nie sprzedaż na siłę</h3>
+                                    <p className="text-sm leading-relaxed text-muted-foreground mb-2">
+                                        Dobieramy rozwiązanie do Twojego domu i budżetu – nie sprzedajemy najdroższej opcji, tylko najbardziej opłacalną.
+                                    </p>
+                                    <p className="text-sm leading-relaxed text-muted-foreground">
+                                        Nie zostawiamy klienta po montażu – zapewniamy serwis i wsparcie.
+                                    </p>
                                 </div>
-                            </div>
+                            </FadeIn>
+
+                            <FadeIn direction="up" delay={160}>
+                                <div className="rounded-2xl bg-primary p-7 text-primary-foreground">
+                                    <h3 className="mb-5 text-lg font-bold">Nasze realizacje w liczbach</h3>
+                                    <div className="grid grid-cols-2 gap-5">
+                                        {stats.map((stat) => (
+                                        <div key={stat.label}>
+                                            <div className="text-3xl font-bold text-white">{stat.value}</div>
+                                            <div className="mt-1 text-sm text-primary-foreground/70">{stat.label}</div>
+                                        </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </FadeIn>
                         </div>
                         
                 </div>
 
                 <div className="mt-10 items-center gap-16 lg:grid-cols-2">
-                    <PhotoGallery images={aboutImages} />
+                    <FadeIn direction="up" delay={120}>
+                        <PhotoGallery images={aboutImages} />
+                    </FadeIn>
                 </div>
             </div>
         </section>
