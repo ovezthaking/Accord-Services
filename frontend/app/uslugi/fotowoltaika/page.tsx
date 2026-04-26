@@ -2,6 +2,7 @@ import ServicePage from "@/components/Services/ServicePage"
 import { servicePageProps } from "@/components/Services/types"
 import findGalleryCadidates from "@/utils/findGalleryCandidates"
 import Image from "next/image"
+import { FadeIn } from "@/components/fx/FadeIn"
 
 const galleryImages = findGalleryCadidates('photovoltaics')
 
@@ -14,12 +15,14 @@ const data: servicePageProps = {
 export default function PhotovoltaicsPage() {
     return (
         <ServicePage {...data}>
-            <Image
-                src='/images/services/photovoltaics/banner.png'
-                alt="Kompleksowa obługa - kroki do realizacji"
-                width={1900}
-                height={500}
-            />
+            <FadeIn direction="up" delay={80}>
+                <Image
+                    src='/images/services/photovoltaics/banner.png'
+                    alt="Kompleksowa obługa - kroki do realizacji"
+                    width={1900}
+                    height={500}
+                />
+            </FadeIn>
         </ServicePage>
     )
 }

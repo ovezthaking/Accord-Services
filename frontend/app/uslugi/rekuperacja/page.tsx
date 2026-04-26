@@ -2,6 +2,7 @@ import ServicePage from "@/components/Services/ServicePage"
 import { servicePageProps } from "@/components/Services/types"
 import findGalleryCadidates from "@/utils/findGalleryCandidates"
 import Image from "next/image"
+import { FadeIn } from "@/components/fx/FadeIn"
 
 const galleryImages = findGalleryCadidates('recuperation')
 
@@ -15,6 +16,7 @@ export default function RecuperationPage() {
     return (
         <ServicePage {...data}>
             <section className="not-prose grid gap-8 md:grid-cols-2 md:items-center">
+                <FadeIn direction="right" delay={70}>
                 <div className="flex flex-col justify-between gap-5 md:gap-20">
                     <div>
                         <p className="mb-4 leading-relaxed text-card-foreground">
@@ -37,16 +39,19 @@ export default function RecuperationPage() {
                         </ul>
                     </div>
                 </div>
+                </FadeIn>
 
-                <div className="rounded-xl border border-border bg-muted/30 p-4 md:p-6">
-                    <Image
-                        src='/images/services/recuperation/banner.jpg'
-                        alt="Wizualizacja przepływu ciepła i działania rekuperacji"
-                        width={900}
-                        height={900}
-                        className="h-auto w-full"
-                    />
-                </div>
+                <FadeIn direction="left" delay={130}>
+                    <div className="rounded-xl border border-border bg-muted/30 p-4 md:p-6">
+                        <Image
+                            src='/images/services/recuperation/banner.jpg'
+                            alt="Wizualizacja przepływu ciepła i działania rekuperacji"
+                            width={900}
+                            height={900}
+                            className="h-auto w-full"
+                        />
+                    </div>
+                </FadeIn>
             </section>
         </ServicePage>
     )

@@ -5,6 +5,7 @@ import { ArrowRight, Fan, Flame, Sun, Wind } from "lucide-react"
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { FadeIn } from "./fx/FadeIn"
 
 const services: ServicesArrayType = [
     {
@@ -48,7 +49,7 @@ export default function ServicesSection() {
         <section id="uslugi" className="bg-background py-20 md:py-28">
             <div className="mx-auto max-w-7xl px-6">
                 {/* Section header */}
-                <div className="mb-16 max-w-2xl">
+                <FadeIn className="mb-16 max-w-2xl" direction="up" delay={60}>
                     <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-accent">Nasze usługi</p>
                     <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
                         Intalacje, które realnie obniżają koszty
@@ -56,7 +57,7 @@ export default function ServicesSection() {
                     <p className="text-lg leading-relaxed text-muted-foreground">
                         Dobieramy rozwiązanie do Twojego domu, budżetu i sposobu użytkowania.
                     </p>
-                </div>
+                </FadeIn>
 
                 {/* Tabs subsection */}
                 <div className="grid gap-8 lg:grid-cols-5">
@@ -66,26 +67,28 @@ export default function ServicesSection() {
                             const Icon = service.icon
                             const isActive = activeIndex === index
                             return (
-                                <button
-                                    key={service.title}
-                                    type="button"
-                                    onClick={() => setActiveIndex(index)}
-                                    className={`flex min-w-[160px] items-center gap-4 rounded-lg border px-5 py-4 text-left transition-all lg:min-w-0 ${
-                                        isActive
-                                        ? 'border-primary bg-primary text-primary-foreground shadow-lg'
-                                        : 'border-border bg-card text-foreground hover:border-primary/30 hover:bg-muted'
-                                    }`}
-                                >
-                                    <Icon className={`h-5 w-5 flex-shrink-0 ${isActive ? 'text-primary-foreground' : 'text-primary'}`}/>
-                                    <span className="text-sm font-semibold">{service.title}</span>
-                                </button>
+                                <FadeIn key={service.title} direction="right" delay={index * 90}>
+                                    <button
+                                        type="button"
+                                        onClick={() => setActiveIndex(index)}
+                                        className={`flex min-w-[160px] w-full items-center gap-4 rounded-lg border px-5 py-4 text-left transition-all lg:min-w-0 ${
+                                            isActive
+                                            ? 'border-primary bg-primary text-primary-foreground shadow-lg'
+                                            : 'border-border bg-card text-foreground hover:border-primary/30 hover:bg-muted'
+                                        }`}
+                                    >
+                                        <Icon className={`h-5 w-5 flex-shrink-0 ${isActive ? 'text-primary-foreground' : 'text-primary'}`}/>
+                                        <span className="text-sm font-semibold">{service.title}</span>
+                                    </button>
+                                </FadeIn>
                             )
                         })}
                     </div>
 
                     {/* Active service details */}
                     <div className="lg:col-span-3">
-                        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                        <FadeIn direction="left" delay={180}>
+                            <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
                             <div className="relative h-56 overflow-hidden md:h-72">
                                 <Image
                                     src={services[activeIndex].image || '/placeholder.svg'}
@@ -100,13 +103,15 @@ export default function ServicesSection() {
                                 <h3 className="mb-3 text-2xl font-bold text-foreground">{services[activeIndex].title}</h3>
                                 <p className="mb-6 leading-relaxed text-muted-foreground">{services[activeIndex].description}</p>
                                 <ul className="mb-6 flex flex-col gap-2">
-                                    {services[activeIndex].features.map((feature) => (
-                                        <li key={feature} className="flex items-center gap-3 text-sm text-foreground">
-                                            <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent">
-                                                <ArrowRight className="h-3 w-3" />
-                                            </span>
-                                            {feature}
-                                        </li>
+                                    {services[activeIndex].features.map((feature, index) => (
+                                        <FadeIn key={feature} direction="up" delay={120 + index * 60} duration={450}>
+                                            <li className="flex items-center gap-3 text-sm text-foreground">
+                                                <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent">
+                                                    <ArrowRight className="h-3 w-3" />
+                                                </span>
+                                                {feature}
+                                            </li>
+                                        </FadeIn>
                                     ))}
                                 </ul>
                                 
@@ -118,7 +123,8 @@ export default function ServicesSection() {
                                     <ArrowRight className="h-4 w-4" />
                                 </Link>
                             </div>
-                        </div>
+                            </div>
+                        </FadeIn>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 import ServicePage from "@/components/Services/ServicePage"
 import { servicePageProps } from "@/components/Services/types"
 import Image from "next/image"
+import { FadeIn } from "@/components/fx/FadeIn"
 
 const data: servicePageProps = {
     title: 'Pompy ciepła - wycena, montaż',
@@ -17,13 +18,16 @@ export default function HeatPumpsPage() {
         <>
 
             <ServicePage {...data}>
-                <p className="my-5 mb-10 leading-relaxed text-card-foreground mx-auto max-w-7xl px-6">
-                    Montujemy pompy ciepła w Opolu i okolicznych miejscowościach, dojeżdzamy też do innych województw.
+                <FadeIn direction="up" delay={50}>
+                    <p className="my-5 mb-10 leading-relaxed text-card-foreground mx-auto max-w-7xl px-6">
+                        Montujemy pompy ciepła w Opolu i okolicznych miejscowościach, dojeżdzamy też do innych województw.
 
-                    Każdą instalację dobieramy indywidualnie - tak, aby była opłacalna, wydajna i bezproblemowa w użytkowaniu przez lata.
-                </p>
+                        Każdą instalację dobieramy indywidualnie - tak, aby była opłacalna, wydajna i bezproblemowa w użytkowaniu przez lata.
+                    </p>
+                </FadeIn>
                 <section className="not-prose mb-10 grid gap-8 md:grid-cols-2 md:items-center">
-                    <div className="rounded-2xl border border-border/60 bg-gradient-to-br from-background via-background to-emerald-50/60 p-6 shadow-sm md:p-8">
+                    <FadeIn direction="right" delay={80}>
+                        <div className="rounded-2xl border border-border/60 bg-gradient-to-br from-background via-background to-emerald-50/60 p-6 shadow-sm md:p-8">
                         <p className="mb-3 inline-flex rounded-full border border-emerald-200 bg-emerald-100 px-3 py-1 text-xs font-medium tracking-wide text-emerald-800">
                             Dobór rozwiązania
                         </p>
@@ -49,18 +53,21 @@ export default function HeatPumpsPage() {
                         <p className="rounded-xl border border-emerald-200/60 bg-emerald-100/40 px-4 py-3 text-sm leading-relaxed text-foreground/90 md:text-base">
                             W takich przypadkach doradzamy najlepsze rozwiązanie - nie sprzedajemy "na siłę".
                         </p>
-                    </div>
+                        </div>
+                    </FadeIn>
 
-                    <div className="relative min-h-[260px] overflow-hidden rounded-2xl border border-border/60 bg-muted/20 shadow-sm md:min-h-[340px]">
-                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
-                        <Image
-                            src="/images/services/heatpumps/banner.png"
-                            alt="Pompa ciepła powietrze-woda"
-                            fill
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                            className="rounded-2xl object-contain p-4 md:object-scale-down md:p-0"
-                        />
-                    </div>
+                    <FadeIn direction="left" delay={140}>
+                        <div className="relative min-h-[260px] overflow-hidden rounded-2xl border border-border/60 bg-muted/20 shadow-sm md:min-h-[340px]">
+                            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
+                            <Image
+                                src="/images/services/heatpumps/banner.png"
+                                alt="Pompa ciepła powietrze-woda"
+                                fill
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                                className="rounded-2xl object-contain p-4 md:object-scale-down md:p-0"
+                            />
+                        </div>
+                    </FadeIn>
                 </section>
 
                 <section className="not-prose grid gap-6 md:grid-cols-2">
@@ -74,7 +81,8 @@ export default function HeatPumpsPage() {
                         />
                     </div> */}
 
-                    <div className="relative self-start overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-amber-50 via-background to-background p-6 shadow-sm md:self-center md:p-8">
+                    <FadeIn direction="up" delay={70} className="md:self-center">
+                    <div className="relative self-start overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-amber-50 via-background to-background p-6 shadow-sm md:p-8">
                         <p className="mb-3 inline-flex rounded-full border border-amber-200 bg-amber-100 px-3 py-1 text-xs font-medium tracking-wide text-amber-800">
                             Realne oszczędności
                         </p>
@@ -92,6 +100,7 @@ export default function HeatPumpsPage() {
                             Pompa ciepła może ogrzewać dom, chłodzić go latem i przygotowywać ciepłą wodę.
                         </p>
                     </div>
+                    </FadeIn>
 
                     {/* <div className="rounded-xl border border-border bg-muted/30 p-4 md:p-6">
                         <Image
@@ -107,7 +116,8 @@ export default function HeatPumpsPage() {
                     </div> */}
 
                     <div className="grid gap-6">
-                        <div className="rounded-2xl border border-border/60 bg-background p-6 shadow-sm md:p-8">
+                        <FadeIn direction="up" delay={120}>
+                            <div className="rounded-2xl border border-border/60 bg-background p-6 shadow-sm md:p-8">
                             <p className="mb-3 text-lg font-semibold leading-relaxed tracking-tight md:text-xl">Ile kosztuje pompa ciepła?</p>
 
                             <p className="text-foreground/90">Koszt instalacji zależy od wielkości domu i rodzaju systemu.</p>
@@ -122,9 +132,11 @@ export default function HeatPumpsPage() {
                             <p className="mt-4 rounded-xl border border-border/60 bg-muted/30 px-4 py-3 text-sm leading-relaxed md:text-base">
                                 Dokładną wycenę przygotujemy po krótkiej rozmowie - bez zobowiązań.
                             </p>
-                        </div>
+                            </div>
+                        </FadeIn>
 
-                        <div className="rounded-2xl border border-border/60 bg-gradient-to-br from-sky-50 via-background to-background p-6 shadow-sm md:p-8">
+                        <FadeIn direction="up" delay={180}>
+                            <div className="rounded-2xl border border-border/60 bg-gradient-to-br from-sky-50 via-background to-background p-6 shadow-sm md:p-8">
                             <p className="mb-3 text-lg font-semibold leading-relaxed tracking-tight md:text-xl">Jak wygląda montaż pompy ciepła?</p>
 
                             <ul className="mb-4 space-y-2 text-sm text-muted-foreground md:text-base">
@@ -138,7 +150,8 @@ export default function HeatPumpsPage() {
                             <p className="rounded-xl border border-sky-200/60 bg-sky-100/40 px-4 py-3 text-sm leading-relaxed text-foreground/90 md:text-base">
                                 Zajmujemy się wszystkim - od projektu po uruchomienie.
                             </p>
-                        </div>
+                            </div>
+                        </FadeIn>
                         
                     </div>
                 </section>
