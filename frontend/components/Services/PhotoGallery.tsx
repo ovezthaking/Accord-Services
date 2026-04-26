@@ -5,6 +5,7 @@ import type { GalleryItem } from "react-image-gallery";
 import { useState } from 'react';
 import 'react-image-gallery/styles/image-gallery.css'
 import { Button } from '../ui/button';
+import { cn } from '@/lib/utils';
 
 export default function PhotoGallery2({images}: {images: GalleryItem[]}) {
     const [galleryShown, setGalleryShown] = useState<boolean>(false)
@@ -24,22 +25,32 @@ export default function PhotoGallery2({images}: {images: GalleryItem[]}) {
                     </p>
                 </div>
 
-                {galleryShown ? 
-                    <div className="space-y-4">
-                        <div className="flex justify-start">
-                            <Button onClick={showGallery} variant="outline">
-                                Ukryj galerię
-                            </Button>
-                        </div>
+                <div className="flex justify-start">
+                    <Button
+                        onClick={showGallery}
+                        variant={galleryShown ? "outline" : "default"}
+                        className={galleryShown ? undefined : "bg-accent text-accent-foreground hover:bg-accent/90"}
+                        aria-expanded={galleryShown}
+                        aria-controls="service-gallery"
+                    >
+                        {galleryShown ? "Ukryj galerię" : "Pokaż galerię zdjęć"}
+                    </Button>
+                </div>
+
+                <div
+                    id="service-gallery"
+                    className={cn(
+                        "grid overflow-hidden transition-[grid-template-rows,opacity,margin-top] duration-500 ease-out",
+                        galleryShown ? "mt-4 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0 pointer-events-none"
+                    )}
+                >
+                    <div className="min-h-0">
                         <ImageGallery
                             items={images}
                             additionalClass="service-image-gallery"
                         />
-                    </div> : 
-                    <Button onClick={showGallery} className="bg-accent text-accent-foreground hover:bg-accent/90">
-                        Pokaż galerię zdjęć
-                    </Button>
-                }
+                    </div>
+                </div>
             </div>
         </section>
         
