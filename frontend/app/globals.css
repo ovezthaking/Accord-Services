@@ -109,6 +109,20 @@ html {
   border-radius: 0.875rem;
 }
 
+.service-image-gallery,
+.service-image-gallery .image-gallery,
+.service-image-gallery .image-gallery-content,
+.service-image-gallery .image-gallery-slide-wrapper,
+.service-image-gallery .image-gallery-slides {
+  width: 100%;
+  max-width: 100%;
+}
+
+.service-image-gallery,
+.service-image-gallery * {
+  box-sizing: border-box;
+}
+
 .service-image-gallery .image-gallery-slide {
   height: clamp(240px, 52vw, 540px);
 }
@@ -116,10 +130,16 @@ html {
 .service-image-gallery .image-gallery-image {
   border: 1px solid hsl(var(--border));
   background-color: hsl(var(--muted));
+  display: block;
   height: 100% !important;
   width: 100%;
   object-fit: cover;
   object-position: center;
+}
+
+.service-image-gallery .image-gallery-slide-wrapper,
+.service-image-gallery .image-gallery-content {
+  overflow: hidden;
 }
 
 .service-image-gallery .image-gallery-thumbnail {
@@ -138,19 +158,56 @@ html {
   object-fit: cover;
 }
 
-.service-image-gallery .image-gallery-thumbnails-container {
-  display: inline-flex;
-  gap: 0.5rem;
-  align-items: stretch;
-}
-
 .service-image-gallery .image-gallery-thumbnails {
   text-align: center;
 }
 
 @media (max-width: 768px) {
+  .service-image-gallery {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   .service-image-gallery .image-gallery-slide {
-    height: 280px;
+    height: clamp(220px, 62vw, 360px) !important;
+  }
+
+  .service-image-gallery .image-gallery-image {
+    height: 100% !important;
+    max-height: none !important;
+    object-fit: contain;
+    background-color: hsl(var(--muted));
+  }
+
+  .service-image-gallery .image-gallery-thumbnail {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  .service-image-gallery .image-gallery-thumbnails-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .service-image-gallery .image-gallery-thumbnails {
+    text-align: left;
+  }
+
+  .service-image-gallery .image-gallery-left-nav,
+  .service-image-gallery .image-gallery-right-nav {
+    padding: 14px 8px;
+  }
+
+  .service-image-gallery .image-gallery-left-nav {
+    left: 0.25rem;
+  }
+
+  .service-image-gallery .image-gallery-right-nav {
+    right: 0.25rem;
   }
 }
 
