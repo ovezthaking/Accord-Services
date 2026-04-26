@@ -54,7 +54,7 @@ export default function HeatPumpsPage() {
                     <div className="relative min-h-[260px] overflow-hidden rounded-2xl border border-border/60 bg-muted/20 shadow-sm md:min-h-[340px]">
                         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
                         <Image
-                            src="http://www.accord.opole.pl/wordpress/wp-content/uploads/2020/03/AT-PA-1.png"
+                            src="/images/services/heatpumps/banner.png"
                             alt="Pompa ciepła powietrze-woda"
                             fill
                             sizes="(max-width: 768px) 100vw, 50vw"

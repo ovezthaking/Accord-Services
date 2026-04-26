@@ -1,27 +1,14 @@
 import ServicePage from "@/components/Services/ServicePage"
 import { servicePageProps } from "@/components/Services/types"
+import findGalleryCadidates from "@/utils/findGalleryCandidates"
 import Image from "next/image"
+
+const galleryImages = findGalleryCadidates('recuperation')
 
 const data: servicePageProps = {
     title: 'Rekuperacja',
     description: 'Rekuperacja w znacznym uproszczeniu oznacza odzyskiwanie ciepła. Rekuperator zawiera również filtry, które oczyszczają powietrze z różnego rodzaju zanieczyszczeń.',
-    images: [
-        {
-            originalAlt: 'Niebieskie rury',
-            original: 'http://www.accord.opole.pl/wordpress/wp-content/uploads/2020/03/90618454_1048516892200273_8171670670757855232_n-1150x1536.jpg',
-            thumbnail: 'http://www.accord.opole.pl/wordpress/wp-content/uploads/2020/03/90618454_1048516892200273_8171670670757855232_n-1150x1536.jpg'
-        },
-        {
-            originalAlt: 'Niebieskie i zielone rury',
-            original: 'http://www.accord.opole.pl/wordpress/wp-content/uploads/2020/03/88360881_223909842087736_7210173942978314240_n.jpg',
-            thumbnail: 'http://www.accord.opole.pl/wordpress/wp-content/uploads/2020/03/88360881_223909842087736_7210173942978314240_n.jpg'
-        },
-        {
-            originalAlt: 'Narzędzia',
-            original: 'http://www.accord.opole.pl/wordpress/wp-content/uploads/2020/03/89841441_822465734918608_8858858278407372800_n.jpg',
-            thumbnail: 'http://www.accord.opole.pl/wordpress/wp-content/uploads/2020/03/89841441_822465734918608_8858858278407372800_n.jpg'
-        },
-    ]
+    images: galleryImages
 }
 
 export default function RecuperationPage() {
@@ -53,7 +40,7 @@ export default function RecuperationPage() {
 
                 <div className="rounded-xl border border-border bg-muted/30 p-4 md:p-6">
                     <Image
-                        src='http://www.accord.opole.pl/wordpress/wp-content/uploads/2020/03/unnamed.jpg'
+                        src='/images/services/recuperation/banner.jpg'
                         alt="Wizualizacja przepływu ciepła i działania rekuperacji"
                         width={900}
                         height={900}
