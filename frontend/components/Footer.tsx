@@ -73,6 +73,12 @@ export default function Footer() {
                                 </a>
                             </li>
                             <li>
+                                <a href="tel:783636363" className="flex items-center gap-3 text-sm text-card/70 transition-colors hover:text-card">
+                                    <Phone className="h-4 w-4 text-accent"/>
+                                    783 636 363
+                                </a>
+                            </li>
+                            <li>
                                 <a href="mailto:accordservice@interia.pl" className="flex items-center gap-3 text-sm text-card/70 transition-colors hover:text-card">
                                     <Mail className="h-4 w-4 text-accent"/>
                                     accordservice@interia.pl
