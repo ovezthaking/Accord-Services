@@ -10,7 +10,7 @@ def send_contact_mail(mail_data: dict):
         f'Numer telefonu: {mail_data.get('phone_number')}\n' +
         'Treść wiadomości: \n' +
         mail_data.get('description'),
-        from_email="kontaktovez@gmail.com",
+        from_email="accordstrona@gmail.com",
         recipient_list=['oliwerx12@gmail.com'],
         fail_silently=False
     )
