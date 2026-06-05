@@ -52,7 +52,7 @@ export default function ServicesSection() {
                 <FadeIn className="mb-16 max-w-2xl" direction="up" delay={60}>
                     <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-accent">Nasze usługi</p>
                     <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-                        Intalacje, które realnie obniżają koszty
+                        Instalacje, które realnie obniżają koszty
                     </h2>
                     <p className="text-lg leading-relaxed text-muted-foreground">
                         Dobieramy rozwiązanie do Twojego domu, budżetu i sposobu użytkowania.
