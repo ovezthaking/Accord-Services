@@ -30,6 +30,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'accord-backend-lyart.vercel.app',
+    'localhost',
+    '127.0.0.1',
 ]
 
 
@@ -136,7 +138,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:3000",
     "http://127.0.0.1:8000",
-    "https://accordproposition.vercel.app/"
+    "https://accordproposition.vercel.app",
+    "https://www.accord.opole.pl",
+    "https://accord.opole.pl"
 ]
 
 CORS_ALLOWED_ORIGIN_REGEXES = [

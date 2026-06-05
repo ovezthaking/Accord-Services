@@ -53,6 +53,18 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
+Jeśli nie aktywujesz środowiska, uruchamiaj komendy backendu przez lokalny interpreter:
+
+```bash
+./.venv/bin/python manage.py runserver
+```
+
+lub
+
+```bash
+uv run python manage.py runserver
+```
+
 Serwer: **http://localhost:8000**  
 Admin: **http://localhost:8000/admin/**
 
