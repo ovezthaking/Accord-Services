@@ -10,9 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
-from pathlib import Path
-
 import os
+from pathlib import Path
+from urllib.parse import urlparse
+
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -85,15 +86,43 @@ TEMPLATES = [
 WSGI_APPLICATION = 'accord.wsgi.application'
 
 
+def build_database_config():
+    database_url = os.getenv('DATABASE_URL')
+
+    if database_url:
+        parsed_url = urlparse(database_url)
+
+        database_config = {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': parsed_url.path.lstrip('/'),
+            'USER': parsed_url.username or '',
+            'PASSWORD': parsed_url.password or '',
+            'HOST': parsed_url.hostname or '',
+            'PORT': parsed_url.port or '5432',
+        }
+
+        sslmode = os.getenv('DB_SSLMODE')
+        if sslmode:
+            database_config['OPTIONS'] = {
+                'sslmode': sslmode,
+            }
+
+        return {
+            'default': database_config,
+        }
+
+    return {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
+
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASES = build_database_config()
 
 
 # Password validation

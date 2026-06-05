@@ -43,6 +43,10 @@ python -m venv .venv
 # Zależności
 pip install -r requirements.txt
 
+# Konfiguracja bazy (opcjonalna lokalnie, wymagana na PostgreSQL)
+# DATABASE_URL=postgresql://postgres:password@localhost:5432/accord_services
+# DB_SSLMODE=require
+
 # Migracje
 python manage.py migrate
 
@@ -108,7 +112,8 @@ Pełna dokumentacja projektu dostępna w [DOKUMENTACJA.md](DOKUMENTACJA.md):
 - **Django 6.0** - Web framework
 - **Django REST Framework** - REST API
 - **Django CORS Headers** - CORS support
-- **SQLite** - Database
+- **PostgreSQL** - Primary database for deployments
+- **SQLite** - Fallback for local development
 - **Uvicorn** - ASGI server
 
 ### Frontend
