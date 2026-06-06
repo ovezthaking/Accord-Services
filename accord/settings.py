@@ -37,6 +37,8 @@ DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [
     'accord-backend-lyart.vercel.app',
+    'admin.accord.opole.pl',
+    'www.admin.accord.opole.pl',
     'www.accord.opole.pl',
     'accord.opole.pl',
     'localhost',
