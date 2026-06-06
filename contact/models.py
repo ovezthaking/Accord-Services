@@ -63,3 +63,16 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.full_name
+
+
+class EmailRecipient(models.Model):
+    email = models.EmailField(unique=True)
+    name = models.CharField(max_length=100, blank=True)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.name} <{self.email}>" if self.name else self.email
+
+    class Meta:
+        verbose_name = "Odbiorca e-mail"
+        verbose_name_plural = "Odbiorcy e-mail"
