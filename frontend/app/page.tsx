@@ -9,7 +9,7 @@ import ServicesSection from "@/components/ServicesSection";
 
 export default function Home() {
   return (
-    <main>
+    <main className="overflow-x-hidden">
       <HeroSection />
       <ScrollingServices />
       <ServicesSection />

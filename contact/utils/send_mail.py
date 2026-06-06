@@ -2,11 +2,19 @@ from django.core.mail import send_mail
 import resend
 import os
 import logging
+from contact.models import EmailRecipient
 
 logger = logging.getLogger(__name__)
 
 RESEND_API_KEY = os.getenv("RESEND_API_KEY")
 resend.api_key = RESEND_API_KEY
+
+
+def get_recipients():
+    return list(
+        EmailRecipient.objects.filter(is_active=True)
+        .values_list('email', flat=True)
+    )
 
 
 def send_contact_mail(mail_data: dict):
@@ -23,7 +31,9 @@ def send_contact_mail(mail_data: dict):
         <hr />
 
         <h3>Treść wiadomości:</h3>
-        <p style="white-space: pre-wrap;">{mail_data.get('description', '')}</p>
+        <p style="white-space: pre-wrap;">
+            {mail_data.get('description', 'Nie podano')}
+        </p>
 
         <hr />
 
@@ -37,7 +47,7 @@ def send_contact_mail(mail_data: dict):
         try:
             resend.Emails.send({
                 "from": "Accord Service <kontakt@accord.opole.pl>",
-                "to": ["oliwerx12@gmail.com", "accordservice@interia.pl"],
+                "to": get_recipients(),
                 "subject": f"{mail_data.get('full_name')} - {mail_data.get('services')}",
                 "html": html_content,
                 "reply_to": mail_data.get("email"),
@@ -56,6 +66,6 @@ def send_contact_mail(mail_data: dict):
             'Treść wiadomości: \n' +
             mail_data.get('description'),
             from_email="accordstrona@gmail.com",
-            recipient_list=['oliwerx12@gmail.com', 'accordservice@interia.pl'],
+            recipient_list=get_recipients(),
             fail_silently=False
         )

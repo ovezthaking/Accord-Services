@@ -52,7 +52,7 @@ export default function ContactForm() {
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="phone" className="text-foreground">Telefon</Label>
-                    <Input id="phone" name="phone" type="tel" placeholder="601 234 567" className="bg-background text-foreground" />
+                    <Input id="phone" name="phone" type="tel" placeholder="601 234 567" className="bg-background text-foreground" required/>
                 </div>
                 <div className="space-y-2 sm:col-span-2">
                     <Label htmlFor="email" className="text-foreground">E-mail</Label>

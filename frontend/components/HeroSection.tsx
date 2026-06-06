@@ -13,7 +13,7 @@ export default function HeroSection() {
                 <Image
                     src='/images/hero-background.jpg'
                     alt="Nowoczesna pompa ciepła przy domu"
-                    className="w-full h-full object-cover opacity-40"
+                    className="w-full h-full object-cover opacity-30 object-[68%_center] md:object-center"
                     width={1024}
                     height={1024}
                 />
@@ -72,7 +72,7 @@ export default function HeroSection() {
                 </div>
             </div> */}
             <div className="relative z-10 border-t border-card/10 bg-foreground/80 backdrop-blur-md">
-                <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-8 px-6 py-8 sm:flex-row sm:gap-16 md:gap-24">
+                <div className="mx-auto flex max-w-7xl flex-row items-center justify-around gap-8 px-6 py-8 sm:flex-row sm:justify-center sm:gap-16 md:gap-24">
                     <FadeIn direction="up" delay={80}>
                         <div className="text-center">
                             <div className="text-3xl font-bold text-accent md:text-4xl">{statsArray[0].value}</div>
