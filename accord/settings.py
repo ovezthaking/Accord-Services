@@ -19,21 +19,32 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()
+
+RENDER_EXTERNAL_HOSTNAME = os.getenv('RENDER_EXTERNAL_HOSTNAME')
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ill*k9atmu^kj=*a@fb=38c(gxh_24-&sa)h1wkvz948hn4_#4'
+# SECRET_KEY = 'django-insecure-ill*k9atmu^kj=*a@fb=38c(gxh_24-&sa)h1wkvz948hn4_#4'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-lokalny-klucz-testowy')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [
     'accord-backend-lyart.vercel.app',
+    'www.accord.opole.pl',
+    'accord.opole.pl',
     'localhost',
     '127.0.0.1',
 ]
+
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 # Application definition
@@ -55,6 +66,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
 
     'corsheaders.middleware.CorsMiddleware',
@@ -160,6 +172,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STORAGES = {
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+}
 
 # CORS Configuration
 CORS_ALLOWED_ORIGINS = [
@@ -172,12 +191,23 @@ CORS_ALLOWED_ORIGINS = [
     "https://accord.opole.pl"
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:8000",
+    "https://accordproposition.vercel.app",
+    "https://www.accord.opole.pl",
+    "https://accord.opole.pl",
+]
+
+if RENDER_EXTERNAL_HOSTNAME:
+    CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
+
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^http://localhost(:\d+)?$",
     r"^http://127\.0\.0\.1(:\d+)?$",
 ]
-
-load_dotenv()
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

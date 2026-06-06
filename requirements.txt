@@ -1,5 +1,7 @@
 django
 django_rest_framework
 django_cors_headers
+gunicorn
 psycopg[binary]
 python-dotenv
+whitenoise

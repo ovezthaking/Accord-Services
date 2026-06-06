@@ -187,6 +187,8 @@ Szczegółowa dokumentacja API: [DOKUMENTACJA.md - REST API](DOKUMENTACJA.md#res
 - Next.js Turbopack dla szybszej kompilacji
 - TypeScript dla type safety
 
+W produkcji ustaw `BACKEND_URL` na adres backendu z Rendera, żeby rewrite dla `/admin` i API kierował do Django.
+
 ## 📧 Konfiguracja E-maili
 
 System automatycznie wysyła e-maile powiadomienia do administratora.
@@ -213,12 +215,25 @@ python manage.py collectstatic
 gunicorn accord.wsgi:application --bind 0.0.0.0:8000
 ```
 
+#### Render - ustawienia serwisu Django
+- `Build Command`: `pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput`
+- `Start Command`: `gunicorn accord.wsgi:application`
+- `DEBUG`: `False`
+- `SECRET_KEY`: własna wartość produkcyjna
+- `DATABASE_URL`: URL z Neon/PostgreSQL
+- `RENDER_EXTERNAL_HOSTNAME`: domena serwisu z Rendera, jeśli Render jej nie ustawi automatycznie
+- `EMAIL_PASSWORD`: hasło aplikacji do SMTP
+
 ### Frontend
 ```bash
 cd frontend
 npm run build
 npm start
 ```
+
+#### Vercel - ustawienia frontendu
+- `BACKEND_URL`: adres backendu z Rendera, np. `https://twoj-backend.onrender.com`
+- `www.accord.opole.pl` może proxy'ować `/admin`, a Django admin po kliknięciu `View site` wróci na frontend
 
 Rekomenduję Docker dla obu serwisów.
 
