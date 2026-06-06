@@ -48,11 +48,16 @@ if RENDER_EXTERNAL_HOSTNAME:
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = False
-SESSION_COOKIE_DOMAIN = '.accord.opole.pl'
-CSRF_COOKIE_DOMAIN = '.accord.opole.pl'
+
+SESSION_COOKIE_DOMAIN = None   # było: '.accord.opole.pl'
+CSRF_COOKIE_DOMAIN = None      # było: '.accord.opole.pl'
+
+SESSION_COOKIE_SAMESITE = 'Lax'   # nowe
+CSRF_COOKIE_SAMESITE = 'Lax'      # nowe
 
 
 # Application definition
