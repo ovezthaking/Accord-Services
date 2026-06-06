@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 
 const __inter = Inter({
@@ -17,7 +18,7 @@ const __spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  icons: { icon: 'images/favicon.png' },
+  icons: { icon: '/images/favicon.png' },
   title: "Accord Service - Pompy Ciepla, Klimatyzacja, Rekuperacja, Fotowoltaika | Opole",
   description: "Accord Service - od 1984 roku dostarczamy profesjonalne rozwiazania w zakresie pomp ciepla, klimatyzacji, rekuperacji i fotowoltaiki w Opolu i okolicach.",
 };
@@ -40,6 +41,8 @@ export default function RootLayout({
         {children}
         <Toaster />
         <Footer />
+
+        <GoogleAnalytics gaId="G-XCG4J88VSQ" />
       </body>
     </html>
   );

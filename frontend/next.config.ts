@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const backendUrl = process.env.BACKEND_URL || "https://accord-backend-lyart.vercel.app";
 
 const nextConfig: NextConfig = {
+  trailingSlash: false, 
   typescript: {
     ignoreBuildErrors: true,
   },
