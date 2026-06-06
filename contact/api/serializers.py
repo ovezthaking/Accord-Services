@@ -6,7 +6,8 @@ from contact.models import Contact, ContactStatus
 class ContactSerializer(ModelSerializer):
     status = SlugRelatedField(
         queryset=ContactStatus.objects.all(),
-        slug_field='name'
+        slug_field='name',
+        required=False,
     )
 
     class Meta:
