@@ -6,9 +6,13 @@ from .serializers import ContactSerializer
 from contact.utils.parse_contact import parse_contact
 from contact.utils.send_mail import send_contact_mail
 from django.contrib.auth.decorators import login_required
+import logging
 from contact.utils.decorators.login_required_for_methods import (
     login_required_for_methods
 )
+
+
+logger = logging.getLogger(__name__)
 
 
 @login_required_for_methods(['GET'])
@@ -36,7 +40,11 @@ def contacts_view(request):
         serializer.save()
 
         mail_data = parse_contact(request)
-        send_contact_mail(mail_data)
+
+        try:
+            send_contact_mail(mail_data)
+        except Exception as exc:
+            logger.exception('Failed to send contact email: %s', exc)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
