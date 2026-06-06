@@ -23,7 +23,7 @@ def send_contact_mail(mail_data: dict):
         <hr />
 
         <h3>Treść wiadomości:</h3>
-        <p style="white-space: pre-wrap;">{mail_data.get('description', '')}</p>
+        <p style="white-space: pre-wrap;">{mail_data.get('description', 'Nie podano')}</p>
 
         <hr />
 
