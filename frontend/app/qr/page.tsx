@@ -21,7 +21,7 @@ const actions = [
         icon: Star,
         label: "Oceń nas w Google",
         description: "Twoja opinia wiele znaczy",
-        href: "https://share.google/Op0Mg94FMcrQjLUho",
+        href: "https://g.page/r/Cd6B_g8YJOq4EBM/review",
         style: "outline" as const,
         external: true,
     },

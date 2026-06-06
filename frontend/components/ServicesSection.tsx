@@ -62,16 +62,16 @@ export default function ServicesSection() {
                 {/* Tabs subsection */}
                 <div className="grid gap-8 lg:grid-cols-5">
                     {/* Tabs */}
-                    <div className="flex flex-row gap-2 overflow-x-auto lg:col-span-2 lg:flex-col lg:gap-3">
+                    <div className="grid grid-cols-2 gap-2 lg:col-span-2 lg:flex lg:flex-col lg:gap-3">
                         {services.map((service, index) => {
                             const Icon = service.icon
                             const isActive = activeIndex === index
                             return (
-                                <FadeIn key={service.title} direction="right" delay={index * 90}>
+                                <FadeIn key={service.title} direction="right" delay={index * 90} className="flex">
                                     <button
                                         type="button"
                                         onClick={() => setActiveIndex(index)}
-                                        className={`flex min-w-[160px] w-full items-center gap-4 rounded-lg border px-5 py-4 text-left transition-all lg:min-w-0 ${
+                                        className={`flex w-full items-center gap-4 rounded-lg border px-5 py-4 text-left transition-all ${
                                             isActive
                                             ? 'border-primary bg-primary text-primary-foreground shadow-lg'
                                             : 'border-border bg-card text-foreground hover:border-primary/30 hover:bg-muted'
