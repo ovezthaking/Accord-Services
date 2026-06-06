@@ -11,6 +11,6 @@ def send_contact_mail(mail_data: dict):
         'Treść wiadomości: \n' +
         mail_data.get('description'),
         from_email="accordstrona@gmail.com",
-        recipient_list=['oliwerx12@gmail.com'],
+        recipient_list=['oliwerx12@gmail.com', 'accordservice@interia.pl'],
         fail_silently=False
     )

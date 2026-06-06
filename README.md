@@ -43,6 +43,10 @@ python -m venv .venv
 # Zależności
 pip install -r requirements.txt
 
+# Konfiguracja bazy (opcjonalna lokalnie, wymagana na PostgreSQL)
+# DATABASE_URL=postgresql://postgres:password@localhost:5432/accord_services
+# DB_SSLMODE=require
+
 # Migracje
 python manage.py migrate
 
@@ -51,6 +55,18 @@ python manage.py createsuperuser
 
 # Uruchomienie
 python manage.py runserver
+```
+
+Jeśli nie aktywujesz środowiska, uruchamiaj komendy backendu przez lokalny interpreter:
+
+```bash
+./.venv/bin/python manage.py runserver
+```
+
+lub
+
+```bash
+uv run python manage.py runserver
 ```
 
 Serwer: **http://localhost:8000**  
@@ -96,7 +112,8 @@ Pełna dokumentacja projektu dostępna w [DOKUMENTACJA.md](DOKUMENTACJA.md):
 - **Django 6.0** - Web framework
 - **Django REST Framework** - REST API
 - **Django CORS Headers** - CORS support
-- **SQLite** - Database
+- **PostgreSQL** - Primary database for deployments
+- **SQLite** - Fallback for local development
 - **Uvicorn** - ASGI server
 
 ### Frontend
@@ -170,6 +187,8 @@ Szczegółowa dokumentacja API: [DOKUMENTACJA.md - REST API](DOKUMENTACJA.md#res
 - Next.js Turbopack dla szybszej kompilacji
 - TypeScript dla type safety
 
+W produkcji ustaw `BACKEND_URL` na adres backendu z Rendera, żeby rewrite dla `/admin` i API kierował do Django.
+
 ## 📧 Konfiguracja E-maili
 
 System automatycznie wysyła e-maile powiadomienia do administratora.
@@ -196,12 +215,25 @@ python manage.py collectstatic
 gunicorn accord.wsgi:application --bind 0.0.0.0:8000
 ```
 
+#### Render - ustawienia serwisu Django
+- `Build Command`: `pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput`
+- `Start Command`: `gunicorn accord.wsgi:application`
+- `DEBUG`: `False`
+- `SECRET_KEY`: własna wartość produkcyjna
+- `DATABASE_URL`: URL z Neon/PostgreSQL
+- `RENDER_EXTERNAL_HOSTNAME`: domena serwisu z Rendera, jeśli Render jej nie ustawi automatycznie
+- `EMAIL_PASSWORD`: hasło aplikacji do SMTP
+
 ### Frontend
 ```bash
 cd frontend
 npm run build
 npm start
 ```
+
+#### Vercel - ustawienia frontendu
+- `BACKEND_URL`: adres backendu z Rendera, np. `https://twoj-backend.onrender.com`
+- `www.accord.opole.pl` może proxy'ować `/admin`, a Django admin po kliknięciu `View site` wróci na frontend
 
 Rekomenduję Docker dla obu serwisów.
 
