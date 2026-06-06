@@ -223,6 +223,7 @@ gunicorn accord.wsgi:application --bind 0.0.0.0:8000
 - `DATABASE_URL`: URL z Neon/PostgreSQL
 - `RENDER_EXTERNAL_HOSTNAME`: domena serwisu z Rendera, jeśli Render jej nie ustawi automatycznie
 - `EMAIL_PASSWORD`: hasło aplikacji do SMTP
+- `RESEND_API_KEY`: klucz API do Resend (jeśli używasz)
 
 ### Frontend
 ```bash
