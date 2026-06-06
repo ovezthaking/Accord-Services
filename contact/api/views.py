@@ -12,6 +12,7 @@ from contact.utils.decorators.login_required_for_methods import (
     login_required_for_methods
 )
 
+import socket
 
 logger = logging.getLogger(__name__)
 
@@ -42,11 +43,23 @@ def contacts_view(request):
 
         mail_data = parse_contact(request)
 
-        def send_mail_thread(data):
+        def test_smtp():
             try:
+                s = socket.create_connection(("smtp.gmail.com", 587), 5)
+                s.close()
+                logger.info("SMTP CONNECT OK")
+            except Exception as e:
+                logger.exception("SMTP CONNECT FAILED: %s", e)
+
+        test_smtp()
+
+        def send_mail_thread(mail_data):
+            try:
+                logger.info("EMAIL THREAD START")
                 send_contact_mail(mail_data)
-            except Exception as exc:
-                logger.exception('Failed to send contact email: %s', exc)
+                logger.info("EMAIL THREAD SUCCESS")
+            except Exception as e:
+                logger.exception("EMAIL THREAD FAILED: %s", e)
 
         Thread(target=send_mail_thread, args=(mail_data,)).start()
 
