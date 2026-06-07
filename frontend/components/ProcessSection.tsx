@@ -45,7 +45,7 @@ export default function ProcessSection() {
                         Jak wygląda współpraca
                     </h2>
                     <p className="mx-auto max-w-lg text-lg leading-relaxed text-muted-foreground">
-                        Od pierwszego kontaktu do gotowej instalacji - każdego klienta traktujemy indywidualnie
+                        Od pierwszego kontaktu do gotowej instalacji - każdego klienta traktujemy indywidualnie.
                     </p>
                 </FadeIn>
 

@@ -43,7 +43,7 @@ export default function ContactSection() {
                         Porozmawiajmy o twoim projekcie
                     </h2>
                     <p className="mx-auto max-w-lg text-lg leading-relaxed text-muted-foreground">
-                        Wypełnij formularz lub zadzwoń - przygotujemy darmową wycenę dopasowaną do Ciebie
+                        Wypełnij formularz lub zadzwoń - przygotujemy darmową wycenę dopasowaną do Ciebie.
                     </p>
                     <div className="mx-auto mt-6 grid max-w-2xl gap-3 sm:grid-cols-2">
                         <FadeIn direction="up" delay={120} duration={450}>
