@@ -17,9 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
+from django.http import JsonResponse
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/contacts', include('contact.api.urls')),
-    path('', RedirectView.as_view(url='/admin/', permanent=False))
+    path('health/', lambda request: JsonResponse({'status': 'ok'})),
+    path('', RedirectView.as_view(url='/admin/', permanent=False)),
 ]
