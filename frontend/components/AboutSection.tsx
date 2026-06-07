@@ -31,7 +31,7 @@ const higlights: highlightsArrayType = [
 
 const stats: StatsArrayType = [
     { value: "40+", label: "lat doświadczenia" },
-    { value: "300+", label: "wykonanych instalacji" },
+    { value: "1000+", label: "wykonanych instalacji" },
     { value: "Setki", label: "obsłużonych klientów w regionie" },
     { value: "Dziesiątki", label: "serwisów rocznie" },
 ]
