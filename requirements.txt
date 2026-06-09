@@ -6,3 +6,5 @@ psycopg[binary]
 python-dotenv
 whitenoise
 resend
+cloudinary
+django-cloudinary-storage

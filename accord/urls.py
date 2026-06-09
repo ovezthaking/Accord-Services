@@ -22,6 +22,7 @@ from django.http import JsonResponse
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/contacts', include('contact.api.urls')),
+    path('api/gallery', include('gallery.api.urls')),
     path('health/', lambda request: JsonResponse({'status': 'ok'})),
     path('', RedirectView.as_view(url='/admin/', permanent=False)),
 ]
