@@ -1,7 +1,7 @@
 # Dokumentacja Projektu Accord Services
 
-**Ostatnia aktualizacja:** 20 marca 2026  
-**Wersja:** 1.0
+**Ostatnia aktualizacja:** czerwiec 2026  
+**Wersja:** 1.1
 
 ---
 
@@ -9,8 +9,8 @@
 
 1. [Przegląd Projektu](#przegląd-projektu)
 2. [Architektura Systemu](#architektura-systemu)
-3. [Backend - Django](#backend---django)
-4. [Frontend - Next.js](#frontend---nextjs)
+3. [Backend — Django](#backend--django)
+4. [Frontend — Next.js](#frontend--nextjs)
 5. [Technologie i Zależności](#technologie-i-zależności)
 6. [Konfiguracja i Instalacja](#konfiguracja-i-instalacja)
 7. [Przepływy Biznesowe](#przepływy-biznesowe)
@@ -22,12 +22,13 @@
 
 ### Cel Projektu
 
-Accord Services to nowoczesna aplikacja webowa zainteresowania dla firmy zajmującej się usługami energetyczno-grzewczymi. Projekt wspomaga działalność firmy będącej na rynku od **1984 roku w Opolu** poprzez:
+Accord Services to nowoczesna aplikacja webowa dla firmy zajmującej się usługami energetyczno-grzewczymi, działającej na rynku od **1984 roku w Opolu**. Projekt wspomaga działalność firmy poprzez:
 
 - Prezentację oferty usług online
 - Zarządzanie zapytaniami kontaktowymi od klientów
 - System rezerwacji i wyceny usług
-- Integrację z systemem poczty elektronicznej
+- Integrację z systemem poczty elektronicznej (Resend API)
+- Szybki dostęp do danych kontaktowych przez stronę QR
 
 ### Zakres Usług
 
@@ -35,19 +36,22 @@ Firma Accord Services oferuje cztery główne kategorie usług:
 
 | Usługa | Opis | Korzyści |
 |--------|------|---------|
-| **Pompy Ciepła** | Ogrzewanie i chłodzenie domów | Oszczędność do 75%, dotacje rządowe |
+| **Pompy Ciepła** | Ogrzewanie i chłodzenie domów | Oszczędność do 70%, dotacje rządowe |
 | **Klimatyzacja** | Systemy split i multi-split | Inwertery, montaż, gwarancja |
 | **Rekuperacja** | Wentylacja mechaniczna z odzyskiem | Odzysk ciepła do 95%, czyste powietrze |
-| **Fotowoltaika** | Instalacje solarne | Darmowa energia, zwrot inwestycji 6-8 lat |
+| **Fotowoltaika** | Instalacje solarne | Darmowa energia, zwrot inwestycji |
 
 ### Główne Funkcjonalności
 
 - ✅ Responsywna strona internetowa z sekcjami: Hero, O nas, Usługi, Proces, Kontakt
 - ✅ Formularze kontaktowe i zapytania o wycenę
-- ✅ Galeria zdjęć realizacji
+- ✅ Galeria zdjęć realizacji z lightboxem
 - ✅ Panel administracyjny Django
 - ✅ REST API do zarządzania kontaktami
-- ✅ System wysyłania e-maili
+- ✅ System wysyłania e-maili przez Resend API (fallback: SMTP Gmail)
+- ✅ Zarządzanie odbiorcami e-mail z panelu admin (model `EmailRecipient`)
+- ✅ Strona QR z linkami do kontaktu, mapy i Google Reviews
+- ✅ Animacje wejścia/wyjścia elementów przy scrollowaniu (`FadeIn`)
 - ✅ Wsparcie mobilne (mobile-first design)
 
 ---
@@ -59,25 +63,22 @@ Firma Accord Services oferuje cztery główne kategorie usług:
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                      Frontend (Next.js 16)                       │
-│  - React Components, TailwindCSS, Shadcn/ui                     │
-│  - Pages: Homepage, Service Pages, Contact Forms                │
-│  - API Client dla komunikacji z backendem                        │
+│  - React 19, TypeScript, TailwindCSS, Shadcn/ui                 │
+│  - Pages: /, /uslugi/*, /qr                                     │
+│  - Rewrites: /admin/* i /static/* → Backend                     │
 └──────────────────────────────┬──────────────────────────────────┘
-                               │
-                    REST API (http://localhost:8000)
+                               │ REST API / proxy
+                    (http://localhost:8000 / Render URL)
                                │
 ┌──────────────────────────────┴──────────────────────────────────┐
 │                      Backend (Django 6.0)                        │
-│  - REST Framework                                               │
-│  - CORS Headers                                                  │
-│  - SQLite Database                                               │
-│  - Email Service                                                 │
-└──────────────────────────────┬──────────────────────────────────┘
-                               │
-                    ┌──────────┴──────────┐
-                    │                     │
-            SQLite Database         Email Service
-                                   (SMTP)
+│  - REST Framework, CORS Headers, Whitenoise                     │
+│  - Gunicorn (WSGI) — produkcja                                   │
+│  - Uvicorn (ASGI) — alternatywa dev                             │
+└──────────────┬───────────────────────────────┬──────────────────┘
+               │                               │
+     PostgreSQL / SQLite               Resend API / SMTP Gmail
+     (Neon na produkcji)               (powiadomienia e-mail)
 ```
 
 ### Stack Techniczny
@@ -85,9 +86,14 @@ Firma Accord Services oferuje cztery główne kategorie usług:
 **Backend:**
 - Python 3.13+
 - Django 6.0.2
-- Django REST Framework
-- Django CORS Headers
-- Uvicorn (ASGI Server)
+- Django REST Framework 3.16
+- Django CORS Headers 4.9
+- Gunicorn 26 (produkcja)
+- Uvicorn 0.41 (dev/ASGI)
+- Whitenoise 6.12 (pliki statyczne)
+- Resend 2.30 (e-mail)
+- psycopg 3 (PostgreSQL)
+- uv (zarządzanie środowiskiem i zależnościami)
 
 **Frontend:**
 - Next.js 16.1.6
@@ -95,53 +101,69 @@ Firma Accord Services oferuje cztery główne kategorie usług:
 - TypeScript 5.7.3
 - TailwindCSS 3.4.17
 - Shadcn/ui (Radix UI)
+- react-image-gallery 2.1.2
 
-**Baza Danych:**
-- SQLite3 (db.sqlite3)
+**Bazy Danych:**
+- PostgreSQL (Neon) — produkcja
+- SQLite3 — lokalne środowisko deweloperskie (fallback)
 
 ---
 
-## Backend - Django
+## Backend — Django
 
 ### Struktura Katalogów
 
 ```
-accord/                          # Główna aplikacja Django
-├── settings.py                  # Konfiguracja projektu
+accord/                          # Konfiguracja projektu Django
+├── settings.py                  # Ustawienia projektu
 ├── urls.py                      # Routing główny
-├── asgi.py                      # ASGI configuration
-├── wsgi.py                      # WSGI configuration
-│
-contact/                         # Aplikacja do zarządzania kontaktami
-├── models.py                    # Modele danych
+├── asgi.py                      # ASGI configuration (Uvicorn)
+└── wsgi.py                      # WSGI configuration (Gunicorn)
+
+contact/                         # Aplikacja zarządzania kontaktami
+├── models.py                    # Contact, ContactStatus, EmailRecipient
 ├── admin.py                     # Konfiguracja Django Admin
-├── views.py                     # Widoki Django
-├── apps.py                      # Konfiguracja aplikacji
-├── migrations/                  # Migracje bazy danych
+├── views.py                     # (placeholder)
+├── apps.py
+├── migrations/
 │   ├── 0001_initial.py
 │   ├── 0002_contact_createdat.py
 │   ├── 0003_alter_contact_options.py
 │   ├── 0004_alter_contact_services.py
-│   └── 0005_contactstatus_*.py
+│   ├── 0005_contactstatus_*.py
+│   └── 0006_emailrecipient.py
 │
 ├── api/                         # REST API
-│   ├── views.py                 # API Endpoints
+│   ├── views.py                 # Endpointy API
 │   ├── serializers.py           # Serializery DRF
 │   └── urls.py                  # Ścieżki API
 │
 └── utils/                       # Funkcje pomocnicze
     ├── parse_contact.py         # Parsowanie danych kontaktu
-    ├── send_mail.py             # Wysyłanie e-maili
+    ├── send_mail.py             # Wysyłanie e-maili (Resend / SMTP)
     └── decorators/
-        └── login_required_for_methods.py  # Dekorator custom
-│
-chatai/                          # Aplikacja do AI Chat (przyszłość)
+        └── login_required_for_methods.py
+
+chatai/                          # Aplikacja AI (przygotowana, niezaimplementowana)
 ├── models.py
 ├── views.py
 └── apps.py
 ```
 
 ### Modele Danych
+
+#### Model: ContactStatus
+
+Definiuje możliwe statusy zapytań kontaktowych.
+
+```python
+class ContactStatus(models.Model):
+    name = models.CharField(max_length=50)
+```
+
+Domyślny status tworzony automatycznie: `nowy`.
+
+---
 
 #### Model: Contact
 
@@ -156,53 +178,60 @@ class Contact(models.Model):
         ('fotowoltaika', 'Fotowoltaika'),
         ('serwis', 'Serwis')
     )
-    
-    full_name = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=25, unique=True)
-    email = models.EmailField(unique=True)
-    services = models.CharField(
-        max_length=50,
-        choices=SERVICE_CHOICES,
-        default='pompy'
-    )
-    description = models.TextField(blank=True, null=True)
-    status = models.ForeignKey(
-        ContactStatus,
-        on_delete=models.PROTECT,
-        default=get_default_contact_status_id
-    )
-    createdAt = models.DateTimeField(auto_now_add=True)
+
+    full_name    = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=25, unique=True)  # walidacja regex
+    email        = models.EmailField(unique=True)
+    services     = models.CharField(max_length=50, choices=SERVICE_CHOICES, default='pompy')
+    description  = models.TextField(blank=True, null=True)
+    status       = models.ForeignKey(ContactStatus, on_delete=models.PROTECT)
+    createdAt    = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-createdAt']
 ```
 
 **Pola:**
-- `full_name` - Imię i nazwisko klienta (max 255 znaków)
-- `phone_number` - Numer telefonu (format: +99999999, max 25 znaków, unikalny)
-- `email` - Adres e-mail (unikalny)
-- `services` - Wybrana usługa (jedno z 5 predefiniowanych)
-- `description` - Opis zapytania (opcjonalne)
-- `status` - Status zapytania (relacja FK do ContactStatus)
-- `createdAt` - Data utworzenia (auto-generowana)
+- `full_name` — Imię i nazwisko (max 255 znaków)
+- `phone_number` — Numer telefonu (regex: `^\+?[\d\s().-]{5,25}$`, unikalny)
+- `email` — Adres e-mail (unikalny)
+- `services` — Wybrana usługa (jedno z 5 predefiniowanych)
+- `description` — Opis zapytania (opcjonalne)
+- `status` — FK do `ContactStatus` (domyślnie: `nowy`)
+- `createdAt` — Data utworzenia (auto)
 
-#### Model: ContactStatus
+---
 
-Definiuje możliwe statusy zapytań.
+#### Model: EmailRecipient
+
+Zarządza listą odbiorców powiadomień e-mail. Pozwala dodawać i wyłączać odbiorców bezpośrednio z panelu Django Admin — bez zmiany kodu.
 
 ```python
-class ContactStatus(models.Model):
-    name = models.CharField(max_length=50)
+class EmailRecipient(models.Model):
+    email     = models.EmailField(unique=True)
+    name      = models.CharField(max_length=100, blank=True)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Odbiorca e-mail"
+        verbose_name_plural = "Odbiorcy e-mail"
 ```
 
-**Domyślne statusy:**
-- `nowy` - Nowe zapytanie (domyślny)
-- Mogą być dodawane inne statusy w Django Admin
+**Pola:**
+- `email` — Adres e-mail odbiorcy (unikalny)
+- `name` — Nazwa/opis odbiorcy (opcjonalne)
+- `is_active` — Czy odbiorca jest aktywny (domyślnie: `True`)
+
+---
 
 ### REST API
 
-#### Endpoint: GET /api/contacts
+Bazowy prefix: `/api/contacts`
+
+#### GET /api/contacts
 **Opis:** Pobiera listę wszystkich zapytań kontaktowych  
-**Metoda:** GET  
 **Autentykacja:** Wymagana (login)  
-**Odpowiedź (Status 200):**
+**Odpowiedź 200:**
 ```json
 [
   {
@@ -217,12 +246,12 @@ class ContactStatus(models.Model):
   }
 ]
 ```
+**Odpowiedź 204:** Brak kontaktów
 
-**Odpowiedź (Status 204):** Brak kontaktów
+---
 
-#### Endpoint: POST /api/contacts
-**Opis:** Tworzy nowe zapytanie kontaktowe  
-**Metoda:** POST  
+#### POST /api/contacts
+**Opis:** Tworzy nowe zapytanie kontaktowe i wysyła powiadomienie e-mail  
 **Autentykacja:** Nie wymagana  
 **Body:**
 ```json
@@ -234,344 +263,342 @@ class ContactStatus(models.Model):
   "description": "Zainteresowany pompą ciepła"
 }
 ```
-
-**Odpowiedź (Status 201):**
-```json
-{
-  "id": 1,
-  "full_name": "Jan Kowalski",
-  "phone_number": "+48601475547",
-  "email": "jan@example.com",
-  "services": "pompy",
-  "description": "Zainteresowany pompą ciepła",
-  "status": "nowy",
-  "createdAt": "2026-02-24T22:15:00Z"
-}
-```
-
+**Odpowiedź 201:** Zwraca obiekt `Contact`  
 **Błędy:**
-- 400 Bad Request - Niepoprawne dane (np. e-mail już istnieje, telefon już istnieje)
+- `400 Bad Request` — niepoprawne dane (np. e-mail lub telefon już istnieje)
 
-#### Endpoint: GET /api/contacts/<id>/
-**Opis:** Pobiera szczegóły konkretnego zapytania  
-**Metoda:** GET  
-**Autentykacja:** Wymagana (login)  
-**Parametry URL:** `id` - ID zapytania  
-**Odpowiedź (Status 200):** Jak wyżej
-
-#### Endpoint: DELETE /api/contacts/<id>/
-**Opis:** Usuwa zapytanie kontaktowe  
-**Metoda:** DELETE  
-**Autentykacja:** Wymagana (login)  
-**Parametry URL:** `id` - ID zapytania  
-**Odpowiedź (Status 204):** No Content
-
-### Konfiguracja Django
-
-**settings.py - Kluczowe ustawienia:**
-
-```python
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'rest_framework',
-    'corsheaders',
-    'contact.apps.ContactConfig',
-    'chatai.apps.ChataiConfig'
-]
-
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-```
-
-**Tutoring REST Framework:**
-- Domyślna paginacja: wyłączona
-- Format odpowiedzi: JSON
-
-### Funkcje Pomocnicze
-
-#### parse_contact.py
-Funkcja do parsowania danych z żądania POST:
-```python
-def parse_contact(request) -> dict:
-    if isinstance(request.data, dict):
-        return request.data
-    return request.data.dict()
-```
-
-#### send_mail.py
-Funkcja wysyłająca e-mail powiadomienia do administratora:
-```python
-def send_contact_mail(mail_data: dict):
-    send_mail(
-        subject=f"{mail_data.get('full_name')} - {mail_data.get('services')}",
-        message=f"Imię i nazwisko: {mail_data.get('full_name')}\n..."
-        from_email="kontaktovez@gmail.com",
-        recipient_list=['oliwerx12@gmail.com'],
-    )
-```
-
-**Uwagi:**
-- Wymaga konfiguracji SMTP w settings.py
-- Aktualnie wysyła do: `oliwerx12@gmail.com`
+Po zapisaniu kontaktu e-mail jest wysyłany asynchronicznie w osobnym wątku (przez `threading.Thread`), żeby nie blokować odpowiedzi API.
 
 ---
 
-## Frontend - Next.js
+#### GET /api/contacts/\<id\>/
+**Autentykacja:** Wymagana  
+**Odpowiedź 200:** Szczegóły kontaktu  
+**Odpowiedź 404:** Kontakt nie istnieje
+
+---
+
+#### DELETE /api/contacts/\<id\>/
+**Autentykacja:** Wymagana  
+**Odpowiedź 204:** Usunięto  
+**Odpowiedź 404:** Kontakt nie istnieje
+
+---
+
+#### GET /health/
+**Opis:** Health check — używany przez Render do monitorowania serwisu  
+**Autentykacja:** Nie wymagana  
+**Odpowiedź 200:**
+```json
+{"status": "ok"}
+```
+
+---
+
+### System E-mail
+
+Plik: `contact/utils/send_mail.py`
+
+System obsługuje dwa tryby wysyłki — z automatycznym fallbackiem:
+
+**1. Resend API** (produkcja — rekomendowane)  
+Aktywny gdy zmienna środowiskowa `RESEND_API_KEY` jest ustawiona.  
+Wysyła wiadomość HTML z adresu `kontakt@accord.opole.pl`.  
+Ustawia `reply_to` na e-mail nadawcy formularza.
+
+**2. SMTP Gmail** (fallback)  
+Używany gdy `RESEND_API_KEY` nie jest ustawiony.  
+Konfiguracja w `settings.py`: host `smtp.gmail.com`, port 587, TLS.  
+Hasło aplikacji pobierane ze zmiennej `EMAIL_PASSWORD`.
+
+**Odbiorcy** są pobierani dynamicznie z bazy danych:
+```python
+def get_recipients():
+    return list(
+        EmailRecipient.objects.filter(is_active=True)
+        .values_list('email', flat=True)
+    )
+```
+
+Zarządzanie odbiorcami odbywa się z poziomu Django Admin → **Odbiorcy e-mail**.
+
+---
+
+### Konfiguracja Django (settings.py — kluczowe elementy)
+
+```python
+# Baza danych — auto-wykrywanie PostgreSQL lub SQLite
+DATABASES = build_database_config()
+# Jeśli DATABASE_URL ustawiony → PostgreSQL (z opcjonalnym sslmode)
+# Jeśli nie → SQLite (db.sqlite3)
+
+# Pliki statyczne — Whitenoise (CompressedManifestStaticFilesStorage)
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# CORS — dozwolone originy
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://accordproposition.vercel.app",
+    "https://www.accord.opole.pl",
+    ...
+]
+
+# Bezpieczeństwo (produkcja)
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+```
+
+---
+
+### Dekorator: login_required_for_methods
+
+Własny dekorator pozwalający wymagać autentykacji tylko dla wybranych metod HTTP (np. `GET`), przy jednoczesnym zostawieniu `POST` jako publicznego:
+
+```python
+@login_required_for_methods(['GET'])
+@api_view(['GET', 'POST'])
+def contacts_view(request):
+    ...
+```
+
+Nieautentykowane żądania `GET` są przekierowywane do `/admin/`.
+
+---
+
+## Frontend — Next.js
 
 ### Struktura Katalogów
 
 ```
 frontend/
 ├── app/                         # App Router (Next.js 13+)
-│   ├── layout.tsx              # Layout główny
+│   ├── layout.tsx              # Layout główny (Header, Footer, Toaster, GA)
 │   ├── page.tsx                # Strona główna (/)
-│   ├── globals.css             # Style globalne
+│   ├── globals.css             # Style globalne + Shadcn/ui + galeria
 │   │
-│   ├── uslugi/                 # Strony usług
+│   ├── uslugi/
 │   │   ├── pompy-ciepla/page.tsx
 │   │   ├── klimatyzacja/page.tsx
 │   │   ├── rekuperacja/page.tsx
 │   │   └── fotowoltaika/page.tsx
 │   │
+│   ├── qr/
+│   │   └── page.tsx            # Strona QR z linkami
+│   │
 │   └── actions/
-│       └── contact.ts          # Server Actions - wysyłanie formularza
+│       └── contact.ts          # Server Action — wysyłanie formularza
 │
-├── components/                  # Komponenty React
-│   ├── Header.tsx              # Nagłówek i nawigacja
-│   ├── Footer.tsx              # Stopka
-│   ├── HeroSection.tsx         # Sekcja hero
-│   ├── AboutSection.tsx        # O nas
-│   ├── ServicesSection.tsx     # Usługi (karuzela)
-│   ├── ProcessSection.tsx      # Proces współpracy
-│   ├── ContactSection.tsx      # Sekcja kontaktu
-│   ├── ScrollingServices.tsx   # Animowana lista usług
+├── components/
+│   ├── Header.tsx              # Nagłówek, nawigacja, mobile menu, dropdown tel.
+│   ├── Footer.tsx              # Stopka z linkami i danymi kontaktowymi
+│   ├── HeroSection.tsx         # Sekcja hero z CTA i statystykami
+│   ├── AboutSection.tsx        # O nas — wyróżniki, galeria realizacji
+│   ├── ServicesSection.tsx     # Karuzela usług z zakładkami
+│   ├── ProcessSection.tsx      # Proces współpracy (4 kroki)
+│   ├── ContactSection.tsx      # Kontakt — dane + mapa + formularz
+│   ├── ScrollingServices.tsx   # Animowany marquee z nazwami usług
 │   │
 │   ├── Forms/
-│   │   └── ContactForm.tsx     # Formularz kontaktowy
+│   │   └── ContactForm.tsx     # Formularz kontaktowy (useActionState)
 │   │
 │   ├── Services/
 │   │   ├── ServicePage.tsx     # Template strony usługi
-│   │   ├── PhotoGallery.tsx    # Galeria zdjęć
-│   │   └── types.ts            # Typy dla serwisów
+│   │   ├── PhotoGallery.tsx    # Galeria z react-image-gallery + toggle
+│   │   └── types.ts
+│   │
+│   ├── fx/
+│   │   └── FadeIn.tsx          # Komponent animacji wejścia/wyjścia
 │   │
 │   └── ui/                     # Shadcn/ui komponenty
-│       ├── button.tsx
-│       ├── input.tsx
-│       ├── label.tsx
-│       ├── textarea.tsx
-│       ├── toast.tsx
-│       ├── toaster.tsx
-│       ├── separator.tsx
-│       ├── tooltip.tsx
-│       ├── sheet.tsx
-│       ├── sidebar.tsx
-│       ├── skeleton.tsx
-│
-├── lib/
-│   ├── navLinks.ts            # Linki nawigacyjne
-│   ├── types.ts               # Typy TypeScript
-│   ├── utils.ts               # Funkcje pomocnicze
-│   └── statsArray.ts          # Dane statystyk
-│
-├── api/
-│   ├── api.ts                 # Funkcje do komunikacji z API
-│   └── types.ts               # Typy dla API
+│       ├── button.tsx, input.tsx, label.tsx, textarea.tsx
+│       ├── toast.tsx, toaster.tsx, tooltip.tsx
+│       ├── separator.tsx, sheet.tsx, sidebar.tsx, skeleton.tsx
 │
 ├── hooks/
-│   ├── use-mobile.tsx         # Hook do detekcji urządzenia
-│   └── use-toast.ts           # Hook do powiadomień
+│   ├── use-in-view.ts          # Hook IntersectionObserver (dla FadeIn)
+│   ├── use-mobile.tsx          # Hook detekcji urządzenia mobilnego
+│   └── use-toast.ts            # Hook systemu powiadomień
 │
-├── public/
-│   └── images/
-│       ├── logo-transparent.png
-│       ├── favicon.png
-│       └── services/            # Zdjęcia usług
-│           ├── airconditioning/
-│           ├── heatpumps/
-│           ├── photovoltaics/
-│           └── recuperation/
+├── lib/
+│   ├── navLinks.ts
+│   ├── types.ts
+│   ├── utils.ts                # cn() (clsx + tailwind-merge)
+│   ├── statsArray.ts
+│   └── aboutImages.ts          # Złączenie galerii dla sekcji "O nas"
 │
-├── styles/
-│   └── globals.css            # Style dla shadcn/ui
+├── api/
+│   ├── api.ts                  # postContact() — fetch do backendu
+│   └── types.ts
 │
-├── next.config.ts             # Konfiguracja Next.js
-├── tailwind.config.ts         # Konfiguracja Tailwind
-├── tsconfig.json              # Konfiguracja TypeScript
-├── postcss.config.mjs         # Konfiguracja PostCSS
-├── package.json               # Zależności npm
-└── eslint.config.mjs          # Konfiguracja ESLint
+├── utils/
+│   └── findGalleryCandidates.ts  # Odczyt zdjęć z fs przy buildzie
+│
+└── public/
+    └── images/
+        ├── logo-transparent.png
+        ├── favicon.png
+        ├── hero-background.jpg
+        ├── service-ac.jpg, service-solar.jpg, service-ventilation.jpg
+        └── services/
+            ├── airconditioning/gallery/
+            ├── heatpumps/
+            ├── photovoltaics/gallery/
+            └── recuperation/gallery/
 ```
 
-### Strony i Komponenty
+---
 
-#### Strona Główna (/)
-**Komponenty:**
-1. Header - Nagłówek z logo i nawigacją
-2. HeroSection - Banner hero z CTA
-3. ScrollingServices - Animowana lista usług
-4. ServicesSection - Karuzela usług z opisami
-5. AboutSection - Informacje o firmie
-6. ProcessSection - Proces współpracy
-7. ContactSection - Formularz kontaktowy
-8. Footer - Stopka z linkami
+### Strony i Routing
 
-#### Strony Usług
-- `/uslugi/pompy-ciepla` - Pompy Ciepła
-- `/uslugi/klimatyzacja` - Klimatyzacja
-- `/uslugi/rekuperacja` - Rekuperacja
-- `/uslugi/fotowoltaika` - Fotowoltaika
+| Ścieżka | Komponent | Opis |
+|---------|-----------|------|
+| `/` | `app/page.tsx` | Strona główna — wszystkie sekcje |
+| `/uslugi/pompy-ciepla` | `app/uslugi/pompy-ciepla/page.tsx` | Szczegóły usługi |
+| `/uslugi/klimatyzacja` | `app/uslugi/klimatyzacja/page.tsx` | Szczegóły usługi |
+| `/uslugi/rekuperacja` | `app/uslugi/rekuperacja/page.tsx` | Szczegóły usługi |
+| `/uslugi/fotowoltaika` | `app/uslugi/fotowoltaika/page.tsx` | Szczegóły usługi |
+| `/qr` | `app/qr/page.tsx` | Strona QR — szybki dostęp |
+| `/admin/*` | proxy → Django | Panel administracyjny |
 
-**Każda strona zawiera:**
-- Header z tytułem i opisem
-- Galeria zdjęć
-- Szczegółowe informacje
-- Przyciski CTA
+---
 
-### Komponenty Główne
+### Komponenty Kluczowe
 
-#### Header.tsx
-**Funkcjonalność:**
-- Top bar z kontaktem (tel, email, info o firmie)
-- Sticky header z logo i nawigacją
-- Mobile menu (hamburger menu)
-- Call-to-action button "Zadzwoń"
+#### FadeIn (`components/fx/FadeIn.tsx`)
 
-**Props:** Brak (wewnętrzny stan)
-
-```tsx
-// Elementy
-const navLinks = [
-  { label: 'O nas', href: '/#onas' },
-  { label: 'Usługi', href: '/#uslugi' },
-  { label: 'Proces', href: '/#proces' },
-  { label: 'Kontakt', href: '/#kontakt' }
-]
-
-// Telefon: 601 47 55 47
-// Email: accordservice@interia.pl
-```
-
-#### ContactForm.tsx
-**Funkcjonalność:**
-- Formularz z polami: imię, telefon, email, usługa, opis
-- Validacja danych
-- Wysyłanie do backendu
-- Powiadomienia (toast)
-
-**Server Action:** `sendContactAction`
-
-```tsx
-Fields:
-- full_name (required)
-- phone_number (required, format: +48...)
-- email (required)
-- services (required, select)
-- description (optional, textarea)
-```
-
-#### ServicesSection.tsx
-**Funkcjonalność:**
-- Karuzela czterech usług
-- Dynamiczne karty z ikoną, tytułem, opisem
-- Galeria zdjęć w aktywnej usłudze
-- Lista features
-
-```tsx
-Services: [
-  { icon: Flame, title: 'Pompy Ciepła', ... },
-  { icon: Wind, title: 'Klimatyzacja', ... },
-  { icon: Fan, title: 'Rekuperacja', ... },
-  { icon: Sun, title: 'Fotowoltaika', ... }
-]
-```
-
-#### PhotoGallery.tsx
-**Funkcjonalność:**
-- Galeria zdjęć z lightbox
-- Miniaturki do nawigacji
-- Responsywna siatka
+Komponent opakowujący dzieci w animację wejścia/wyjścia opartą na `IntersectionObserver`. Używany powszechnie na całej stronie.
 
 **Props:**
 ```tsx
-interface PhotoGalleryProps {
-  images: Array<{
-    original: string
-    thumbnail: string
-    originalAlt: string
-  }>
+interface FadeInProps {
+  direction?: "up" | "down" | "left" | "right" | "none"
+  delay?: number       // ms, opóźnienie animacji
+  duration?: number    // ms, czas trwania (domyślnie 600)
+  threshold?: number   // próg widoczności (domyślnie 0.15)
+  exitDelay?: number   // ms, opóźnienie animacji wyjścia
 }
 ```
 
-### Konfiguracja Stylów
+**Stany widoczności** (hook `use-in-view`):
+- `before` — element poniżej viewportu, oczekuje na wejście
+- `visible` — element w viewporcie, w pełni widoczny
+- `above` — element przewinięty powyżej viewportu (statyczny, bez animacji)
+- `exiting` — element opuszcza viewport podczas scrollowania w górę (animacja wyjścia)
 
-#### TailwindCSS
-- **Motyw:** Light/Dark mode
-- **Kolory:** Zdefiniowane zmienne CSS (HSL)
-- **Czcionki:** Inter (sans), Space Grotesk, Geist Mono
-- **Komponenty:** Animacje (accordion, marquee)
+---
 
-#### Shadcn/ui
-Użytkowne komponenty z Radix UI:
-- Button, Input, Label, Textarea
-- Toast, Toaster, Tooltip
-- Separator, Sheet, Sidebar
-- Skeleton
+#### Header (`components/Header.tsx`)
+
+- Top bar z dwoma numerami telefonu i adresem e-mail
+- Sticky header z logo i nawigacją desktopową
+- Mobile hamburger menu z nawigacją
+- Dropdown "Zadzwoń" z wyborem numeru (601 47 55 47 / 783 636 363)
+- Zamykanie dropdownu przy kliknięciu poza jego obszar (`useRef` + `useEffect`)
+
+---
+
+#### ContactForm (`components/Forms/ContactForm.tsx`)
+
+Formularz oparty na React `useActionState` z Server Actions Next.js.
+
+**Pola:** imię i nazwisko, telefon, e-mail, usługa (select), wiadomość  
+**Przepływ:** submit → Server Action `sendContactAction` → `postContact()` → POST `/api/contacts`  
+**Feedback:** toast z wynikiem (sukces lub błąd)  
+**Deduplicacja toastów:** `useRef` śledzi ostatnią wiadomość, żeby nie pokazywać duplikatów przy ponownym renderze.
+
+---
+
+#### PhotoGallery (`components/Services/PhotoGallery.tsx`)
+
+Galeria oparta na `react-image-gallery` z przełącznikiem widoczności.
+
+- Domyślnie ukryta — przycisk "Pokaż galerię zdjęć" otwiera z animacją CSS grid
+- Na mobile: brak miniaturek, uproszczone strzałki nawigacji
+- Obsługuje tryb `embedded` (bez dodatkowych padingów, do użycia w sekcji "O nas")
+- Styl dostosowany przez klasy CSS w `globals.css` (prefix `.service-image-gallery`)
+
+---
+
+#### QR Page (`app/qr/page.tsx`)
+
+Uproszczona strona zoptymalizowana pod wyświetlanie po zeskanowaniu kodu QR.
+
+**Linki:**
+- Przejdź do strony głównej (`/`)
+- Zadzwoń teraz (`tel:601475547`)
+- Oceń nas w Google (link zewnętrzny)
+- Znajdź nas na mapie (link zewnętrzny — Google Maps)
+
+---
+
+#### findGalleryCandidates (`utils/findGalleryCandidates.ts`)
+
+Funkcja uruchamiana po stronie serwera (w czasie buildu) — odczytuje system plików i zwraca listę zdjęć z galerii dla danej usługi.
+
+Przeszukuje dwie możliwe lokalizacje:
+1. `public/images/<serviceFolder>/gallery/`
+2. `public/images/services/<serviceFolder>/gallery/`
+
+Zwraca posortowaną tablicę obiektów `GalleryItem` kompatybilnych z `react-image-gallery`.
+
+---
 
 ### Integracja z Backendem
 
-#### API Client (api.ts)
-```typescript
-postContact({
-  full_name: string,
-  phone_number: string,
-  email: string,
-  services: string,
-  description: string
-}): Promise<any>
-```
-
-**Endpoint:** `{BACKEND_URL}/api/contacts`  
-**Metoda:** POST  
-**Headers:** `Content-Type: application/json`
-
-**Zmienna środowiskowa:**
-```
-BACKEND_URL=http://localhost:8000
-```
-
-### Metadane i SEO
+#### api/api.ts
 
 ```typescript
-export const metadata: Metadata = {
-  title: "Accord Service - Pompy Ciepła...",
-  description: "Accord Service - od 1984 roku...",
-  icons: { icon: 'images/favicon.png' }
-}
+const baseUrl = process.env.BACKEND_URL || 'http://localhost:8000'
 
-export const viewport = {
-  themeColor: '#0047CC'
+export const postContact = async (data: postContactProps): Promise<any>
+```
+
+#### next.config.ts — Rewrites
+
+Next.js przekierowuje wybrane ścieżki do backendu Django, co pozwala serwować panel admina pod tą samą domeną co frontend:
+
+```typescript
+async rewrites() {
+  return [
+    { source: "/admin/:path*",  destination: `${backendUrl}/admin/:path*`  },
+    { source: "/static/:path*", destination: `${backendUrl}/static/:path*` },
+    { source: "/media/:path*",  destination: `${backendUrl}/media/:path*`  },
+  ]
 }
 ```
+
+#### Server Action: sendContactAction (`app/actions/contact.ts`)
+
+```typescript
+export async function sendContactAction(
+  _prevState: ContactActionState,
+  formData: FormData
+): Promise<ContactActionState>
+```
+
+Przetwarza `FormData` z formularza, wywołuje `postContact()` i zwraca stan (`ok`, `message`) do komponentu.
+
+---
+
+### Konfiguracja Stylów
+
+#### TailwindCSS (`tailwind.config.ts`)
+
+- Kolory definiowane przez zmienne CSS HSL (light/dark mode)
+- Niestandardowe animacje: `marquee` (ScrollingServices), `accordion-down/up`
+- Czcionki: Inter (sans), Geist Mono
+
+#### Shadcn/ui
+
+Komponenty z Radix UI zintegrowane przez zmienne CSS:  
+Button, Input, Label, Textarea, Toast/Toaster, Tooltip, Separator, Sheet, Sidebar, Skeleton
+
+#### Galeria zdjęć
+
+Style `react-image-gallery` nadpisane w `app/globals.css` pod prefixem `.service-image-gallery` — responsywność, rozmiary miniaturek, kolory przycisków nawigacji.
 
 ---
 
@@ -581,11 +608,15 @@ export const viewport = {
 
 | Pakiet | Wersja | Cel |
 |--------|--------|-----|
-| Django | >=6.0.2 | Framework webowy |
-| Django REST Framework | >=0.1.0 | REST API |
-| Django CORS Headers | >=4.9.0 | CORS support |
-| Python-dotenv | >=1.2.1 | Zmienne środowiskowe |
-| Uvicorn | >=0.41.0 | ASGI server |
+| Django | 6.0.2 | Framework webowy |
+| djangorestframework | 3.16.1 | REST API |
+| django-cors-headers | 4.9.0 | CORS support |
+| gunicorn | 26.0.0 | WSGI server (produkcja) |
+| uvicorn | 0.41.0 | ASGI server (dev) |
+| whitenoise | 6.12.0 | Pliki statyczne |
+| resend | 2.30.1 | Wysyłanie e-maili |
+| psycopg[binary] | 3.3.4 | Klient PostgreSQL |
+| python-dotenv | 1.2.1 | Zmienne środowiskowe |
 
 ### Frontend
 
@@ -593,21 +624,19 @@ export const viewport = {
 |--------|--------|-----|
 | next | 16.1.6 | React framework |
 | react | 19.2.3 | UI library |
-| react-dom | 19.2.3 | React DOM |
 | typescript | 5.7.3 | Typy |
 | tailwindcss | 3.4.17 | CSS framework |
-| tailwindcss-animate | 1.0.7 | Animacje |
 | lucide-react | 0.544.0 | Ikony |
-| @radix-ui/* | ^1.1+ | Komponenty |
-| react-image-gallery | 2.1.2 | Galeria |
+| react-image-gallery | 2.1.2 | Galeria zdjęć |
+| @radix-ui/* | ^1.1+ | Komponenty UI |
 | next-themes | 0.4.6 | Dark mode |
+| @next/third-parties | ^16.2.7 | Google Analytics |
 
 ### Narzędzia
 
-- **Python** 3.13+
-- **Node.js** 18+ (rekomendowane: 20+)
-- **npm/pnpm** - Package manager
-- **Git** - Version control
+- **uv** — zarządzanie zależnościami i wirtualnym środowiskiem Pythona
+- **Node.js 18+** — środowisko uruchomieniowe frontendu
+- **Git** — version control
 
 ---
 
@@ -617,94 +646,125 @@ export const viewport = {
 
 - Python 3.13+
 - Node.js 18+ (v20 rekomendowane)
-- pip lub uv
+- uv (`pip install uv` lub https://docs.astral.sh/uv/)
 - Git
+
+---
 
 ### Instalacja Backend-u
 
-1. **Klonowanie repozytorium**
-   ```bash
-   git clone https://github.com/ovezthaking/Accord-Services.git
-   cd Accord-Services
-   ```
+```bash
+git clone https://github.com/ovezthaking/Accord-Services.git
+cd Accord-Services
+```
 
-2. **Tworzenie wirtualnego środowiska**
-   ```bash
-   python -m venv .venv
-   .\.venv\Scripts\activate  # Windows
-   source .venv/bin/activate # Linux/Mac
-   ```
+#### Przez uv (rekomendowane)
 
-3. **Instalacja zależności**
-   ```bash
-   pip install -r requirements.txt
-   ```
-   lub
-   ```bash
-   pip install django django-cors-headers django-rest-framework python-dotenv uvicorn
-   ```
+```bash
+# uv sam tworzy .venv i instaluje z uv.lock — jeden krok
+uv run python manage.py migrate
+uv run python manage.py createsuperuser
+uv run python manage.py runserver
+```
 
-4. **Migracje bazy danych**
-   ```bash
-   python manage.py migrate
-   ```
+#### Przez pip + venv
 
-5. **Tworzenie superusera**
-   ```bash
-   python manage.py createsuperuser
-   ```
+```bash
+python -m venv .venv
+source .venv/bin/activate    # Linux/Mac
+.\.venv\Scripts\activate     # Windows
 
-6. **Uruchomienie serwera**
-   ```bash
-   python manage.py runserver
-   # ORAZ (dla development - alternatywnie)
-   uvicorn accord.asgi:application --reload
-   ```
+pip install -r requirements.txt
 
-   Serwer dostępny: `http://localhost:8000`
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+Serwer dostępny: `http://localhost:8000`  
+Admin: `http://localhost:8000/admin/`
+
+---
 
 ### Instalacja Frontend-u
 
-1. **Przejście do katalogu frontend**
-   ```bash
-   cd frontend
-   ```
+```bash
+cd frontend
+npm install        # lub: pnpm install
 
-2. **Instalacja zależności**
-   ```bash
-   npm install
-   # lub
-   pnpm install
-   ```
+# Plik zmiennych środowiskowych
+echo "BACKEND_URL=http://localhost:8000" > .env.local
 
-3. **Konfiguracja zmiennych środowiskowych**
-   ```bash
-   # Stwórz plik .env.local
-   BACKEND_URL=http://localhost:8000
-   ```
+npm run dev
+```
 
-4. **Uruchomienie development serwera**
-   ```bash
-   npm run dev
-   # ORAZ
-   pnpm dev
-   ```
+Aplikacja dostępna: `http://localhost:3000`
 
-   Aplikacja dostępna: `http://localhost:3000`
+---
+
+### Dodanie Odbiorcy E-mail
+
+Po uruchomieniu serwera i stworzeniu superusera, wejdź w panel admina:
+
+`http://localhost:8000/admin/` → **Odbiorcy e-mail** → **Dodaj odbiorcę e-mail**
+
+Wpisz adres e-mail i opcjonalnie nazwę. Zaznacz `is_active` (domyślnie zaznaczone). Od tej chwili wszystkie nowe zapytania z formularza będą trafiać na ten adres.
+
+---
 
 ### Build dla Produkcji
 
 **Backend:**
 ```bash
-python manage.py collectstatic
-gunicorn accord.wsgi:application --bind 0.0.0.0:8000
+uv run python manage.py collectstatic --noinput
+uv run gunicorn accord.wsgi:application --bind 0.0.0.0:8000
 ```
 
 **Frontend:**
 ```bash
+cd frontend
 npm run build
 npm start
 ```
+
+---
+
+### Zmienne Środowiskowe
+
+**Backend (`.env`):**
+
+| Zmienna | Wymagana | Opis |
+|---------|----------|------|
+| `SECRET_KEY` | ✅ produkcja | Tajny klucz Django |
+| `DEBUG` | — | `True` (dev) / `False` (produkcja) |
+| `DATABASE_URL` | ✅ produkcja | URL PostgreSQL (`postgresql://...`) |
+| `DB_SSLMODE` | — | np. `require` dla Neon/Render |
+| `RESEND_API_KEY` | ✅ produkcja | Klucz API Resend |
+| `EMAIL_PASSWORD` | — | Hasło aplikacji Gmail (fallback SMTP) |
+| `RENDER_EXTERNAL_HOSTNAME` | — | Ustawiane automatycznie przez Render |
+
+**Frontend (`.env.local`):**
+
+| Zmienna | Opis |
+|---------|------|
+| `BACKEND_URL` | URL backendu Django (domyślnie `http://localhost:8000`) |
+
+---
+
+### Deployment — Render (Backend)
+
+| Pole | Wartość |
+|------|---------|
+| **Build Command** | `pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput` |
+| **Start Command** | `gunicorn accord.wsgi:application` |
+
+Zmienne środowiskowe: `SECRET_KEY`, `DEBUG=False`, `DATABASE_URL`, `DB_SSLMODE`, `RESEND_API_KEY`, `EMAIL_PASSWORD`.
+
+### Deployment — Vercel (Frontend)
+
+Zmienna środowiskowa: `BACKEND_URL` → adres backendu z Rendera.
+
+Rewrite w `next.config.ts` sprawia, że `/admin/*` jest serwowany przez Django pod tą samą domeną co frontend.
 
 ---
 
@@ -713,98 +773,84 @@ npm start
 ### Przepływ 1: Wysyłanie Zapytania Kontaktowego
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│ 1. Użytkownik wychodzi na stronę www.accord.opole.pl        │
-└──────────────────────────────────────────────────────────────┘
-                            ↓
-┌──────────────────────────────────────────────────────────────┐
-│ 2. Przeglądanie sekcji:                                      │
-│    - Hero (oferta)                                           │
-│    - Usługi (karuzela)                                       │
-│    - O nas (info)                                            │
-│    - Proces (jak pracujemy)                                  │
-└──────────────────────────────────────────────────────────────┘
-                            ↓
-┌──────────────────────────────────────────────────────────────┐
-│ 3. Zainteresowanie konkretną usługą                          │
-│    → Klik na usługę → Przejście do strony usługi            │
-│    lub przejście do sekcji "Kontakt"                         │
-└──────────────────────────────────────────────────────────────┘
-                            ↓
-┌──────────────────────────────────────────────────────────────┐
-│ 4. Wypełnianie formularza:                                   │
-│    - Imię i nazwisko                                         │
-│    - Telefon (+48...)                                        │
-│    - E-mail                                                  │
-│    - Wybór usługi                                            │
-│    - Opis zapytania                                          │
-└──────────────────────────────────────────────────────────────┘
-                            ↓
-┌──────────────────────────────────────────────────────────────┐
-│ 5. Frontend (Next.js):                                       │
-│    - Validacja danych client-side                            │
-│    - Wysłanie POST /api/contacts                             │
-│    - Wyświetlenie powiadomienia (toast)                      │
-└──────────────────────────────────────────────────────────────┘
-                            ↓
-┌──────────────────────────────────────────────────────────────┐
-│ 6. Backend (Django):                                         │
-│    - Odbór żądania POST                                      │
-│    - Validacja danych (email, telefon, unikalność)           │
-│    - Zapis do bazy (Contact model)                           │
-│    - Wysłanie e-maila do administratora                      │
-├─────────────────────────────────────────────────────────────┤
-│ Email wysyłany do: accordservice@interia.pl                 │
-│ Format: Imię - Usługa [temat]                               │
-└──────────────────────────────────────────────────────────────┘
-                            ↓
-┌──────────────────────────────────────────────────────────────┐
-│ 7. Odpowiedź backendowu (JSON):                              │
-│    - Status 201 Created                                      │
-│    - Zwrócenie komplętnego obiektu Contact                   │
-│    - Wyświetlenie "Wysłano!" na frontend                     │
-└──────────────────────────────────────────────────────────────┘
-                            ↓
-┌──────────────────────────────────────────────────────────────┐
-│ 8. Administrator recebuje e-mailem i panelu:                 │
-│    - Panel admin: /admin/contact/contact/                    │
-│    - Status: "nowy"                                          │
-│    - Może zmienić status na "w realizacji", "zamknięte"      │
-└──────────────────────────────────────────────────────────────┘
+Użytkownik wchodzi na stronę
+        ↓
+Przeglądanie sekcji (Hero → Usługi → O nas → Proces)
+        ↓
+Przejście do sekcji Kontakt lub strony usługi
+        ↓
+Wypełnienie formularza (imię, telefon, e-mail, usługa, opis)
+        ↓
+Frontend (Next.js):
+  - walidacja HTML5 (required, type)
+  - submit → Server Action sendContactAction
+  - wywołanie POST /api/contacts
+        ↓
+Backend (Django):
+  - walidacja DRF (unikalność e-mail, telefon, regex)
+  - zapis do bazy (Contact, status="nowy")
+  - uruchomienie wątku e-mail (Thread)
+        ↓
+E-mail (asynchronicznie):
+  - Resend API (jeśli RESEND_API_KEY) → kontakt@accord.opole.pl
+  - fallback: SMTP Gmail
+  - odbiorcy: aktywni EmailRecipient z bazy
+        ↓
+Frontend:
+  - toast "Dziękujemy, odezwiemy się wkrótce"
+  lub toast "Coś poszło nie tak..."
+        ↓
+Administrator w panelu /admin/contact/contact/:
+  - widzi nowe zapytanie ze statusem "nowy"
+  - może zmienić status, przeglądać historię
 ```
+
+---
 
 ### Przepływ 2: Przeglądanie Usług
 
 ```
-Home Page
+Strona główna (/)
     ↓
-ServicesSection (Karuzela)
-    ├→ Klik na usługę → Zmiana content w sekcji
-    └→ Przycisk "Więcej" → Przejście do /uslugi/[slug]
-    
-Service Page (/uslugi/[slug])
-    ├→ ServicePage Component
-    ├→ Header z tytułem
-    ├→ PhotoGallery z zdjęciami
-    └→ Przycisk "Umów wycenę" → #kontakt na home
+ServicesSection — karuzela z zakładkami (Pompy / Klimatyzacja / Rekuperacja / Fotowoltaika)
+    ├── klik zakładki → zmiana treści i zdjęcia w sekcji
+    └── "Dowiedz się więcej" → /uslugi/[slug]
+
+Strona usługi (/uslugi/[slug])
+    ├── ServicePage — nagłówek z tytułem, opisem i CTA
+    ├── Treść szczegółowa (children — specyficzna dla każdej usługi)
+    ├── PhotoGallery — galeria z toggle (domyślnie ukryta)
+    └── Przyciski: "Umów bezpłatną wycenę" → /#kontakt
+                  "Zobacz wszystkie usługi" → /#uslugi
 ```
 
-### Przepływ 3: Zarządzanie Kontaktami (Admin)
+---
+
+### Przepływ 3: Strona QR
 
 ```
-Administrator
-    ↓
-Logowanie: /admin/
-    ↓
-Django Admin Panel
-    ├→ Contact List: /admin/contact/contact/
-    │   ├→ Przeglądanie zapytań
-    │   ├→ Filtrowanie po statusie, usłudze
-    │   └→ Export danych
-    │
-    └→ ContactStatus: /admin/contact/contactstatus/
-        ├→ Edycja statusów
-        └→ Dodawanie nowych statusów
+Zeskanowanie kodu QR (np. z wizytówki lub ulotki)
+        ↓
+/qr — uproszczona strona z 4 kartami:
+  ├── Przejdź do strony → /
+  ├── Zadzwoń teraz → tel:601475547
+  ├── Oceń nas w Google → g.page/r/...
+  └── Znajdź nas na mapie → maps.app.goo.gl/...
+```
+
+---
+
+### Przepływ 4: Zarządzanie Kontaktami (Admin)
+
+```
+Administrator → /admin/
+    ├── contact/contact/ — lista zapytań
+    │   ├── filtrowanie po statusie, usłudze, dacie
+    │   └── zmiana statusu pojedynczego zapytania
+    ├── contact/contactstatus/ — zarządzanie statusami
+    └── contact/emailrecipient/ — zarządzanie odbiorcami e-mail
+        ├── dodawanie nowych odbiorców
+        └── wyłączanie odbiorców (is_active = False)
 ```
 
 ---
@@ -815,104 +861,72 @@ Django Admin Panel
 
 | Informacja | Wartość |
 |-----------|---------|
-| **Firma** | Accord Services |
-| **Lokalizacja** | Opole, Polska |
-| **Od** | 1984 r. |
+| **Firma** | F.U.H. Accord Service |
+| **Lokalizacja** | ul. Opolska 27, 46-024 Masów, woj. opolskie |
+| **Założona** | 1984 r. |
 | **Telefon** | +48 601 47 55 47 |
+| **Telefon 2** | +48 783 636 363 |
 | **Email** | accordservice@interia.pl |
 | **Strona** | https://www.accord.opole.pl |
+| **Google Maps** | https://share.google/9emUNr7ADPnOUdc4r |
 
-### Linki Ważne
+### Linki Projektu
 
-- **Strona główna:** /
-- **Panel Admin:** /admin/
-- **API Kontakty:** /api/contacts
-- **Repo GitHub:** https://github.com/ovezthaking/Accord-Services
+| Zasób | URL |
+|-------|-----|
+| Strona główna (produkcja) | https://accordproposition.vercel.app/ |
+| Panel Admin | /admin/ |
+| API Kontakty | /api/contacts |
+| Health Check | /health/ |
+| Repo GitHub | https://github.com/ovezthaking/Accord-Services |
 
-### Dokumentacja Technologiczne
+### Dokumentacja Technologiczna
 
-- [Django Documentation](https://docs.djangoproject.com/)
+- [Django](https://docs.djangoproject.com/)
 - [Django REST Framework](https://www.django-rest-framework.org/)
-- [Next.js Documentation](https://nextjs.org/docs)
+- [Next.js](https://nextjs.org/docs)
 - [TailwindCSS](https://tailwindcss.com/)
 - [Shadcn/ui](https://ui.shadcn.com/)
-- [TypeScript](https://www.typescriptlang.org/)
-
-### Zmienne Środowiskowe
-
-**Backend (.env lub settings.py):**
-```
-DEBUG=True
-SECRET_KEY=django-insecure-...
-ALLOWED_HOSTS=localhost,127.0.0.1
-DATABASE_URL=sqlite:///db.sqlite3
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USE_TLS=True
-EMAIL_HOST_USER=kontaktovez@gmail.com
-EMAIL_HOST_PASSWORD=***
-```
-
-**Frontend (.env.local):**
-```
-BACKEND_URL=http://localhost:8000
-NEXT_PUBLIC_GA_ID=  # Google Analytics (opcjonalnie)
-```
-
-### Proces CI/CD (Rekomendowany)
-
-1. **Testing:** `pytest` dla Pythona
-2. **Linting:** `eslint` dla JavaScriptu, `pylint` dla Pythona
-3. **Build:** Docker containers
-4. **Deploy:** GitHub Actions → Hosting (np. Vercel, Heroku)
+- [Resend](https://resend.com/docs)
+- [uv](https://docs.astral.sh/uv/)
+- [Gunicorn](https://docs.gunicorn.org/)
 
 ---
 
-## Uwagi Znaczące
+## Uwagi i TODO
 
-### TODO i Przyszłe Usprawnienia
+### TODO / Przyszłe Usprawnienia
 
-Jak wynika z komentarzy w kodzie (`models.py`):
-- Przeprojektowanie pola `status` - rozważenie osobnego modelu
-- Wydzielenie `services` do oddzielnego modelu
-- Integracja ChatAI (aplikacja `chatai` jest przygotowana)
+Na podstawie komentarzy w kodzie i planów:
+
+- **ChatAI** — aplikacja `chatai` jest przygotowana w strukturze projektu; brak implementacji
+- **Refaktoring modelu `Contact`** — wydzielenie `services` do osobnego modelu, przemyślenie pola `status`
+- **Integracja CRM** — zewnętrzny system zarządzania klientami
+- **Scheduling** — system rezerwacji terminów online
+- **System ocen** — opinie klientów na stronie
 
 ### Bezpieczeństwo
 
-⚠️ **WAŻNE:**
-- `DEBUG = True` w settings.py - zmienić na `False` w produkcji
-- `SECRET_KEY` trzymać w zmiennych środowiskowych
-- Hasła e-maili trzymać w `.env`
-- CORS jest włączony - konfigurować dla konkretnych domen
-- CSRF token wymagany dla POST requestów
+⚠️ **Ważne przed deploymentem na produkcję:**
+
+- `DEBUG = False` (zmienna `DEBUG=False` w Render)
+- `SECRET_KEY` wyłącznie w zmiennych środowiskowych
+- `ALLOWED_HOSTS` zawiera domenę produkcyjną
+- CORS skonfigurowany dla właściwych domen (`CORS_ALLOWED_ORIGINS`)
+- `RESEND_API_KEY` ustawiony (wysyłka e-maili)
+- Baza PostgreSQL z `sslmode=require`
+- `SESSION_COOKIE_SECURE = True` i `CSRF_COOKIE_SECURE = True` — już ustawione w `settings.py`
 
 ### Performance
 
-- TailwindCSS - purged CSS o ~10% rozmiaru
-- Next.js Turbopack dla szybszej kompilacji
-- Image optimization (Next.js Image component)
-- Lazy loading komponentów
-
-### Responsywność
-
-- Mobile-first approach
-- Breakpoints: sm (640px), md (768px), lg (1024px)
-- Hamburger menu na urządzeniach < lg
+- TailwindCSS — purged CSS (tylko użyte klasy)
+- Next.js Turbopack — szybsza kompilacja w trybie dev (`next dev --turbo`)
+- Whitenoise z `CompressedManifestStaticFilesStorage` — kompresja i cache plików statycznych
+- E-mail wysyłany asynchronicznie (osobny wątek) — nie blokuje odpowiedzi API
+- `findGalleryCandidates` — wykonuje się raz przy buildzie, nie przy każdym żądaniu
 
 ---
 
-## Podsumowanie
-
-Projekt Accord Services to nowoczesna, responsywna aplikacja webowa łącząca:
-- **Backend:** Django REST API z systemem zarządzania
-- **Frontend:** Next.js z pięknym UI (Shadcn/ui + TailwindCSS)
-- **Integracja:** Email notifications dla administratora
-- **Skalowanie:** Przygotowana infrastruktura do AI (ChatAI)
-
-Dokumentacja ta obejmuje wszystkie aspekty projektu: architekturę, modele, API, komponenty, konfigurację i przepływy biznesowe.
-
----
-
-**Data aktualizacji:** 20 marca 2026  
+**Data aktualizacji:** czerwiec 2026  
 **Autor:** Dokumentacja projektu  
-**Wersja:** 1.0
+**Wersja:** 1.1
