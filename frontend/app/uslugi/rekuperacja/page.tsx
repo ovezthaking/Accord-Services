@@ -3,6 +3,12 @@ import { servicePageProps } from "@/components/Services/types"
 import findGalleryCadidates from "@/utils/findGalleryCandidates"
 import Image from "next/image"
 import { FadeIn } from "@/components/fx/FadeIn"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+    title: 'Rekuperacja - projekt, montaż i serwis | Accord Service - Opole i okolice',
+    description: 'Profesjonalny montaż systemów rekuperacji w Opolu i okolicach. Zmniejsz straty ciepła i popraw komfort powietrza w swoim domu.'
+}
 
 const galleryImages = findGalleryCadidates('recuperation')
 

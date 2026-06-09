@@ -2,6 +2,14 @@ import ServicePage from "@/components/Services/ServicePage"
 import { servicePageProps } from "@/components/Services/types"
 import Image from "next/image"
 import { FadeIn } from "@/components/fx/FadeIn"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+    title: 'Pompy ciepła - wycena, doradztwo i montaż | Accord Service - Opole i okolice',
+    description: 'Profesjonalny montaż pomp ciepła w Opolu i okolicach.' + 
+    'Zmniejsz rachunki za ogrzewanie i zadbaj o środowisko. ' +
+    'Sprawdź naszą ofertę i zyskaj dotację!'
+}
 
 const data: servicePageProps = {
     title: 'Pompy ciepła - wycena, montaż',
