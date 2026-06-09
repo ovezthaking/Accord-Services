@@ -3,6 +3,12 @@ import { servicePageProps } from "@/components/Services/types"
 import findGalleryCadidates from "@/utils/findGalleryCandidates"
 import Image from "next/image"
 import { FadeIn } from "@/components/fx/FadeIn"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+    title: 'Klimatyzacja - montaż, serwis i doradztwo | Accord Service - Opole i okolice',
+    description: 'Profesjonalny montaż systemów klimatyzacji w Opolu i okolicach. Zapewniamy komfort i świeże powietrze przez cały rok.'
+}
 
 const galleryImages = findGalleryCadidates('airconditioning')
 
