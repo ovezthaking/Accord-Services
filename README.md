@@ -4,7 +4,7 @@ Nowoczesna aplikacja webowa dla firmy Accord Services - dostarczającej profesjo
 
 ## 🌐 Live Demo
 
-- **Strona www:** [https://www.accord.opole.pl](Accord Service)
+- **Strona www:** [Accord Service](https://www.accord.opole.pl)
 - **Telefon:** +48 601 47 55 47 / +48 783 636 363
 - **Email:** accordservice@interia.pl
 
