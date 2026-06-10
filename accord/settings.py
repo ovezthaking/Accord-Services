@@ -206,7 +206,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
     "https://accordproposition.vercel.app",
     "https://www.accord.opole.pl",
-    "https://accord.opole.pl"
+    "https://accord.opole.pl",
+    "https://accordservice-git-development-accordservicebiuro-3353s-projects.vercel.app",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -217,6 +218,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://accordproposition.vercel.app",
     "https://www.accord.opole.pl",
     "https://accord.opole.pl",
+    "https://accordservice-git-development-accordservicebiuro-3353s-projects.vercel.app",
 ]
 
 if RENDER_EXTERNAL_HOSTNAME:

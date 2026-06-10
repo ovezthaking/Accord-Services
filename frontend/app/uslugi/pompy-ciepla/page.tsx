@@ -14,11 +14,12 @@ export const metadata: Metadata = {
 const data: servicePageProps = {
     title: 'Pompy ciepła - wycena, montaż',
     description: 'Dobieramy instalację do Twojego domu i budżetu. Sprawdź, ile możesz zaoszczędzić.',
+    service: 'pompy',
     images: [
         {
             original: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCgCqngpZ-zF_TCxErrjbmrDHS-gsX1gCCRzkAwMAgGw&s=10'
         }
-    ]
+    ],
 }
 
 export default function HeatPumpsPage() {

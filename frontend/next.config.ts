@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const backendUrl = process.env.BACKEND_URL || "https://accord-backend-lyart.vercel.app";
+const backendUrl = process.env.BACKEND_URL || process.env.NEXT_BACKEND_URL ||"https://accord-backend-lyart.vercel.app";
 
 const nextConfig: NextConfig = {
   trailingSlash: false, 
@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     return [
+      {
+          source: "/api/gallery/:path*",
+          destination: `${backendUrl}/api/gallery/:path*`,
+      },
       {
         source: "/admin/:path*",
         destination: `${backendUrl}/admin/:path*`,
@@ -25,6 +29,10 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
       {
         protocol: "http",
         hostname: "www.accord.opole.pl",

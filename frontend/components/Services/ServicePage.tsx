@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { FadeIn } from "../fx/FadeIn";
 
-export default function ServicePage({title, description, images, children}: servicePageProps) {
+export default function ServicePage({title, description, images, service, children}: servicePageProps) {
     return (
         <main className="bg-background">
             <section className="mx-auto max-w-7xl px-6 pb-8 pt-24 md:pt-28">
@@ -33,9 +33,9 @@ export default function ServicePage({title, description, images, children}: serv
                 </section>
             )}
 
-            {images && (
+            {(images || service) && (
                 <FadeIn direction="up" delay={90}>
-                    <PhotoGallery images={images}/>
+                    <PhotoGallery service={service} images={images} />
                 </FadeIn>
             )}
         </main>
