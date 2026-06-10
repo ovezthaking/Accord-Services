@@ -18,7 +18,8 @@ const data: servicePageProps = {
         {
             original: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCgCqngpZ-zF_TCxErrjbmrDHS-gsX1gCCRzkAwMAgGw&s=10'
         }
-    ]
+    ],
+    service: 'pompy'
 }
 
 export default function HeatPumpsPage() {

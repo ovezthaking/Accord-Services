@@ -15,4 +15,5 @@ export type servicePageProps = {
     description?: string,
     children?: ReactNode,
     images?: Array<GalleryItem>,
+    service?: string
 }

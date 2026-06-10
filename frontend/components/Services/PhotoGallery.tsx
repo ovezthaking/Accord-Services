@@ -7,15 +7,26 @@ import 'react-image-gallery/styles/image-gallery.css'
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
+import useGallery from '@/hooks/use-gallery';
 
 type PhotoGalleryProps = {
     images: GalleryItem[]
     embedded?: boolean
+    service?: string
 }
 
-export default function PhotoGallery2({images, embedded = false}: PhotoGalleryProps) {
+export default function PhotoGallery2({images: staticImages, embedded = false, service}: PhotoGalleryProps) {
+    const { images: dynamicImages, loading } = useGallery(service)
     const [galleryShown, setGalleryShown] = useState<boolean>(false)
     const isMobile = useIsMobile()
+
+    const galleryItems: Array<GalleryItem> = service
+        ? dynamicImages.map(img => ({
+            original: img.image_url,
+            thumbnail: img.image_url,
+            originalAlt: `Zdjęcie ${img.service} ${img.order}`
+        }))
+        : (staticImages ?? [])
 
     const showGallery = () => {
         setGalleryShown(prevState => !prevState)
@@ -55,7 +66,7 @@ export default function PhotoGallery2({images, embedded = false}: PhotoGalleryPr
                 >
                     <div className="min-h-0">
                         <ImageGallery
-                            items={images}
+                            items={galleryItems}
                             additionalClass="service-image-gallery"
                             showThumbnails={!isMobile}
                             showPlayButton={true}

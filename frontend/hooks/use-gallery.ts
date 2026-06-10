@@ -9,6 +9,8 @@ export type GalleryImage = {
     order: number
 }
 
+const baseUrl = process.env.BACKEND_URL || 'https://admin.accord.opole.pl'
+
 export default function useGallery(service?: string) {
     const [images, setImages] = useState<Array<GalleryImage>>([])
     const [loading, setLoading] = useState(true)
@@ -16,7 +18,7 @@ export default function useGallery(service?: string) {
     useEffect(() => {
         const params = service ? `?service=${service}` : ''
 
-        fetch(`/api/contacts/gallery/${params}`)
+        fetch(`${baseUrl}/api/gallery/${params}`)
             .then(res => res.json())
             .then(data => {
                 setImages(data)
