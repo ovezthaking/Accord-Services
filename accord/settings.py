@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'contact.apps.ContactConfig',
     'chatai.apps.ChataiConfig',
     'gallery.apps.GalleryConfig',
+    'realization.apps.RealizationConfig',
 ]
 
 MIDDLEWARE = [
