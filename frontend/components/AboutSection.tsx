@@ -153,7 +153,7 @@ export default function AboutSection() {
 
                 <div className="mt-10">
                     <FadeIn direction="up" delay={120}>
-                        <PhotoGallery images={aboutImages} embedded />
+                        <PhotoGallery service=" " images={aboutImages} embedded />
                     </FadeIn>
                 </div>
             </div>
