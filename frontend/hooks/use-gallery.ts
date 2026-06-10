@@ -16,7 +16,7 @@ export default function useGallery(service?: string) {
     useEffect(() => {
         const params = service ? `?service=${service}` : ''
 
-        fetch(`http://127.0.0.1:8000/api/gallery${params}`)
+        fetch(`/api/gallery${params}`)
             .then(res => res.json())
             .then(data => {
                 setImages(data)
