@@ -24,6 +24,8 @@ urlpatterns = [
     path('api/contacts', include('contact.api.urls')),
     path('api/gallery', include('gallery.api.urls')),
     path('api/gallery/', include('gallery.api.urls')),
+    path('api/realizations', include('realization.api.urls')),
+    path('api/realizations/', include('realization.api.urls')),
     path('health/', lambda request: JsonResponse({'status': 'ok'})),
     path('', RedirectView.as_view(url='/admin/', permanent=False)),
 ]
