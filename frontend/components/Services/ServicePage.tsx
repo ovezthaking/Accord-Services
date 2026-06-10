@@ -33,9 +33,9 @@ export default function ServicePage({title, description, images, service, childr
                 </section>
             )}
 
-            {images && (
+            {(images || service) && (
                 <FadeIn direction="up" delay={90}>
-                    <PhotoGallery images={images} service={service}/>
+                    <PhotoGallery service={service} images={images} />
                 </FadeIn>
             )}
         </main>

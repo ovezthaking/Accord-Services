@@ -10,4 +10,4 @@ class GalleryImageSerializer(ModelSerializer):
         fields = ('id', 'image_url', 'service', 'order')
 
     def get_image_url(self, obj):
-        return obj.image_url
+        return obj.image.url

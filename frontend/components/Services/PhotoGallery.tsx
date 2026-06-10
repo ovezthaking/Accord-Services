@@ -10,7 +10,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import useGallery from '@/hooks/use-gallery';
 
 type PhotoGalleryProps = {
-    images: GalleryItem[]
+    images: GalleryItem[] | undefined
     embedded?: boolean
     service?: string
 }
