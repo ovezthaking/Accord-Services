@@ -15,6 +15,7 @@ const galleryImages = findGalleryCadidates('airconditioning')
 const data: servicePageProps = {
     title: 'Klimatyzacja',
     description: 'Zapewniamy kompleksową obsługę w zakresie doboru, montażu i serwisu systemów klimatyzacji pomieszczeń w biurach, sklepach oraz domach na terenie województwa opolskiego.',
+    service: 'klimatyzacja',
     images: galleryImages
 }
 

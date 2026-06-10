@@ -15,6 +15,7 @@ const galleryImages = findGalleryCadidates('recuperation')
 const data: servicePageProps = {
     title: 'Rekuperacja',
     description: 'Rekuperacja w znacznym uproszczeniu oznacza odzyskiwanie ciepła. Rekuperator zawiera również filtry, które oczyszczają powietrze z różnego rodzaju zanieczyszczeń.',
+    service: 'rekuperacja',
     images: galleryImages
 }
 

@@ -16,6 +16,7 @@ const galleryImages = findGalleryCadidates('photovoltaics')
 const data: servicePageProps = {
     title: 'Fotowoltaika',
     description: 'To jeden z najskuteczniejszych sposobów pozyskiwania energii elektrycznej z promieniowania słonecznego, który zdobywa w Polsce coraz większą popularność. System fotowoltaiczny wykorzystuje zjawisko, w którym promienie słoneczne są przetwarzane w prąd przez panele fotowoltaiczne połączone w baterie słoneczne. Następnie wyprodukowany prąd zostaje wprowadzony do sieci energetycznej.',
+    service: 'fotowoltaika',
     images: galleryImages
 }
 
