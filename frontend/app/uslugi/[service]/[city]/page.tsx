@@ -4,7 +4,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 type Props = {
-    params: { service: string; city: string }
+    params: Promise<{ service: string; city: string }>
 }
 
 export async function generateStaticParams() {
@@ -13,9 +13,11 @@ export async function generateStaticParams() {
     )
 }
 
-export async function generateMetadata({ params }:Props): Promise<Metadata> {
-    const cityObj = CITIES.find(c => c.slug === params.city)
-    const serviceKey = SERVICE_MAP[params.service]
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const { service, city } = await params;
+
+    const cityObj = CITIES.find(c => c.slug === city)
+    const serviceKey = SERVICE_MAP[service]
 
     if (!cityObj || !serviceKey) return {}
 
@@ -27,17 +29,19 @@ export async function generateMetadata({ params }:Props): Promise<Metadata> {
     }
 }
 
-export default function LocalPage({ params }: Props) {
-    const cityObj = CITIES.find(c => c.slug === params.city)
-    const serviceKey = SERVICE_MAP[params.service]
+export default async function LocalPage({ params }: Props) {
+    const { service, city } = await params;
+
+    const cityObj = CITIES.find(c => c.slug === city)
+    const serviceKey = SERVICE_MAP[service]
 
     if (!cityObj || !serviceKey) notFound()
 
     return (
         <LocalServicePage 
             city={cityObj.name}
-            citySlug={params.city}
-            service={params.service}
+            citySlug={city}
+            service={service}
             serviceKey={serviceKey}
             serviceLabel={SERVICE_LABELS[serviceKey]}
             serviceDeclination={SERVICE_DELCINATIONS[serviceKey]}

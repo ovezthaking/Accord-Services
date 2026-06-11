@@ -39,6 +39,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "http",
+        hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: "http",
         hostname: "www.accord.opole.pl",
       },
       {
