@@ -12,6 +12,13 @@ export const SERVICE_LABELS: Record<string, string> = {
     'fotowoltaika': 'Fotowoltaika'
 }
 
+export const SERVICE_DELCINATIONS: Record<string, string> = {
+    'pompy': 'Pompy Ciepła',
+    'klimatyzacja': 'Klimatyzację',
+    'rekuperacja': 'Rekuperację',
+    'fotowoltaika': 'Fotowoltaikę'
+}
+
 export const CITIES: Array<{name: string, slug: string}> = [
     { name: 'Opole', slug: 'opole' },
     { name: 'Ozimek', slug: 'ozimek' },

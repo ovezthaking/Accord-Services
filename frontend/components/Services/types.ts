@@ -17,3 +17,12 @@ export type servicePageProps = {
     service?: string,
     images?: Array<GalleryItem>,
 }
+
+export type LocalServicePageProps = {
+    city: string,
+    citySlug: string,
+    service: string,
+    serviceKey: string,
+    serviceLabel: string,
+    serviceDeclination: string
+}
