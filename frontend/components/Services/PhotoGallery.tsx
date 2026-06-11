@@ -17,7 +17,7 @@ type PhotoGalleryProps = {
 
 export default function PhotoGallery2({images: staticImages, embedded = false, service}: PhotoGalleryProps) {
     const { images: dynamicImages, loading } = useGallery(service)
-    const [galleryShown, setGalleryShown] = useState<boolean>(false)
+    const [galleryShown, setGalleryShown] = useState<boolean>(true)
     const isMobile = useIsMobile()
 
     const galleryItems: Array<GalleryItem> = service
