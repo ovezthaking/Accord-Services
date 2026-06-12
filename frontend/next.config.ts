@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
+          source: "/api/realizations/:path*",
+          destination: `${backendUrl}/api/realizations/:path*`,
+      },
+      {
           source: "/api/gallery/:path*",
           destination: `${backendUrl}/api/gallery/:path*`,
       },
@@ -31,6 +35,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: "http",
         hostname: "res.cloudinary.com",
       },
       {

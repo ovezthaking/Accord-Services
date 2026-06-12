@@ -8,12 +8,15 @@ from rest_framework.response import Response
 def realizations_view(request):
     service = request.query_params.get('service')
     city_slug = request.query_params.get('city_slug')
+    limit = request.query_params.get('limit')
 
     qs = Realization.objects.filter(is_published=True)
     if service:
         qs = qs.filter(service=service)
     if city_slug:
         qs = qs.filter(city_slug=city_slug)
+    if limit:
+        qs = qs[:int(limit)]
 
     serializer = RealizationSerializer(qs, many=True)
     return Response(serializer.data)

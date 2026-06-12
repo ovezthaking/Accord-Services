@@ -5,6 +5,7 @@ import Image from "next/image"
 import PhotoGallery from "./Services/PhotoGallery";
 import { aboutImages } from "@/lib/aboutImages";
 import { FadeIn } from "./fx/FadeIn";
+import RealizationsGrid from "./Realizations/RealizationsGrid";
 
 const higlights: highlightsArrayType = [
     {
@@ -153,7 +154,8 @@ export default function AboutSection() {
 
                 <div className="mt-10">
                     <FadeIn direction="up" delay={120}>
-                        <PhotoGallery service=" " images={aboutImages} embedded />
+                        {/* <PhotoGallery service=" " images={aboutImages} embedded /> */}
+                        <RealizationsGrid />
                     </FadeIn>
                 </div>
             </div>
