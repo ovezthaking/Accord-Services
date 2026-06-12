@@ -111,8 +111,8 @@ const localBusinessSchema = {
     geo: {
         "@type": "GeoCoordinates",
         // współrzędne ul. Opolska 27, Masów
-        latitude: 50.7093,
-        longitude: 17.9567,
+        latitude: 50.759473511176,
+        longitude: 17.9774155395509,
     },
     openingHoursSpecification: [
         {
