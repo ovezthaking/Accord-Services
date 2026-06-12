@@ -1,6 +1,11 @@
 import Link from "next/link"
 import { Phone, Star, Globe, MapPin, Clock, ChevronRight } from "lucide-react"
 import Image from "next/image"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false }
+}
 
 const actions = [
     {
