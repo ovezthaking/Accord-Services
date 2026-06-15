@@ -1,7 +1,7 @@
 # Dokumentacja Projektu Accord Services
 
 **Ostatnia aktualizacja:** czerwiec 2026  
-**Wersja:** 1.1
+**Wersja:** 1.2
 
 ---
 
@@ -28,6 +28,8 @@ Accord Services to nowoczesna aplikacja webowa dla firmy zajmującej się usług
 - Zarządzanie zapytaniami kontaktowymi od klientów
 - System rezerwacji i wyceny usług
 - Integrację z systemem poczty elektronicznej (Resend API)
+- Dynamiczne strony lokalne dla SEO (`/uslugi/[service]/[city]`)
+- Zarządzanie galerią zdjęć i realizacjami z panelu admin (Cloudinary)
 - Szybki dostęp do danych kontaktowych przez stronę QR
 
 ### Zakres Usług
@@ -45,11 +47,16 @@ Firma Accord Services oferuje cztery główne kategorie usług:
 
 - ✅ Responsywna strona internetowa z sekcjami: Hero, O nas, Usługi, Proces, Kontakt
 - ✅ Formularze kontaktowe i zapytania o wycenę
-- ✅ Galeria zdjęć realizacji z lightboxem
+- ✅ Galeria zdjęć realizacji z lightboxem (react-image-gallery + Cloudinary)
+- ✅ Karuzela realizacji na stronie głównej i stronach lokalnych
 - ✅ Panel administracyjny Django
-- ✅ REST API do zarządzania kontaktami
+- ✅ REST API do zarządzania kontaktami, galerią i realizacjami
 - ✅ System wysyłania e-maili przez Resend API (fallback: SMTP Gmail)
 - ✅ Zarządzanie odbiorcami e-mail z panelu admin (model `EmailRecipient`)
+- ✅ Dynamiczne strony lokalne (`/uslugi/[service]/[city]`) z ISR (revalidate: 24h)
+- ✅ Dynamiczny sitemap z uwzględnieniem stron lokalnych z API
+- ✅ SEO: Schema.org (HVACBusiness, Service, BreadcrumbList, WebSite)
+- ✅ Google Analytics (GA4)
 - ✅ Strona QR z linkami do kontaktu, mapy i Google Reviews
 - ✅ Animacje wejścia/wyjścia elementów przy scrollowaniu (`FadeIn`)
 - ✅ Wsparcie mobilne (mobile-first design)
@@ -64,8 +71,9 @@ Firma Accord Services oferuje cztery główne kategorie usług:
 ┌─────────────────────────────────────────────────────────────────┐
 │                      Frontend (Next.js 16)                       │
 │  - React 19, TypeScript, TailwindCSS, Shadcn/ui                 │
-│  - Pages: /, /uslugi/*, /qr                                     │
-│  - Rewrites: /admin/* i /static/* → Backend                     │
+│  - Pages: /, /uslugi/*, /uslugi/[service]/[city], /qr           │
+│  - Rewrites: /admin/* /static/* /media/*                        │
+│             /api/gallery/* /api/realizations/* → Backend         │
 └──────────────────────────────┬──────────────────────────────────┘
                                │ REST API / proxy
                     (http://localhost:8000 / Render URL)
@@ -75,10 +83,13 @@ Firma Accord Services oferuje cztery główne kategorie usług:
 │  - REST Framework, CORS Headers, Whitenoise                     │
 │  - Gunicorn (WSGI) — produkcja                                   │
 │  - Uvicorn (ASGI) — alternatywa dev                             │
-└──────────────┬───────────────────────────────┬──────────────────┘
-               │                               │
-     PostgreSQL / SQLite               Resend API / SMTP Gmail
-     (Neon na produkcji)               (powiadomienia e-mail)
+└──────────────┬──────────────────────────────┬───────────────────┘
+               │                              │
+     PostgreSQL / SQLite              Resend API / SMTP Gmail
+     (Neon na produkcji)              (powiadomienia e-mail)
+               │
+        Cloudinary
+  (galeria zdjęć, realizacje)
 ```
 
 ### Stack Techniczny
@@ -88,6 +99,7 @@ Firma Accord Services oferuje cztery główne kategorie usług:
 - Django 6.0.2
 - Django REST Framework 3.16
 - Django CORS Headers 4.9
+- Cloudinary 1.44 + django-cloudinary-storage 0.3
 - Gunicorn 26 (produkcja)
 - Uvicorn 0.41 (dev/ASGI)
 - Whitenoise 6.12 (pliki statyczne)
@@ -107,6 +119,9 @@ Firma Accord Services oferuje cztery główne kategorie usług:
 - PostgreSQL (Neon) — produkcja
 - SQLite3 — lokalne środowisko deweloperskie (fallback)
 
+**Storage:**
+- Cloudinary — zdjęcia galerii i realizacji (zarządzane z Django Admin)
+
 ---
 
 ## Backend — Django
@@ -117,44 +132,44 @@ Firma Accord Services oferuje cztery główne kategorie usług:
 accord/                          # Konfiguracja projektu Django
 ├── settings.py                  # Ustawienia projektu
 ├── urls.py                      # Routing główny
-├── asgi.py                      # ASGI configuration (Uvicorn)
-└── wsgi.py                      # WSGI configuration (Gunicorn)
+├── asgi.py
+└── wsgi.py
 
 contact/                         # Aplikacja zarządzania kontaktami
 ├── models.py                    # Contact, ContactStatus, EmailRecipient
-├── admin.py                     # Konfiguracja Django Admin
-├── views.py                     # (placeholder)
-├── apps.py
-├── migrations/
-│   ├── 0001_initial.py
-│   ├── 0002_contact_createdat.py
-│   ├── 0003_alter_contact_options.py
-│   ├── 0004_alter_contact_services.py
-│   ├── 0005_contactstatus_*.py
-│   └── 0006_emailrecipient.py
-│
-├── api/                         # REST API
-│   ├── views.py                 # Endpointy API
-│   ├── serializers.py           # Serializery DRF
-│   └── urls.py                  # Ścieżki API
-│
-└── utils/                       # Funkcje pomocnicze
-    ├── parse_contact.py         # Parsowanie danych kontaktu
-    ├── send_mail.py             # Wysyłanie e-maili (Resend / SMTP)
+├── admin.py
+├── api/
+│   ├── views.py
+│   ├── serializers.py
+│   └── urls.py
+└── utils/
+    ├── parse_contact.py
+    ├── send_mail.py
     └── decorators/
         └── login_required_for_methods.py
 
+gallery/                         # Aplikacja galerii zdjęć (Cloudinary)
+├── models.py                    # GalleryImage
+├── admin.py
+└── api/
+    ├── views.py
+    ├── serializers.py
+    └── urls.py
+
+realization/                     # Aplikacja realizacji
+├── models.py                    # Realization
+├── admin.py
+└── api/
+    ├── views.py
+    ├── serializers.py
+    └── urls.py
+
 chatai/                          # Aplikacja AI (przygotowana, niezaimplementowana)
-├── models.py
-├── views.py
-└── apps.py
 ```
 
 ### Modele Danych
 
 #### Model: ContactStatus
-
-Definiuje możliwe statusy zapytań kontaktowych.
 
 ```python
 class ContactStatus(models.Model):
@@ -167,8 +182,6 @@ Domyślny status tworzony automatycznie: `nowy`.
 
 #### Model: Contact
 
-Przechowuje informacje o zapytaniach kontaktowych od klientów.
-
 ```python
 class Contact(models.Model):
     SERVICE_CHOICES = (
@@ -180,7 +193,7 @@ class Contact(models.Model):
     )
 
     full_name    = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=25, unique=True)  # walidacja regex
+    phone_number = models.CharField(max_length=25, unique=True)  # regex
     email        = models.EmailField(unique=True)
     services     = models.CharField(max_length=50, choices=SERVICE_CHOICES, default='pompy')
     description  = models.TextField(blank=True, null=True)
@@ -191,20 +204,9 @@ class Contact(models.Model):
         ordering = ['-createdAt']
 ```
 
-**Pola:**
-- `full_name` — Imię i nazwisko (max 255 znaków)
-- `phone_number` — Numer telefonu (regex: `^\+?[\d\s().-]{5,25}$`, unikalny)
-- `email` — Adres e-mail (unikalny)
-- `services` — Wybrana usługa (jedno z 5 predefiniowanych)
-- `description` — Opis zapytania (opcjonalne)
-- `status` — FK do `ContactStatus` (domyślnie: `nowy`)
-- `createdAt` — Data utworzenia (auto)
-
 ---
 
 #### Model: EmailRecipient
-
-Zarządza listą odbiorców powiadomień e-mail. Pozwala dodawać i wyłączać odbiorców bezpośrednio z panelu Django Admin — bez zmiany kodu.
 
 ```python
 class EmailRecipient(models.Model):
@@ -217,81 +219,113 @@ class EmailRecipient(models.Model):
         verbose_name_plural = "Odbiorcy e-mail"
 ```
 
-**Pola:**
-- `email` — Adres e-mail odbiorcy (unikalny)
-- `name` — Nazwa/opis odbiorcy (opcjonalne)
-- `is_active` — Czy odbiorca jest aktywny (domyślnie: `True`)
+Zarządzanie odbiorcami odbywa się z Django Admin → **Odbiorcy e-mail**.
+
+---
+
+#### Model: GalleryImage
+
+```python
+class GalleryImage(models.Model):
+    image      = CloudinaryField('image')
+    service    = models.CharField(max_length=50, choices=GalleryService.choices)
+    order      = models.PositiveIntegerField(default=0)
+    is_active  = models.BooleanField(default=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['service', 'order']
+```
+
+**Dostępne wartości `service`:** `pompy`, `klimatyzacja`, `rekuperacja`, `fotowoltaika`, `o-nas`
+
+Zarządzanie w panelu admin: edycja `order` i `is_active` inline (list_editable).
+
+---
+
+#### Model: Realization
+
+```python
+class Realization(models.Model):
+    title        = models.CharField(max_length=255)
+    city         = models.CharField(max_length=100)
+    city_slug    = models.SlugField(max_length=100)
+    service      = models.CharField(max_length=50, choices=SERVICE_CHOICES)
+    description  = models.TextField()
+    device_model = models.CharField(max_length=255, blank=True)
+    area_m2      = models.IntegerField(blank=True, null=True)
+    cover_image  = CloudinaryField('image')
+    is_published = models.BooleanField(default=True)
+    created_at   = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+```
+
+`city_slug` jest auto-wypełniany z pola `city` w panelu admin (`prepopulated_fields`).
 
 ---
 
 ### REST API
 
-Bazowy prefix: `/api/contacts`
-
-#### GET /api/contacts
-**Opis:** Pobiera listę wszystkich zapytań kontaktowych  
+#### Kontakty — `GET /api/contacts`
 **Autentykacja:** Wymagana (login)  
+**Odpowiedź 200:** Lista obiektów Contact  
+**Odpowiedź 204:** Brak kontaktów
+
+#### Kontakty — `POST /api/contacts`
+**Autentykacja:** Nie wymagana  
+**Body:** `full_name`, `phone_number`, `email`, `services`, `description`  
+**Odpowiedź 201:** Utworzony obiekt Contact  
+**Odpowiedź 400:** Błąd walidacji (duplikat e-mail lub telefon)
+
+Po zapisaniu e-mail wysyłany jest asynchronicznie w osobnym wątku (`threading.Thread`).
+
+#### Kontakty — `GET /api/contacts/<id>/`
+**Autentykacja:** Wymagana
+
+#### Kontakty — `DELETE /api/contacts/<id>/`
+**Autentykacja:** Wymagana
+
+---
+
+#### Galeria — `GET /api/gallery`
+**Autentykacja:** Nie wymagana  
+**Parametry:** `?service=pompy|klimatyzacja|rekuperacja|fotowoltaika|o-nas`  
+**Odpowiedź 200:**
+```json
+[
+  { "id": 1, "image_url": "https://res.cloudinary.com/...", "service": "pompy", "order": 0 }
+]
+```
+
+---
+
+#### Realizacje — `GET /api/realizations`
+**Autentykacja:** Nie wymagana  
+**Parametry:** `?service=...&city_slug=...&limit=...`  
 **Odpowiedź 200:**
 ```json
 [
   {
     "id": 1,
-    "full_name": "Jan Kowalski",
-    "phone_number": "+48601475547",
-    "email": "jan@example.com",
-    "services": "pompy",
-    "description": "Zainteresowany pompą ciepła",
-    "status": "nowy",
-    "createdAt": "2026-02-24T22:15:00Z"
+    "title": "Pompa ciepła Opole",
+    "city": "Opole",
+    "city_slug": "opole",
+    "service": "pompy",
+    "description": "...",
+    "device_model": "Daikin 9kW",
+    "area_m2": 120,
+    "cover_image_url": "https://res.cloudinary.com/...",
+    "created_at": "2026-06-10T22:49:00Z"
   }
 ]
 ```
-**Odpowiedź 204:** Brak kontaktów
 
 ---
 
-#### POST /api/contacts
-**Opis:** Tworzy nowe zapytanie kontaktowe i wysyła powiadomienie e-mail  
-**Autentykacja:** Nie wymagana  
-**Body:**
-```json
-{
-  "full_name": "Jan Kowalski",
-  "phone_number": "+48601475547",
-  "email": "jan@example.com",
-  "services": "pompy",
-  "description": "Zainteresowany pompą ciepła"
-}
-```
-**Odpowiedź 201:** Zwraca obiekt `Contact`  
-**Błędy:**
-- `400 Bad Request` — niepoprawne dane (np. e-mail lub telefon już istnieje)
-
-Po zapisaniu kontaktu e-mail jest wysyłany asynchronicznie w osobnym wątku (przez `threading.Thread`), żeby nie blokować odpowiedzi API.
-
----
-
-#### GET /api/contacts/\<id\>/
-**Autentykacja:** Wymagana  
-**Odpowiedź 200:** Szczegóły kontaktu  
-**Odpowiedź 404:** Kontakt nie istnieje
-
----
-
-#### DELETE /api/contacts/\<id\>/
-**Autentykacja:** Wymagana  
-**Odpowiedź 204:** Usunięto  
-**Odpowiedź 404:** Kontakt nie istnieje
-
----
-
-#### GET /health/
-**Opis:** Health check — używany przez Render do monitorowania serwisu  
-**Autentykacja:** Nie wymagana  
-**Odpowiedź 200:**
-```json
-{"status": "ok"}
-```
+#### Health Check — `GET /health/`
+**Odpowiedź 200:** `{"status": "ok"}`
 
 ---
 
@@ -299,19 +333,13 @@ Po zapisaniu kontaktu e-mail jest wysyłany asynchronicznie w osobnym wątku (pr
 
 Plik: `contact/utils/send_mail.py`
 
-System obsługuje dwa tryby wysyłki — z automatycznym fallbackiem:
-
-**1. Resend API** (produkcja — rekomendowane)  
-Aktywny gdy zmienna środowiskowa `RESEND_API_KEY` jest ustawiona.  
-Wysyła wiadomość HTML z adresu `kontakt@accord.opole.pl`.  
-Ustawia `reply_to` na e-mail nadawcy formularza.
+**1. Resend API** (produkcja)  
+Aktywny gdy `RESEND_API_KEY` jest ustawiony. Wysyła HTML z `kontakt@accord.opole.pl` z `reply_to` ustawionym na e-mail nadawcy formularza.
 
 **2. SMTP Gmail** (fallback)  
-Używany gdy `RESEND_API_KEY` nie jest ustawiony.  
-Konfiguracja w `settings.py`: host `smtp.gmail.com`, port 587, TLS.  
-Hasło aplikacji pobierane ze zmiennej `EMAIL_PASSWORD`.
+Używany gdy brak `RESEND_API_KEY`. Host: `smtp.gmail.com`, port: 587, TLS.
 
-**Odbiorcy** są pobierani dynamicznie z bazy danych:
+**Odbiorcy** pobierani dynamicznie z bazy:
 ```python
 def get_recipients():
     return list(
@@ -320,42 +348,44 @@ def get_recipients():
     )
 ```
 
-Zarządzanie odbiorcami odbywa się z poziomu Django Admin → **Odbiorcy e-mail**.
-
 ---
 
-### Konfiguracja Django (settings.py — kluczowe elementy)
+### Konfiguracja Django — kluczowe elementy
 
 ```python
-# Baza danych — auto-wykrywanie PostgreSQL lub SQLite
+# Baza danych
 DATABASES = build_database_config()
-# Jeśli DATABASE_URL ustawiony → PostgreSQL (z opcjonalnym sslmode)
-# Jeśli nie → SQLite (db.sqlite3)
+# DATABASE_URL ustawiony → PostgreSQL (z opcjonalnym sslmode)
+# Brak → SQLite (db.sqlite3)
 
-# Pliki statyczne — Whitenoise (CompressedManifestStaticFilesStorage)
+# Cloudinary
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET')
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# Pliki statyczne
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STORAGES = {
+    'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'},
+}
 
-# CORS — dozwolone originy
+# CORS
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://accordproposition.vercel.app",
     "https://www.accord.opole.pl",
     ...
 ]
-
-# Bezpieczeństwo (produkcja)
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-USE_X_FORWARDED_HOST = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ```
 
 ---
 
 ### Dekorator: login_required_for_methods
 
-Własny dekorator pozwalający wymagać autentykacji tylko dla wybranych metod HTTP (np. `GET`), przy jednoczesnym zostawieniu `POST` jako publicznego:
+Pozwala wymagać autentykacji tylko dla wybranych metod HTTP:
 
 ```python
 @login_required_for_methods(['GET'])
@@ -374,94 +404,142 @@ Nieautentykowane żądania `GET` są przekierowywane do `/admin/`.
 
 ```
 frontend/
-├── app/                         # App Router (Next.js 13+)
-│   ├── layout.tsx              # Layout główny (Header, Footer, Toaster, GA)
-│   ├── page.tsx                # Strona główna (/)
-│   ├── globals.css             # Style globalne + Shadcn/ui + galeria
+├── app/
+│   ├── layout.tsx              # Layout (Header, Footer, Toaster, GA)
+│   ├── page.tsx                # Strona główna
+│   ├── globals.css
+│   ├── sitemap.ts              # Dynamiczny sitemap XML
+│   ├── robots.ts               # robots.txt
 │   │
 │   ├── uslugi/
+│   │   ├── [service]/[city]/
+│   │   │   ├── page.tsx        # Dynamiczne strony lokalne (ISR)
+│   │   │   └── loading.tsx     # Skeleton loader
 │   │   ├── pompy-ciepla/page.tsx
 │   │   ├── klimatyzacja/page.tsx
 │   │   ├── rekuperacja/page.tsx
 │   │   └── fotowoltaika/page.tsx
 │   │
-│   ├── qr/
-│   │   └── page.tsx            # Strona QR z linkami
-│   │
-│   └── actions/
-│       └── contact.ts          # Server Action — wysyłanie formularza
+│   ├── qr/page.tsx
+│   └── actions/contact.ts      # Server Action
 │
 ├── components/
-│   ├── Header.tsx              # Nagłówek, nawigacja, mobile menu, dropdown tel.
-│   ├── Footer.tsx              # Stopka z linkami i danymi kontaktowymi
-│   ├── HeroSection.tsx         # Sekcja hero z CTA i statystykami
-│   ├── AboutSection.tsx        # O nas — wyróżniki, galeria realizacji
-│   ├── ServicesSection.tsx     # Karuzela usług z zakładkami
-│   ├── ProcessSection.tsx      # Proces współpracy (4 kroki)
-│   ├── ContactSection.tsx      # Kontakt — dane + mapa + formularz
-│   ├── ScrollingServices.tsx   # Animowany marquee z nazwami usług
-│   │
-│   ├── Forms/
-│   │   └── ContactForm.tsx     # Formularz kontaktowy (useActionState)
-│   │
+│   ├── Header.tsx
+│   ├── Footer.tsx
+│   ├── HeroSection.tsx
+│   ├── AboutSection.tsx        # Zawiera RealizationsGrid
+│   ├── ServicesSection.tsx
+│   ├── ProcessSection.tsx
+│   ├── ContactSection.tsx
+│   ├── ScrollingServices.tsx
+│   ├── Forms/ContactForm.tsx
 │   ├── Services/
-│   │   ├── ServicePage.tsx     # Template strony usługi
-│   │   ├── PhotoGallery.tsx    # Galeria z react-image-gallery + toggle
+│   │   ├── ServicePage.tsx
+│   │   ├── LocalServicePage.tsx
+│   │   ├── PhotoGallery.tsx    # react-image-gallery + Cloudinary
 │   │   └── types.ts
-│   │
-│   ├── fx/
-│   │   └── FadeIn.tsx          # Komponent animacji wejścia/wyjścia
-│   │
+│   ├── Realizations/
+│   │   ├── RealizationsCarousel.tsx  # Karuzela z fetch /api/realizations
+│   │   └── type.ts
+│   ├── fx/FadeIn.tsx
 │   └── ui/                     # Shadcn/ui komponenty
-│       ├── button.tsx, input.tsx, label.tsx, textarea.tsx
-│       ├── toast.tsx, toaster.tsx, tooltip.tsx
-│       ├── separator.tsx, sheet.tsx, sidebar.tsx, skeleton.tsx
 │
 ├── hooks/
-│   ├── use-in-view.ts          # Hook IntersectionObserver (dla FadeIn)
-│   ├── use-mobile.tsx          # Hook detekcji urządzenia mobilnego
-│   └── use-toast.ts            # Hook systemu powiadomień
+│   ├── use-in-view.ts
+│   ├── use-mobile.tsx
+│   ├── use-toast.ts
+│   └── use-gallery.ts          # Hook fetchujący /api/gallery
 │
 ├── lib/
 │   ├── navLinks.ts
 │   ├── types.ts
-│   ├── utils.ts                # cn() (clsx + tailwind-merge)
+│   ├── utils.ts
 │   ├── statsArray.ts
-│   └── aboutImages.ts          # Złączenie galerii dla sekcji "O nas"
+│   ├── aboutImages.ts
+│   └── localPages.ts           # CITIES, SERVICES, SERVICE_MAP, LABELS
 │
 ├── api/
-│   ├── api.ts                  # postContact() — fetch do backendu
+│   ├── api.ts                  # postContact()
 │   └── types.ts
 │
-├── utils/
-│   └── findGalleryCandidates.ts  # Odczyt zdjęć z fs przy buildzie
-│
-└── public/
-    └── images/
-        ├── logo-transparent.png
-        ├── favicon.png
-        ├── hero-background.jpg
-        ├── service-ac.jpg, service-solar.jpg, service-ventilation.jpg
-        └── services/
-            ├── airconditioning/gallery/
-            ├── heatpumps/
-            ├── photovoltaics/gallery/
-            └── recuperation/gallery/
+└── utils/
+    └── findGalleryCandidates.ts  # Lokalne zdjęcia (build-time)
 ```
 
 ---
 
 ### Strony i Routing
 
-| Ścieżka | Komponent | Opis |
-|---------|-----------|------|
-| `/` | `app/page.tsx` | Strona główna — wszystkie sekcje |
-| `/uslugi/pompy-ciepla` | `app/uslugi/pompy-ciepla/page.tsx` | Szczegóły usługi |
-| `/uslugi/klimatyzacja` | `app/uslugi/klimatyzacja/page.tsx` | Szczegóły usługi |
-| `/uslugi/rekuperacja` | `app/uslugi/rekuperacja/page.tsx` | Szczegóły usługi |
-| `/uslugi/fotowoltaika` | `app/uslugi/fotowoltaika/page.tsx` | Szczegóły usługi |
-| `/qr` | `app/qr/page.tsx` | Strona QR — szybki dostęp |
-| `/admin/*` | proxy → Django | Panel administracyjny |
+| Ścieżka | Opis |
+|---------|-------|
+| `/` | Strona główna — wszystkie sekcje + karuzela realizacji |
+| `/uslugi/pompy-ciepla` | Szczegóły usługi |
+| `/uslugi/klimatyzacja` | Szczegóły usługi |
+| `/uslugi/rekuperacja` | Szczegóły usługi |
+| `/uslugi/fotowoltaika` | Szczegóły usługi |
+| `/uslugi/[service]/[city]` | Dynamiczne strony lokalne (ISR 24h) |
+| `/qr` | Strona QR — szybki dostęp |
+| `/sitemap.xml` | Generowany dynamicznie |
+| `/admin/*` | Proxy → Django admin |
+
+---
+
+### Dynamiczne Strony Lokalne (`/uslugi/[service]/[city]`)
+
+Plik: `frontend/app/uslugi/[service]/[city]/page.tsx`
+
+- `dynamicParams = true` — obsługa slugów spoza `generateStaticParams`
+- `revalidate = 86400` — ISR, odświeżanie raz na dobę
+- Przy buildzie generowane są strony dla kombinacji `SERVICES × CITIES` z `lib/localPages.ts`
+- Dla nieznanych miast (`dynamicParams`) pobierana jest nazwa miasta z API (`/api/realizations/?city_slug=...&limit=1`)
+- Strona wyświetla `LocalServicePage` z `RealizationsGrid` filtrowanym po mieście i usłudze
+
+**Konfiguracja miast (hardcoded):**
+```typescript
+// lib/localPages.ts
+export const CITIES = [
+    { name: 'Opole', slug: 'opole' },
+    { name: 'Ozimek', slug: 'ozimek' },
+    // ... 10 miast województwa opolskiego
+]
+```
+
+---
+
+### Dynamiczny Sitemap
+
+Plik: `frontend/app/sitemap.ts`
+
+Łączy trzy źródła:
+1. Strony statyczne (główna, 4 strony usług)
+2. Hardcoded strony lokalne (`SERVICES × CITIES`)
+3. Dynamiczne strony lokalne pobrane z `/api/realizations/` — nowe miasta z realizacji, których nie ma w hardcoded liście
+
+---
+
+### Karuzela Realizacji (`RealizationsCarousel`)
+
+Plik: `frontend/components/Realizations/RealizationsCarousel.tsx`
+
+- Pobiera dane z `/api/realizations/` (parametry: `citySlug`, `service`, `limit`)
+- Używana w `AboutSection` (na stronie głównej) i `LocalServicePage`
+- Karuzela z poziomym scrollem, przyciski nawigacji (desktop), snap scrolling
+- Każda karta linkuje do `/uslugi/[service]/[city_slug]`
+
+---
+
+### Hook: useGallery
+
+Plik: `frontend/hooks/use-gallery.ts`
+
+```typescript
+export default function useGallery(service?: string) {
+    // fetchuje GET /api/gallery?service=...
+    return { images, loading }
+}
+```
+
+Używany w `PhotoGallery.tsx` gdy `service` jest podany (galeria z Cloudinary zamiast lokalnych plików).
 
 ---
 
@@ -469,136 +547,47 @@ frontend/
 
 #### FadeIn (`components/fx/FadeIn.tsx`)
 
-Komponent opakowujący dzieci w animację wejścia/wyjścia opartą na `IntersectionObserver`. Używany powszechnie na całej stronie.
-
-**Props:**
-```tsx
-interface FadeInProps {
-  direction?: "up" | "down" | "left" | "right" | "none"
-  delay?: number       // ms, opóźnienie animacji
-  duration?: number    // ms, czas trwania (domyślnie 600)
-  threshold?: number   // próg widoczności (domyślnie 0.15)
-  exitDelay?: number   // ms, opóźnienie animacji wyjścia
-}
-```
-
-**Stany widoczności** (hook `use-in-view`):
-- `before` — element poniżej viewportu, oczekuje na wejście
-- `visible` — element w viewporcie, w pełni widoczny
-- `above` — element przewinięty powyżej viewportu (statyczny, bez animacji)
-- `exiting` — element opuszcza viewport podczas scrollowania w górę (animacja wyjścia)
-
----
-
-#### Header (`components/Header.tsx`)
-
-- Top bar z dwoma numerami telefonu i adresem e-mail
-- Sticky header z logo i nawigacją desktopową
-- Mobile hamburger menu z nawigacją
-- Dropdown "Zadzwoń" z wyborem numeru (601 47 55 47 / 783 636 363)
-- Zamykanie dropdownu przy kliknięciu poza jego obszar (`useRef` + `useEffect`)
-
----
-
-#### ContactForm (`components/Forms/ContactForm.tsx`)
-
-Formularz oparty na React `useActionState` z Server Actions Next.js.
-
-**Pola:** imię i nazwisko, telefon, e-mail, usługa (select), wiadomość  
-**Przepływ:** submit → Server Action `sendContactAction` → `postContact()` → POST `/api/contacts`  
-**Feedback:** toast z wynikiem (sukces lub błąd)  
-**Deduplicacja toastów:** `useRef` śledzi ostatnią wiadomość, żeby nie pokazywać duplikatów przy ponownym renderze.
-
----
+Animacja wejścia/wyjścia oparta na `IntersectionObserver`. Stany: `before`, `visible`, `above`, `exiting`.
 
 #### PhotoGallery (`components/Services/PhotoGallery.tsx`)
 
-Galeria oparta na `react-image-gallery` z przełącznikiem widoczności.
+- Jeśli podano `service` → galeria z Cloudinary (przez `useGallery`)
+- Jeśli podano `images` (statyczne) → lokalne pliki z `public/`
+- Domyślnie galeria jest **widoczna** (przycisk „Ukryj galerię")
 
-- Domyślnie ukryta — przycisk "Pokaż galerię zdjęć" otwiera z animacją CSS grid
-- Na mobile: brak miniaturek, uproszczone strzałki nawigacji
-- Obsługuje tryb `embedded` (bez dodatkowych padingów, do użycia w sekcji "O nas")
-- Styl dostosowany przez klasy CSS w `globals.css` (prefix `.service-image-gallery`)
+#### LocalServicePage (`components/Services/LocalServicePage.tsx`)
 
----
-
-#### QR Page (`app/qr/page.tsx`)
-
-Uproszczona strona zoptymalizowana pod wyświetlanie po zeskanowaniu kodu QR.
-
-**Linki:**
-- Przejdź do strony głównej (`/`)
-- Zadzwoń teraz (`tel:601475547`)
-- Oceń nas w Google (link zewnętrzny)
-- Znajdź nas na mapie (link zewnętrzny — Google Maps)
+Template dla stron lokalnych. Zawiera nagłówek z miastem i usługą, `RealizationsGrid` oraz Schema.org (`Service`, `BreadcrumbList`).
 
 ---
 
-#### findGalleryCandidates (`utils/findGalleryCandidates.ts`)
+### SEO
 
-Funkcja uruchamiana po stronie serwera (w czasie buildu) — odczytuje system plików i zwraca listę zdjęć z galerii dla danej usługi.
+**Schema.org w `layout.tsx`:** `HVACBusiness` z pełnymi danymi firmy.
 
-Przeszukuje dwie możliwe lokalizacje:
-1. `public/images/<serviceFolder>/gallery/`
-2. `public/images/services/<serviceFolder>/gallery/`
+**Schema.org na stronach usług:** `Service` z `areaServed` i `BreadcrumbList`.
 
-Zwraca posortowaną tablicę obiektów `GalleryItem` kompatybilnych z `react-image-gallery`.
+**Schema.org na stronach lokalnych:** `Service` z `areaServed: City` i `BreadcrumbList` z 3 poziomami.
+
+**Sitemap:** `sitemap.ts` generuje wpisy dla stron statycznych (priority 0.9–1.0), hardcoded lokalnych (0.7) i dynamicznych z API (0.6).
+
+**robots.ts:** Blokuje `/qr`, `/admin/`, `/static/`, `/media/`, `/api/`.
 
 ---
 
-### Integracja z Backendem
-
-#### api/api.ts
-
-```typescript
-const baseUrl = process.env.BACKEND_URL || 'http://localhost:8000'
-
-export const postContact = async (data: postContactProps): Promise<any>
-```
-
-#### next.config.ts — Rewrites
-
-Next.js przekierowuje wybrane ścieżki do backendu Django, co pozwala serwować panel admina pod tą samą domeną co frontend:
+### Rewrites w next.config.ts
 
 ```typescript
 async rewrites() {
   return [
-    { source: "/admin/:path*",  destination: `${backendUrl}/admin/:path*`  },
-    { source: "/static/:path*", destination: `${backendUrl}/static/:path*` },
-    { source: "/media/:path*",  destination: `${backendUrl}/media/:path*`  },
+    { source: "/api/realizations/:path*", destination: `${backendUrl}/api/realizations/:path*` },
+    { source: "/api/gallery/:path*",      destination: `${backendUrl}/api/gallery/:path*` },
+    { source: "/admin/:path*",            destination: `${backendUrl}/admin/:path*` },
+    { source: "/static/:path*",           destination: `${backendUrl}/static/:path*` },
+    { source: "/media/:path*",            destination: `${backendUrl}/media/:path*` },
   ]
 }
 ```
-
-#### Server Action: sendContactAction (`app/actions/contact.ts`)
-
-```typescript
-export async function sendContactAction(
-  _prevState: ContactActionState,
-  formData: FormData
-): Promise<ContactActionState>
-```
-
-Przetwarza `FormData` z formularza, wywołuje `postContact()` i zwraca stan (`ok`, `message`) do komponentu.
-
----
-
-### Konfiguracja Stylów
-
-#### TailwindCSS (`tailwind.config.ts`)
-
-- Kolory definiowane przez zmienne CSS HSL (light/dark mode)
-- Niestandardowe animacje: `marquee` (ScrollingServices), `accordion-down/up`
-- Czcionki: Inter (sans), Geist Mono
-
-#### Shadcn/ui
-
-Komponenty z Radix UI zintegrowane przez zmienne CSS:  
-Button, Input, Label, Textarea, Toast/Toaster, Tooltip, Separator, Sheet, Sidebar, Skeleton
-
-#### Galeria zdjęć
-
-Style `react-image-gallery` nadpisane w `app/globals.css` pod prefixem `.service-image-gallery` — responsywność, rozmiary miniaturek, kolory przycisków nawigacji.
 
 ---
 
@@ -611,8 +600,10 @@ Style `react-image-gallery` nadpisane w `app/globals.css` pod prefixem `.service
 | Django | 6.0.2 | Framework webowy |
 | djangorestframework | 3.16.1 | REST API |
 | django-cors-headers | 4.9.0 | CORS support |
-| gunicorn | 26.0.0 | WSGI server (produkcja) |
-| uvicorn | 0.41.0 | ASGI server (dev) |
+| cloudinary | 1.44.2 | SDK Cloudinary |
+| django-cloudinary-storage | 0.3.0 | Storage backend |
+| gunicorn | 26.0.0 | WSGI server |
+| uvicorn | 0.41.0 | ASGI server |
 | whitenoise | 6.12.0 | Pliki statyczne |
 | resend | 2.30.1 | Wysyłanie e-maili |
 | psycopg[binary] | 3.3.4 | Klient PostgreSQL |
@@ -631,12 +622,6 @@ Style `react-image-gallery` nadpisane w `app/globals.css` pod prefixem `.service
 | @radix-ui/* | ^1.1+ | Komponenty UI |
 | next-themes | 0.4.6 | Dark mode |
 | @next/third-parties | ^16.2.7 | Google Analytics |
-
-### Narzędzia
-
-- **uv** — zarządzanie zależnościami i wirtualnym środowiskiem Pythona
-- **Node.js 18+** — środowisko uruchomieniowe frontendu
-- **Git** — version control
 
 ---
 
@@ -661,7 +646,6 @@ cd Accord-Services
 #### Przez uv (rekomendowane)
 
 ```bash
-# uv sam tworzy .venv i instaluje z uv.lock — jeden krok
 uv run python manage.py migrate
 uv run python manage.py createsuperuser
 uv run python manage.py runserver
@@ -673,9 +657,7 @@ uv run python manage.py runserver
 python -m venv .venv
 source .venv/bin/activate    # Linux/Mac
 .\.venv\Scripts\activate     # Windows
-
 pip install -r requirements.txt
-
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
@@ -690,11 +672,8 @@ Admin: `http://localhost:8000/admin/`
 
 ```bash
 cd frontend
-npm install        # lub: pnpm install
-
-# Plik zmiennych środowiskowych
+npm install
 echo "BACKEND_URL=http://localhost:8000" > .env.local
-
 npm run dev
 ```
 
@@ -704,11 +683,23 @@ Aplikacja dostępna: `http://localhost:3000`
 
 ### Dodanie Odbiorcy E-mail
 
-Po uruchomieniu serwera i stworzeniu superusera, wejdź w panel admina:
-
 `http://localhost:8000/admin/` → **Odbiorcy e-mail** → **Dodaj odbiorcę e-mail**
 
-Wpisz adres e-mail i opcjonalnie nazwę. Zaznacz `is_active` (domyślnie zaznaczone). Od tej chwili wszystkie nowe zapytania z formularza będą trafiać na ten adres.
+---
+
+### Dodanie Zdjęć do Galerii
+
+`http://localhost:8000/admin/` → **Zdjęcia galerii** → **Dodaj zdjęcie galerii**
+
+Wymagane: plik zdjęcia (upload do Cloudinary), wybór usługi, numer kolejności.
+
+---
+
+### Dodanie Realizacji
+
+`http://localhost:8000/admin/` → **Realizacje** → **Dodaj realizację**
+
+Wymagane: tytuł, miasto (slug auto-wypełniany), usługa, opis, zdjęcie główne.
 
 ---
 
@@ -737,10 +728,13 @@ npm start
 |---------|----------|------|
 | `SECRET_KEY` | ✅ produkcja | Tajny klucz Django |
 | `DEBUG` | — | `True` (dev) / `False` (produkcja) |
-| `DATABASE_URL` | ✅ produkcja | URL PostgreSQL (`postgresql://...`) |
+| `DATABASE_URL` | ✅ produkcja | URL PostgreSQL |
 | `DB_SSLMODE` | — | np. `require` dla Neon/Render |
 | `RESEND_API_KEY` | ✅ produkcja | Klucz API Resend |
 | `EMAIL_PASSWORD` | — | Hasło aplikacji Gmail (fallback SMTP) |
+| `CLOUDINARY_CLOUD_NAME` | ✅ | Nazwa konta Cloudinary |
+| `CLOUDINARY_API_KEY` | ✅ | Klucz API Cloudinary |
+| `CLOUDINARY_API_SECRET` | ✅ | Secret Cloudinary |
 | `RENDER_EXTERNAL_HOSTNAME` | — | Ustawiane automatycznie przez Render |
 
 **Frontend (`.env.local`):**
@@ -758,13 +752,11 @@ npm start
 | **Build Command** | `pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput` |
 | **Start Command** | `gunicorn accord.wsgi:application` |
 
-Zmienne środowiskowe: `SECRET_KEY`, `DEBUG=False`, `DATABASE_URL`, `DB_SSLMODE`, `RESEND_API_KEY`, `EMAIL_PASSWORD`.
+Zmienne środowiskowe: wszystkie z tabeli powyżej.
 
 ### Deployment — Vercel (Frontend)
 
 Zmienna środowiskowa: `BACKEND_URL` → adres backendu z Rendera.
-
-Rewrite w `next.config.ts` sprawia, że `/admin/*` jest serwowany przez Django pod tą samą domeną co frontend.
 
 ---
 
@@ -773,18 +765,11 @@ Rewrite w `next.config.ts` sprawia, że `/admin/*` jest serwowany przez Django p
 ### Przepływ 1: Wysyłanie Zapytania Kontaktowego
 
 ```
-Użytkownik wchodzi na stronę
-        ↓
-Przeglądanie sekcji (Hero → Usługi → O nas → Proces)
-        ↓
-Przejście do sekcji Kontakt lub strony usługi
-        ↓
-Wypełnienie formularza (imię, telefon, e-mail, usługa, opis)
+Użytkownik wypełnia formularz kontaktowy
         ↓
 Frontend (Next.js):
-  - walidacja HTML5 (required, type)
   - submit → Server Action sendContactAction
-  - wywołanie POST /api/contacts
+  - POST /api/contacts
         ↓
 Backend (Django):
   - walidacja DRF (unikalność e-mail, telefon, regex)
@@ -792,65 +777,94 @@ Backend (Django):
   - uruchomienie wątku e-mail (Thread)
         ↓
 E-mail (asynchronicznie):
-  - Resend API (jeśli RESEND_API_KEY) → kontakt@accord.opole.pl
-  - fallback: SMTP Gmail
+  - Resend API lub SMTP Gmail
   - odbiorcy: aktywni EmailRecipient z bazy
         ↓
 Frontend:
   - toast "Dziękujemy, odezwiemy się wkrótce"
-  lub toast "Coś poszło nie tak..."
+```
+
+---
+
+### Przepływ 2: Wyświetlanie Galerii na Stronie Usługi
+
+```
+/uslugi/[service]
         ↓
-Administrator w panelu /admin/contact/contact/:
-  - widzi nowe zapytanie ze statusem "nowy"
-  - może zmienić status, przeglądać historię
-```
-
----
-
-### Przepływ 2: Przeglądanie Usług
-
-```
-Strona główna (/)
-    ↓
-ServicesSection — karuzela z zakładkami (Pompy / Klimatyzacja / Rekuperacja / Fotowoltaika)
-    ├── klik zakładki → zmiana treści i zdjęcia w sekcji
-    └── "Dowiedz się więcej" → /uslugi/[slug]
-
-Strona usługi (/uslugi/[slug])
-    ├── ServicePage — nagłówek z tytułem, opisem i CTA
-    ├── Treść szczegółowa (children — specyficzna dla każdej usługi)
-    ├── PhotoGallery — galeria z toggle (domyślnie ukryta)
-    └── Przyciski: "Umów bezpłatną wycenę" → /#kontakt
-                  "Zobacz wszystkie usługi" → /#uslugi
-```
-
----
-
-### Przepływ 3: Strona QR
-
-```
-Zeskanowanie kodu QR (np. z wizytówki lub ulotki)
+ServicePage renderuje PhotoGallery z prop `service`
         ↓
-/qr — uproszczona strona z 4 kartami:
-  ├── Przejdź do strony → /
-  ├── Zadzwoń teraz → tel:601475547
-  ├── Oceń nas w Google → g.page/r/...
-  └── Znajdź nas na mapie → maps.app.goo.gl/...
+useGallery hook:
+  - fetch GET /api/gallery?service=[service]
+  - Next.js rewrite → backend Django
+        ↓
+Backend zwraca JSON z URL Cloudinary
+        ↓
+PhotoGallery wyświetla react-image-gallery
 ```
 
 ---
 
-### Przepływ 4: Zarządzanie Kontaktami (Admin)
+### Przepływ 3: Wyświetlanie Realizacji
+
+```
+Strona główna / strona lokalna
+        ↓
+RealizationsCarousel:
+  - fetch GET /api/realizations?[filters]
+  - Next.js rewrite → backend Django
+        ↓
+Backend zwraca JSON z cover_image_url (Cloudinary)
+        ↓
+Karuzela z linkami do /uslugi/[service]/[city_slug]
+```
+
+---
+
+### Przepływ 4: Strona Lokalna (SEO)
+
+```
+/uslugi/pompy-ciepla/opole
+        ↓
+Next.js ISR (revalidate: 86400):
+  1. Sprawdza CITIES — jeśli znane miasto, używa nazwy
+  2. Jeśli nieznane → getCityFromAPI() → /api/realizations/?city_slug=...
+  3. Jeśli miasto nie istnieje → notFound()
+        ↓
+LocalServicePage:
+  - nagłówek: "[Usługa] [Miasto]"
+  - RealizationsGrid z filtrami
+  - Schema.org: Service + BreadcrumbList
+```
+
+---
+
+### Przepływ 5: Sitemap
+
+```
+GET /sitemap.xml
+        ↓
+sitemap.ts (Next.js):
+  1. Statyczne strony (/, /uslugi/*)
+  2. SERVICES × CITIES (hardcoded)
+  3. getDynamicLocalPages():
+     - fetch /api/realizations/ z backendu
+     - filtruje miasta spoza hardcoded listy
+     - zwraca unikalne pary [service, city_slug]
+        ↓
+Łączny sitemap z priorytetami i changeFrequency
+```
+
+---
+
+### Przepływ 6: Zarządzanie Treścią (Admin)
 
 ```
 Administrator → /admin/
-    ├── contact/contact/ — lista zapytań
-    │   ├── filtrowanie po statusie, usłudze, dacie
-    │   └── zmiana statusu pojedynczego zapytania
-    ├── contact/contactstatus/ — zarządzanie statusami
-    └── contact/emailrecipient/ — zarządzanie odbiorcami e-mail
-        ├── dodawanie nowych odbiorców
-        └── wyłączanie odbiorców (is_active = False)
+    ├── contact/contact/           # Zapytania klientów
+    ├── contact/contactstatus/     # Statusy zapytań
+    ├── contact/emailrecipient/    # Odbiorcy e-mail
+    ├── gallery/galleryimage/      # Zdjęcia galerii (Cloudinary)
+    └── realization/realization/   # Realizacje (Cloudinary)
 ```
 
 ---
@@ -868,15 +882,16 @@ Administrator → /admin/
 | **Telefon 2** | +48 783 636 363 |
 | **Email** | accordservice@interia.pl |
 | **Strona** | https://www.accord.opole.pl |
-| **Google Maps** | https://share.google/9emUNr7ADPnOUdc4r |
 
 ### Linki Projektu
 
 | Zasób | URL |
 |-------|-----|
-| Strona główna (produkcja) | https://accordproposition.vercel.app/ |
+| Strona główna (produkcja) | https://www.accord.opole.pl |
 | Panel Admin | /admin/ |
 | API Kontakty | /api/contacts |
+| API Galeria | /api/gallery |
+| API Realizacje | /api/realizations |
 | Health Check | /health/ |
 | Repo GitHub | https://github.com/ovezthaking/Accord-Services |
 
@@ -888,6 +903,7 @@ Administrator → /admin/
 - [TailwindCSS](https://tailwindcss.com/)
 - [Shadcn/ui](https://ui.shadcn.com/)
 - [Resend](https://resend.com/docs)
+- [Cloudinary Python SDK](https://cloudinary.com/documentation/django_integration)
 - [uv](https://docs.astral.sh/uv/)
 - [Gunicorn](https://docs.gunicorn.org/)
 
@@ -897,10 +913,8 @@ Administrator → /admin/
 
 ### TODO / Przyszłe Usprawnienia
 
-Na podstawie komentarzy w kodzie i planów:
-
 - **ChatAI** — aplikacja `chatai` jest przygotowana w strukturze projektu; brak implementacji
-- **Refaktoring modelu `Contact`** — wydzielenie `services` do osobnego modelu, przemyślenie pola `status`
+- **Refaktoring modelu `Contact`** — wydzielenie `services` do osobnego modelu
 - **Integracja CRM** — zewnętrzny system zarządzania klientami
 - **Scheduling** — system rezerwacji terminów online
 - **System ocen** — opinie klientów na stronie
@@ -909,24 +923,26 @@ Na podstawie komentarzy w kodzie i planów:
 
 ⚠️ **Ważne przed deploymentem na produkcję:**
 
-- `DEBUG = False` (zmienna `DEBUG=False` w Render)
+- `DEBUG = False`
 - `SECRET_KEY` wyłącznie w zmiennych środowiskowych
 - `ALLOWED_HOSTS` zawiera domenę produkcyjną
-- CORS skonfigurowany dla właściwych domen (`CORS_ALLOWED_ORIGINS`)
-- `RESEND_API_KEY` ustawiony (wysyłka e-maili)
+- CORS skonfigurowany dla właściwych domen
+- `RESEND_API_KEY` ustawiony
+- Cloudinary skonfigurowane (`CLOUD_NAME`, `API_KEY`, `API_SECRET`)
 - Baza PostgreSQL z `sslmode=require`
-- `SESSION_COOKIE_SECURE = True` i `CSRF_COOKIE_SECURE = True` — już ustawione w `settings.py`
+- `SESSION_COOKIE_SECURE = True` i `CSRF_COOKIE_SECURE = True` (już ustawione)
 
 ### Performance
 
-- TailwindCSS — purged CSS (tylko użyte klasy)
-- Next.js Turbopack — szybsza kompilacja w trybie dev (`next dev --turbo`)
-- Whitenoise z `CompressedManifestStaticFilesStorage` — kompresja i cache plików statycznych
-- E-mail wysyłany asynchronicznie (osobny wątek) — nie blokuje odpowiedzi API
-- `findGalleryCandidates` — wykonuje się raz przy buildzie, nie przy każdym żądaniu
+- TailwindCSS — purged CSS
+- Next.js Turbopack — szybsza kompilacja w trybie dev
+- Whitenoise z `CompressedManifestStaticFilesStorage`
+- E-mail wysyłany asynchronicznie (osobny wątek)
+- ISR na stronach lokalnych (revalidate: 24h)
+- Sitemap z dynamicznym generowaniem stron z API
+- `findGalleryCandidates` — wykonuje się raz przy buildzie (lokalne zdjęcia fallback)
 
 ---
 
 **Data aktualizacji:** czerwiec 2026  
-**Autor:** Dokumentacja projektu  
-**Wersja:** 1.1
+**Wersja:** 1.2
