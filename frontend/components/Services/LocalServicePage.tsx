@@ -88,7 +88,7 @@ export default function LocalServicePage({
                     </h1>
                     <p className="mb-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">
                         Montujemy {serviceDeclination.toLowerCase()} w miejscowości {city} i okolicach. 
-                        Każdą instalację dobieramy indywidualnoe - tak, aby była opłacalna i bezproblemowa 
+                        Każdą instalację dobieramy indywidualnie - tak, aby była opłacalna i bezproblemowa 
                         przez lata.
                     </p>
                     <div className="flex flex-wrap gap-3">
