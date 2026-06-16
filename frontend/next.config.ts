@@ -51,6 +51,110 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      // --- Stare .html / strony bezpośrednie ---
+      {
+        source: '/pompy.html',
+        destination: '/uslugi/pompy-ciepla',
+        permanent: true,
+      },
+      {
+        source: '/wentylacja.html',
+        destination: '/uslugi/rekuperacja',
+        permanent: true,
+      },
+      {
+        source: '/historia.html',
+        destination: '/#o-nas',
+        permanent: true,
+      },
+
+      // --- Stare PDF-y (katalogi producentów) → strona główna ---
+      {
+        source: '/kaisaic.pdf',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/rotensok.pdf',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/kaisaik.pdf',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/vaillantpc.pdf',
+        destination: '/uslugi/pompy-ciepla',
+        permanent: true,
+      },
+      {
+        source: '/vailantpk.pdf',
+        destination: '/uslugi/pompy-ciepla',
+        permanent: true,
+      },
+      {
+        source: '/vaillantrc.pdf',
+        destination: '/uslugi/rekuperacja',
+        permanent: true,
+      },
+
+      // --- Stara ścieżka /uslugi/pompy-ciepla (już poprawna, ale może być bez www) ---
+      // Jeśli masz już ten route w Next.js, ten redirect nie jest potrzebny.
+
+      // --- WordPress permalinks ---
+      {
+        source: '/wordpress/index.php/fotowoltaika/',
+        destination: '/uslugi/fotowoltaika',
+        permanent: true,
+      },
+      {
+        source: '/wordpress/index.php/fotowoltaika',
+        destination: '/uslugi/fotowoltaika',
+        permanent: true,
+      },
+      {
+        source: '/wordpress/index.php/rekuperacja/',
+        destination: '/uslugi/rekuperacja',
+        permanent: true,
+      },
+      {
+        source: '/wordpress/index.php/rekuperacja',
+        destination: '/uslugi/rekuperacja',
+        permanent: true,
+      },
+      {
+        source: '/wordpress/index.php/klimatyzacja/',
+        destination: '/uslugi/klimatyzacja',
+        permanent: true,
+      },
+      {
+        source: '/wordpress/index.php/klimatyzacja',
+        destination: '/uslugi/klimatyzacja',
+        permanent: true,
+      },
+      {
+        source: '/wordpress/index.php/kontakt/',
+        destination: '/#kontakt',
+        permanent: true,
+      },
+      {
+        source: '/wordpress/index.php/kontakt',
+        destination: '/#kontakt',
+        permanent: true,
+      },
+
+      // --- Catch-all dla pozostałych /wordpress/* ścieżek → strona główna ---
+      {
+        source: '/wordpress/:path*',
+        destination: '/',
+        permanent: true,
+      },
+    ]
+  },
 };
 
 export default nextConfig;
