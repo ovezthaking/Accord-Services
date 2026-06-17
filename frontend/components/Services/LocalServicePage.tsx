@@ -106,7 +106,7 @@ export default function LocalServicePage({
                     <h2 className="mb-8 text-2xl font-bold text-foreground">
                         Nasze realizacje w miejscowości {city}
                     </h2>
-                    <RealizationsGrid citySlug={citySlug} service={serviceKey} />
+                    <RealizationsGrid citySlug={citySlug} />
                 </section>
             </main>
         </>

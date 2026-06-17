@@ -1,6 +1,7 @@
 export type Realization = {
     id: number,
     title: string,
+    description: string,
     city: string,
     city_slug: string,
     service: string,

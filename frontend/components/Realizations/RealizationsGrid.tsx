@@ -61,14 +61,12 @@ export default function RealizationsCarousel({ citySlug, service, limit }: Reali
 
     return (
         <div className="relative w-full overflow-hidden px-4 py-8">
-            {/* Header sekcji */}
             <div className="mb-8 flex items-end justify-between px-2">
                 <div>
                     <h2 className="text-3xl font-bold tracking-tight text-foreground">Nasze Realizacje</h2>
                     <p className="mt-2 text-muted-foreground">Zobacz ostatnie montaże u naszych klientów.</p>
                 </div>
                 
-                {/* Przyciski nawigacji */}
                 <div className="hidden gap-2 sm:flex">
                     <button 
                         onClick={() => scroll('left')}
@@ -87,7 +85,6 @@ export default function RealizationsCarousel({ citySlug, service, limit }: Reali
                 </div>
             </div>
 
-            {/* Kontener scrollowalny */}
             <div 
                 ref={scrollRef}
                 className="flex gap-6 overflow-x-auto scroll-smooth pb-6 snap-x snap-mandatory scrollbar-hide"
@@ -101,23 +98,36 @@ export default function RealizationsCarousel({ citySlug, service, limit }: Reali
                     >
                         <div className="group h-full overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-primary/30 hover:shadow-md">
                             {/* Obrazek */}
-                            <div className="relative h-56 overflow-hidden">
+                            <div className="relative h-64 overflow-hidden">
                                 <Image
                                     src={item.cover_image_url}
                                     alt={item.title}
                                     fill
-                                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60" />
-                                <div className="absolute bottom-4 left-4 text-white">
-                                    <div className="flex items-center gap-1 text-xs font-medium">
+                                
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 transition-all duration-500 group-hover:bg-black/60 group-hover:backdrop-blur-[2px]" />
+                                
+                                <div className="absolute inset-0 flex flex-col justify-end p-5 text-white">
+                                    <div className="flex items-center gap-1 text-xs font-medium text-primary-foreground/80 mb-2">
                                         <MapPin className="h-3 w-3" />
                                         {item.city}
                                     </div>
+                                    
+                                    {item.description && (
+                                        <div className="overflow-hidden transition-all duration-500 max-h-full">
+                                            <p className="text-sm font-light leading-relaxed text-gray-100 mb-2 transition-all duration-500 line-clamp-3 group-hover:line-clamp-none group-hover:overflow-y-auto max-h-40 scrollbar-hide">
+                                                {item.description}
+                                            </p>
+                                        </div>
+                                    )}
+                                    
+                                    {/* Linia oddzielająca, która wydłuża się na hover */}
+                                    <div className="h-px w-12 bg-primary/60 transform origin-left transition-all duration-500 group-hover:w-full" />
                                 </div>
                             </div>
 
-                            {/* Treść */}
+                            {/* Treść pod obrazkiem */}
                             <div className="p-5">
                                 <h3 className="mb-1 text-lg font-semibold text-foreground line-clamp-1">
                                     {item.title}
@@ -127,7 +137,7 @@ export default function RealizationsCarousel({ citySlug, service, limit }: Reali
                                         {item.device_model || 'Realizacja indywidualna'}
                                     </p>
                                     {item.area_m2 && (
-                                        <span className="text-xs font-medium bg-secondary px-2 py-1 rounded-md whitespace-nowrap">
+                                        <span className="text-xs font-medium bg-secondary px-2 py-1 rounded-md">
                                             {item.area_m2} m²
                                         </span>
                                     )}
@@ -143,7 +153,6 @@ export default function RealizationsCarousel({ citySlug, service, limit }: Reali
                 ))}
             </div>
             
-            {/* Wskaźnik scrollowania (mobilny - opcjonalny wizualny akcent) */}
             <div className="mt-2 flex justify-center gap-1 sm:hidden">
                 <div className="h-1.5 w-8 rounded-full bg-primary" />
                 <div className="h-1.5 w-2 rounded-full bg-border" />
