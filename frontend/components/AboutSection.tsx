@@ -123,7 +123,7 @@ export default function AboutSection() {
                         </FadeIn>
                         
                         <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:col-span-2">
-                            <FadeIn direction="up" delay={80}>
+                            <FadeIn direction="right" delay={80}>
                                 <div className="rounded-2xl border border-border bg-card p-6">
                                     <h3 className="mb-3 text-base font-bold text-foreground">Realne doradztwo, nie sprzedaż na siłę</h3>
                                     <p className="text-sm leading-relaxed text-muted-foreground mb-2">
@@ -135,7 +135,7 @@ export default function AboutSection() {
                                 </div>
                             </FadeIn>
 
-                            <FadeIn direction="up" delay={160}>
+                            <FadeIn direction="left" delay={160}>
                                 <div className="rounded-2xl bg-primary p-7 text-primary-foreground">
                                     <h3 className="mb-5 text-lg font-bold">Nasze realizacje w liczbach</h3>
                                     <div className="grid grid-cols-2 gap-5">
