@@ -69,6 +69,11 @@ const nextConfig: NextConfig = {
         destination: '/#o-nas',
         permanent: true,
       },
+      {
+        source: '/kontakt.html',
+        destination: '/#kontakt',
+        permanent: true,
+      },
 
       // --- Stare PDF-y (katalogi producentów) → strona główna ---
       {
