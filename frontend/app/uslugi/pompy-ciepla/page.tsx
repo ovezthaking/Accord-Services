@@ -26,13 +26,13 @@ export default function HeatPumpsPage() {
     return (
         <ServicePage {...data}>
             <FadeIn direction="up" delay={50}>
-                <p className="my-5 mb-10 leading-relaxed text-card-foreground mx-auto max-w-7xl px-6">
+                <p className="my-5 mb-10 leading-relaxed text-card-foreground mx-auto max-w-7xl px-4 md:px-6">
                     Montujemy pompy ciepła w Opolu i okolicznych miejscowościach, dojeżdzamy też do innych województw.
                     Każdą instalację dobieramy indywidualnie - tak, aby była opłacalna, wydajna i bezproblemowa w użytkowaniu przez lata.
                 </p>
             </FadeIn>
 
-            <FadeIn direction="up" delay={100} className="mb-12 px-6">
+            <FadeIn direction="up" delay={100} className="mb-12 px-0 md:px-6">
                 <div className="relative aspect-[1024/352] w-full overflow-hidden rounded-2xl border border-border/60 shadow-sm">
                     <Image
                         src="/images/services/heatpumps/banner.png"
@@ -44,7 +44,8 @@ export default function HeatPumpsPage() {
                 </div>
             </FadeIn>
 
-            <section className="not-prose mb-12 px-6">
+            {/* 3. SEKCJA ANALIZY - Wykorzystuje pełną szerokość dostępną w ServicePage */}
+            <section className="not-prose mb-12 px-0 md:px-6">
                 <FadeIn direction="up" delay={150}>
                     <div className="rounded-2xl border border-border/60 bg-gradient-to-br from-background via-background to-emerald-50/60 p-6 shadow-sm md:p-10">
                         <p className="mb-3 inline-flex rounded-full border border-emerald-200 bg-emerald-100 px-3 py-1 text-xs font-medium tracking-wide text-emerald-800">
@@ -78,9 +79,11 @@ export default function HeatPumpsPage() {
                 </FadeIn>
             </section>
 
-            <section className="not-prose grid gap-6 px-6 lg:grid-cols-3 mb-12">
+            {/* 4. TRZY KAFELKI - Kluczowe zmiany w paddingu i gridzie */}
+            <section className="not-prose grid gap-6 px-0 md:px-6 lg:grid-cols-3 mb-12">
                 
-                <FadeIn direction="right" delay={200} className="flex">
+                {/* Karta: Oszczędności */}
+                <FadeIn direction="up" delay={200} className="flex w-full">
                     <div className="flex flex-col rounded-2xl border border-border/60 bg-gradient-to-br from-amber-50 via-background to-background p-6 shadow-sm md:p-8 w-full">
                         <p className="mb-3 inline-flex w-fit rounded-full border border-amber-200 bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800">
                             Zalety
@@ -98,7 +101,8 @@ export default function HeatPumpsPage() {
                     </div>
                 </FadeIn>
 
-                <FadeIn direction="down" delay={300} className="flex">
+                {/* Karta: Koszty */}
+                <FadeIn direction="up" delay={250} className="flex w-full">
                     <div className="flex flex-col rounded-2xl border border-border/60 bg-background p-6 shadow-sm md:p-8 w-full">
                         <p className="mb-3 inline-flex w-fit rounded-full border border-border bg-muted/50 px-3 py-1 text-xs font-medium text-muted-foreground">
                             Wycena
@@ -117,7 +121,8 @@ export default function HeatPumpsPage() {
                     </div>
                 </FadeIn>
 
-                <FadeIn direction="left" delay={400} className="flex">
+                {/* Karta: Montaż */}
+                <FadeIn direction="up" delay={300} className="flex w-full">
                     <div className="flex flex-col rounded-2xl border border-border/60 bg-gradient-to-br from-sky-50 via-background to-background p-6 shadow-sm md:p-8 w-full">
                         <p className="mb-3 inline-flex w-fit rounded-full border border-sky-200 bg-sky-100 px-3 py-1 text-xs font-medium text-sky-800">
                             Instalacja
